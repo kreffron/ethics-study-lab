@@ -1,0 +1,879 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Study games for the Ethics unit test: flashcards, practice quiz, theory sort, Doctrine of the Mean, key ideas, case studies, and a group vocabulary game.">
+<title>Ethics Study Lab</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+body{margin:0;min-height:100vh}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Spectral:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+/* Layout: a study hall. Home is a test map (what each section is worth) feeding into seven practice stations; every station is a single focused column with the four theories color-coded throughout. */
+:root{
+  --bg:#edf0f3; --surface:#ffffff; --sunk:#e3e7ec; --ink:#16202b; --muted:#566373; --line:#d2d9e1;
+  --accent:#1f4e79; --accent-ink:#ffffff;
+  --ve:#4b7a26; --sct:#a5432c; --deon:#2b5ea8; --util:#a8730c; --gen:#5e6876;
+  --good:#2f7d4a; --bad:#b23a2a;
+  --display:"Spectral",Georgia,"Times New Roman",serif;
+  --body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#11151b; --surface:#1a2029; --sunk:#232b36; --ink:#e7ecf1; --muted:#9ba7b5; --line:#2e3845;
+  --accent:#8fb9e6; --accent-ink:#0e1620;
+  --ve:#9cc874; --sct:#ec8a72; --deon:#8bb2f2; --util:#e6b552; --gen:#a7b0bc;
+  --good:#7fd29a; --bad:#f08977; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11151b; --surface:#1a2029; --sunk:#232b36; --ink:#e7ecf1; --muted:#9ba7b5; --line:#2e3845;
+  --accent:#8fb9e6; --accent-ink:#0e1620;
+  --ve:#9cc874; --sct:#ec8a72; --deon:#8bb2f2; --util:#e6b552; --gen:#a7b0bc;
+  --good:#7fd29a; --bad:#f08977; color-scheme:dark}
+
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 40px}
+.shell{max-width:980px;margin:0 auto}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);line-height:1.1;text-wrap:balance;margin:0}
+p{margin:0}
+
+/* Top bar */
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:16px;border-bottom:1px solid var(--line);margin-bottom:24px}
+.brand{font-family:var(--display);font-weight:800;font-size:20px;text-decoration:none;color:var(--ink);letter-spacing:.01em}
+.brand small{font-family:var(--body);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-left:8px}
+.home-link{font-weight:700;font-size:15px;text-decoration:none;color:var(--accent)}
+.home-link:hover{text-decoration:underline}
+
+/* Buttons and chips */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-weight:700;font-size:16px;border-radius:8px;padding:10px 16px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);line-height:1.2}
+.btn:hover:not(:disabled){border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover:not(:disabled){filter:brightness(1.1)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.sm{font-size:14px;padding:6px 11px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.row.end{justify-content:flex-end}
+.row.between{justify-content:space-between}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--c,var(--gen))}
+.chip::before{content:"";width:9px;height:9px;border-radius:50%;background:currentColor}
+.t-ve{--c:var(--ve)} .t-sct{--c:var(--sct)} .t-deon{--c:var(--deon)} .t-util{--c:var(--util)} .t-gen{--c:var(--gen)}
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.filters button{font-size:14px;font-weight:700;border-radius:999px;padding:6px 12px;border:1.5px solid var(--line);background:transparent;color:var(--muted)}
+.filters button[aria-pressed="true"]{border-color:var(--c,var(--accent));color:var(--c,var(--accent));background:var(--surface)}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+.stack{display:grid;gap:16px}
+.view-head{display:grid;gap:6px;margin-bottom:20px}
+.view-head h1{font-size:clamp(30px,5vw,44px);font-weight:800}
+.view-head p{color:var(--muted);max-width:62ch}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px}
+.num{font-variant-numeric:tabular-nums}
+
+/* Home */
+.hero{display:grid;gap:10px;padding-block:8px 24px}
+.hero h1{font-size:clamp(38px,7vw,68px);font-weight:800;letter-spacing:-.01em}
+.hero p{font-size:19px;color:var(--muted);max-width:56ch}
+.theories{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:4px}
+.testmap{overflow-x:auto;margin-bottom:28px}
+.testmap table{width:100%;min-width:560px;border-collapse:collapse;font-size:15px}
+.testmap th,.testmap td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.testmap th{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.testmap td.pts{font-family:var(--display);font-weight:800;font-size:20px;white-space:nowrap}
+.testmap tfoot td{border-bottom:none;font-weight:700}
+.testmap a{color:var(--accent);font-weight:700;text-decoration:none;white-space:nowrap}
+.testmap a:hover{text-decoration:underline}
+.stations{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.station{display:grid;grid-template-rows:auto 1fr auto;gap:8px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;text-decoration:none;color:var(--ink);transition:border-color .15s,transform .15s}
+.station:hover{border-color:var(--accent);transform:translateY(-2px)}
+.station h2{font-size:24px;font-weight:700}
+.station p{font-size:15px;color:var(--muted)}
+.station .meta{display:flex;justify-content:space-between;gap:8px;font-size:13px;font-weight:700;color:var(--muted);padding-top:8px;border-top:1px dashed var(--line)}
+.station .meta b{color:var(--accent)}
+.section-title{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.mode-tag{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* Flashcards */
+.card3d{perspective:1400px}
+.flash{width:100%;min-height:300px;border:none;background:transparent;padding:0;position:relative;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.3,.7,.3,1);display:grid}
+.flash.flipped{transform:rotateY(180deg)}
+.face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--surface);border:1px solid var(--line);border-top:5px solid var(--c,var(--gen));border-radius:12px;padding:28px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center}
+.face.back{transform:rotateY(180deg)}
+.face .term{font-family:var(--display);font-weight:800;font-size:clamp(32px,6vw,52px);line-height:1.05}
+.face .def{font-size:clamp(18px,2.4vw,22px);max-width:46ch;line-height:1.5}
+.face .tap{font-size:13px;color:var(--muted)}
+.known-mark{font-size:13px;font-weight:700;color:var(--good)}
+.progress{height:6px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.progress span{display:block;height:100%;background:var(--accent);transition:width .3s}
+
+/* Quiz / Sort / Mean */
+.q-text{font-family:var(--display);font-weight:700;font-size:clamp(22px,3.4vw,30px);line-height:1.25}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:13px 16px;font-size:17px}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt .k{flex:0 0 auto;font-weight:700;color:var(--muted);width:1.3em}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--good);background:color-mix(in srgb,var(--good) 12%,var(--surface))}
+.opt.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,var(--surface))}
+.opt.dim{opacity:.55}
+.feedback{border-left:4px solid var(--good);padding:10px 14px;background:var(--sunk);border-radius:0 8px 8px 0}
+.feedback.no{border-left-color:var(--bad)}
+.feedback b{display:block;margin-bottom:2px}
+.scorebig{font-family:var(--display);font-weight:800;font-size:clamp(56px,11vw,96px);line-height:1}
+.missed{display:grid;gap:10px}
+.missed li{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.missed ul,ul.clean{list-style:none;margin:0;padding:0}
+.theory-btns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.theory-btns button{border:1.5px solid var(--c);color:var(--c);background:var(--surface);border-radius:10px;padding:16px 10px;font-weight:700;font-size:17px}
+.theory-btns button:hover:not(:disabled){background:color-mix(in srgb,var(--c) 12%,var(--surface))}
+.theory-btns button.hit{background:var(--c);color:var(--surface)}
+.theory-btns button:disabled{cursor:default}
+.prompt-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:30px 22px;text-align:center;display:grid;gap:10px}
+.prompt-card .big{font-family:var(--display);font-weight:700;font-size:clamp(24px,4vw,36px);line-height:1.2}
+.stats{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:14px;font-weight:700;color:var(--muted)}
+.stats b{color:var(--ink);font-variant-numeric:tabular-nums}
+
+.slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.slot{border:1.5px dashed var(--line);border-radius:10px;padding:12px 10px;text-align:center;display:grid;gap:4px;min-height:84px;align-content:center}
+.slot.active{border-color:var(--accent);border-style:solid}
+.slot.filled{border-style:solid;background:var(--surface)}
+.slot.ok{border-color:var(--good)} .slot.no{border-color:var(--bad)}
+.slot .lab{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.slot .val{font-family:var(--display);font-weight:700;font-size:20px;line-height:1.15}
+.slot .fix{font-size:13px;color:var(--bad)}
+.pool{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.pool button{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:9px 16px;font-weight:700}
+.pool button:hover:not(:disabled){border-color:var(--accent)}
+.pool button:disabled{opacity:.3;cursor:default}
+
+/* Writing practice */
+label.fl{display:grid;gap:6px;font-weight:700;font-size:15px}
+textarea,input[type=text],input[type=number],select{font:inherit;font-size:17px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:8px;padding:10px 12px;width:100%}
+textarea{min-height:120px;resize:vertical;line-height:1.5}
+textarea:focus,input:focus,select:focus{outline:none;border-color:var(--accent)}
+.model{display:grid;gap:12px}
+.model-part{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:start}
+.model-part .pt{font-family:var(--display);font-weight:800;font-size:22px;line-height:1.1;color:var(--accent);grid-row:span 2}
+.model-part h3{font-family:var(--body);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.checks{display:grid;gap:8px}
+.checks label{display:flex;gap:10px;align-items:flex-start;font-size:16px;cursor:pointer}
+.checks input{width:20px;height:20px;margin-top:2px;accent-color:var(--accent);flex:0 0 auto}
+.idea-list{display:flex;flex-wrap:wrap;gap:6px}
+.idea-list button{font-size:14px;border:1.5px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 10px;text-align:left}
+.idea-list button[aria-current="true"]{border-color:var(--accent);color:var(--accent);font-weight:700}
+.idea-list button .d{color:var(--good);font-weight:700;margin-left:4px}
+
+/* Case lab */
+.case-text{font-size:19px;line-height:1.6;max-width:66ch}
+.stance{display:inline-flex;align-items:center;gap:10px;border:2px solid var(--c);color:var(--c);border-radius:10px;padding:10px 16px;font-family:var(--display);font-weight:800;font-size:clamp(22px,3.5vw,30px)}
+.stance-wrap{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.lens{display:grid;gap:4px;padding:12px 14px;border-left:4px solid var(--c);background:var(--sunk);border-radius:0 8px 8px 0}
+.lens.mine{background:color-mix(in srgb,var(--c) 10%,var(--surface))}
+.lens h3{font-family:var(--body);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--c)}
+.group-list{display:grid;gap:8px}
+.group-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:8px}
+.group-row b{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.tabs{display:inline-flex;flex-wrap:wrap;max-width:100%;border:1.5px solid var(--line);border-radius:8px;overflow:hidden}
+.tabs button{border:none;background:transparent;padding:8px 14px;font-weight:700;font-size:15px;color:var(--muted)}
+.tabs button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+
+/* Describe it */
+.timer{font-family:var(--display);font-weight:800;font-size:clamp(44px,8vw,72px);line-height:1;font-variant-numeric:tabular-nums}
+.timer.low{color:var(--bad)}
+.taboo{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.taboo span{font-weight:700;font-size:15px;padding:4px 10px;border-radius:6px;background:color-mix(in srgb,var(--bad) 14%,var(--surface));color:var(--bad);text-decoration:line-through}
+.teams{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.team-box{background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:2px;min-width:0}
+.team-box.up{border-color:var(--accent)}
+.team-box .s{font-family:var(--display);font-weight:800;font-size:36px;line-height:1}
+.team-box input{min-width:0;width:100%;border:none;padding:0;background:transparent;font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-radius:0;border-bottom:1px dashed var(--line)}
+
+@media (max-width:560px){
+  .slots{grid-template-columns:1fr}
+  .slot{min-height:0}
+  .panel{padding:16px}
+  .face{padding:22px 16px}
+}
+@media (prefers-reduced-motion:reduce){ .flash,.station,.progress span{transition:none} }
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="bar">
+    <a class="brand" href="#">Ethics Study Lab<small>Unit test review</small></a>
+    <a class="home-link" id="homeLink" href="#" hidden>All stations</a>
+  </header>
+  <main id="view"></main>
+</div>
+
+<script>
+/* ================= CONTENT ================= */
+const TH = {
+  ve:{name:"Virtue Ethics", short:"Virtue"},
+  sct:{name:"Social Contract", short:"Social Contract"},
+  deon:{name:"Deontology", short:"Deontology"},
+  util:{name:"Utilitarianism", short:"Utilitarian"},
+  gen:{name:"Across theories", short:"General"}
+};
+
+const TERMS = [
+  {t:"Anarchy",th:"sct",d:"The absence of any government or political authority. Social contract thinkers see it as close to the state of nature.",x:["government","chaos","rules"]},
+  {t:"Cardinal Virtue",th:"ve",d:"One of the four “hinge” virtues (prudence, justice, fortitude, temperance) on which all the other moral virtues depend.",x:["four","hinge","prudence"]},
+  {t:"Deon / Duty",th:"deon",d:"Greek for “duty.” A moral obligation to do or not do something, binding no matter the consequences.",x:["obligation","Kant","must"]},
+  {t:"Deficiency",th:"ve",d:"The vice of having too little of a quality. Cowardice is a deficiency of courage.",x:["too little","lack","mean"]},
+  {t:"Ends",th:"gen",d:"The goals or purposes an action aims at. Utilitarians judge acts by their ends (outcomes); Kant says persons are ends in themselves.",x:["goal","purpose","result"]},
+  {t:"Excess",th:"ve",d:"The vice of having too much of a quality. Rashness is an excess of courage.",x:["too much","overdo","mean"]},
+  {t:"Eudaimonia",th:"ve",d:"Aristotle’s highest good: human flourishing, living and acting well in accordance with virtue over a whole life.",x:["happiness","flourishing","Aristotle"]},
+  {t:"Fortitude",th:"ve",d:"The cardinal virtue of firmness in difficulty: steadiness in pursuing the good despite fear, pain, or danger.",x:["courage","brave","strength"]},
+  {t:"Free Will",th:"gen",d:"The capacity to choose our own actions rather than having them determined for us. Without it there is no moral responsibility.",x:["choice","choose","freedom"]},
+  {t:"General Will",th:"sct",d:"Rousseau’s term for the collective will of the people as a whole, always aimed at the common good rather than private interest.",x:["Rousseau","people","common"]},
+  {t:"Good Will",th:"deon",d:"For Kant, a will that acts from duty. It is the only thing good without qualification.",x:["Kant","duty","intention"]},
+  {t:"Habit",th:"ve",d:"A stable disposition formed by repeated action. Virtues are good habits; vices are bad ones.",x:["repeat","practice","routine"]},
+  {t:"Happiness (for Utilitarians)",th:"util",d:"Pleasure and the absence of pain. It is the one thing utilitarians say is good in itself.",x:["pleasure","pain","Bentham"]},
+  {t:"Human Agency",th:"gen",d:"A person’s capacity to act intentionally and make free choices that shape their own life and the world around them.",x:["act","choice","free"]},
+  {t:"Human Dignity",th:"gen",d:"The inherent, unconditional worth of every human person. It demands respect and forbids treating anyone as a mere object.",x:["worth","value","respect"]},
+  {t:"Human Nature",th:"gen",d:"The basic traits and tendencies all humans share. Every ethical and political theory starts from a view of it (Hobbes: selfish; Aristotle: rational and social).",x:["human","born","Hobbes"]},
+  {t:"Inculcation",th:"ve",d:"Instilling virtues or values through repeated teaching, example, and practice.",x:["teach","instill","repeat"]},
+  {t:"Inherent",th:"gen",d:"Belonging to something by its very nature. Inherent value is worth a thing has in itself, not because it is useful.",x:["itself","natural","built-in"]},
+  {t:"Intention",th:"deon",d:"The purpose or motive behind an action. For Kant, intention, not outcome, determines an act’s moral worth.",x:["motive","mean","purpose"]},
+  {t:"Justice",th:"ve",d:"The cardinal virtue of giving each person what is due to them.",x:["fair","due","law"]},
+  {t:"Maxim",th:"deon",d:"The personal rule or principle behind an action (“When I need money, I will make a false promise”). Kant tests maxims with the categorical imperative.",x:["rule","principle","Kant"]},
+  {t:"Means",th:"gen",d:"The action or tool used to reach an end.",x:["way","tool","how"]},
+  {t:"Mere Means",th:"deon",d:"Treating a person only as a tool for your own goals, ignoring their own purposes and consent. Kant forbids it.",x:["use","tool","Kant"]},
+  {t:"Pain",th:"util",d:"The negative experience utilitarians aim to minimize. Bentham calls pain and pleasure our “two sovereign masters.”",x:["hurt","pleasure","suffering"]},
+  {t:"Pleasure",th:"util",d:"The positive experience utilitarians aim to maximize. Mill ranks higher (intellectual) pleasures above lower (bodily) ones.",x:["enjoy","happy","fun"]},
+  {t:"Prudence",th:"ve",d:"The cardinal virtue of practical wisdom, “right reason in action”: knowing what the right thing to do is in a particular situation.",x:["wisdom","wise","reason"]},
+  {t:"State of Nature / Original Position",th:"sct",d:"The imagined condition of people before government (Hobbes, Locke, Rousseau). Rawls’s original position imagines choosing society’s rules behind a “veil of ignorance.”",x:["government","before","Hobbes"]},
+  {t:"Telos / Ultimate End",th:"ve",d:"The final purpose a thing is directed toward. For humans it is eudaimonia (Aristotle) or union with God (Aquinas).",x:["purpose","goal","end"]},
+  {t:"Temperance",th:"ve",d:"The cardinal virtue that moderates our desire for physical pleasures like food and drink.",x:["moderation","self-control","pleasure"]},
+  {t:"Totalitarianism",th:"sct",d:"A system in which the state holds total authority and controls nearly every part of public and private life.",x:["control","dictator","total"]},
+  {t:"Utility (to Utilitarians)",th:"util",d:"An action’s usefulness in producing pleasure or happiness and preventing pain.",x:["useful","happiness","Bentham"]},
+  {t:"Vice",th:"ve",d:"A bad habit: a settled tendency toward the excess or deficiency of a quality.",x:["bad","habit","sin"]},
+  {t:"Virtue",th:"ve",d:"A good habit: a settled tendency to choose the mean between excess and deficiency, guided by reason.",x:["good","habit","excellence"]},
+  {t:"Categorical Imperative",th:"deon",d:"Kant’s supreme moral law: act only on a maxim you could will to become a universal law, and treat humanity always as an end, never merely as a means.",x:["Kant","universal","rule"]},
+  {t:"Social Contract",th:"sct",d:"An agreement, real or imagined, in which people give up some freedoms to a government in exchange for protection of their rights and order.",x:["agreement","government","Locke"]},
+  {t:"Greatest Happiness Principle",th:"util",d:"Actions are right as they tend to promote happiness and wrong as they tend to produce the reverse; aim for the greatest happiness of the greatest number.",x:["most","people","Mill"]},
+  {t:"Doctrine of the Mean",th:"ve",d:"Aristotle’s teaching that each virtue lies between two vices, one of excess and one of deficiency.",x:["middle","Aristotle","balance"]},
+  {t:"Double Effect",th:"ve",d:"Aquinas’s principle that an action with a good and a bad effect can be allowed if the act is good, the bad effect is not intended or used as a means, and the good outweighs the bad.",x:["Aquinas","two","side effect"]}
+];
+
+const QUIZ = [
+  {th:"ve",q:"Who is credited with founding virtue ethics?",o:["Aristotle","Immanuel Kant","Jeremy Bentham","Thomas Hobbes"],a:0,e:"Aristotle’s Nicomachean Ethics gives virtue ethics its systematic form, building on Socrates and Plato."},
+  {th:"ve",q:"For Aristotle, happiness (eudaimonia) is best described as…",o:["A lifetime of activity in accordance with virtue","The greatest amount of pleasure","Union with God after death","Getting whatever you desire"],a:0,e:"Eudaimonia is flourishing: acting well over a whole life, not a passing feeling."},
+  {th:"ve",q:"For Aquinas, perfect happiness is found in…",o:["Union with God (the beatific vision)","Political honor","Bodily pleasure","Eudaimonia in this life alone"],a:0,e:"Aquinas accepts Aristotle’s earthly happiness as imperfect; perfect happiness is the vision of God."},
+  {th:"ve",q:"According to Aristotle, how are virtues formed?",o:["By habit: repeatedly doing virtuous acts","We are born with them","By memorizing moral rules","By obeying the law"],a:0,e:"“We become just by doing just acts, brave by doing brave acts.” Virtue is inculcated through practice."},
+  {th:"ve",q:"Which of these is NOT one of the four cardinal virtues?",o:["Charity","Prudence","Justice","Temperance"],a:0,e:"Charity is a theological virtue (with faith and hope). The cardinal virtues are prudence, justice, fortitude, and temperance."},
+  {th:"ve",q:"Which cardinal virtue guides all of the others?",o:["Prudence","Temperance","Fortitude","Justice"],a:0,e:"Prudence is “right reason in action.” It sets the mean for every other virtue."},
+  {th:"ve",q:"In the Doctrine of the Mean, the deficiency of courage is…",o:["Cowardice","Rashness","Insensibility","Temperance"],a:0,e:"Cowardice (too little) and rashness (too much) are the two vices on either side of courage."},
+  {th:"ve",q:"The excess of generosity is…",o:["Wastefulness (prodigality)","Stinginess","Magnificence","Justice"],a:0,e:"Stinginess is the deficiency; wastefulness is the excess."},
+  {th:"ve",q:"Christian virtue ethics adds which virtues to the Greek list?",o:["Faith, hope, and charity","Prudence and justice","Honor, glory, and pride","Liberty, equality, and fraternity"],a:0,e:"The theological virtues come by grace and direct us to God. Christian thinkers also treat humility as a virtue, which Aristotle did not."},
+  {th:"ve",q:"What is the relationship among the virtues?",o:["They are connected; you cannot fully have one without the others, and prudence unites them","They are completely independent","Only one virtue matters","They often contradict each other"],a:0,e:"This is the “unity of the virtues.” A brave person without prudence is just reckless."},
+  {th:"ve",q:"Which is a basic requirement of Just War Theory for going to war?",o:["War must be a last resort","The war must be profitable","The enemy must surrender unconditionally","Civilians may be targeted if it ends the war sooner"],a:0,e:"Classic criteria include legitimate authority, just cause, right intention, and last resort; in war, civilians may never be directly targeted."},
+  {th:"ve",q:"In the basic moral calculus, an action is judged by which three parts?",o:["The object (the act itself), the intention, and the circumstances","Intensity, duration, and extent","Consent, rights, and law","Pleasure, pain, and utility"],a:0,e:"All three must be good for an act to be good. A good intention cannot make a bad act good."},
+  {th:"ve",q:"Under the principle of double effect, which condition must be met?",o:["The bad effect must not be the means to the good effect","The bad effect must be intended","The action may be wrong in itself if the result is good","The bad effect must outweigh the good"],a:0,e:"The act must be good or neutral, the bad effect only foreseen (not intended), not used as a means, and outweighed by the good."},
+  {th:"sct",q:"Who is usually credited with founding social contract theory?",o:["Thomas Hobbes","John Stuart Mill","Aristotle","Immanuel Kant"],a:0,e:"Hobbes’s Leviathan (1651). Locke and Rousseau are the other main thinkers."},
+  {th:"sct",q:"What are Locke’s natural rights?",o:["Life, liberty, and property","Life, liberty, and the pursuit of happiness","Speech, religion, and assembly","Liberty, equality, and fraternity"],a:0,e:"Jefferson adapted Locke’s list in the Declaration of Independence."},
+  {th:"sct",q:"Hobbes believed human nature is…",o:["Selfish and competitive, so life without government is “nasty, brutish, and short”","Naturally good but corrupted by society","Rational and generally peaceful","Directed toward eudaimonia"],a:0,e:"Hobbes’s grim view leads him to want a strong sovereign to keep the peace."},
+  {th:"sct",q:"Rousseau believed human nature is…",o:["Naturally good, but corrupted by society and private property","Fundamentally selfish","Ruled entirely by pleasure and pain","Fallen and in need of an absolute ruler"],a:0,e:"For Rousseau the problem is a corrupt society, so the solution is a just community governed by the general will."},
+  {th:"sct",q:"According to social contract theory, where does a government get its legitimacy?",o:["The consent of the governed","Divine right of kings","Military strength","Tradition"],a:0,e:"A government is legitimate because the people agree to it."},
+  {th:"sct",q:"According to Locke, what may the people do if a government violates their natural rights?",o:["Resist and replace it","Nothing; they must always obey","Return to the state of nature permanently","Only petition the king"],a:0,e:"A government that breaks the contract loses its authority. This idea fueled the American Revolution."},
+  {th:"sct",q:"Which form of government did Hobbes think best?",o:["An absolute sovereign (ideally a monarch)","Direct democracy","Limited, representative government","No government at all"],a:0,e:"Only overwhelming power can keep selfish people from war. Locke preferred limited government; Rousseau, rule by the general will."},
+  {th:"sct",q:"Locke says most people enter the social contract by…",o:["Tacit consent: living in a country and accepting its benefits","Signing a written document at age 18","Being born into a noble family","Fighting in a revolution"],a:0,e:"Express consent is rare; by using a society’s protections and property, you tacitly agree to its laws."},
+  {th:"sct",q:"Which is the clearest connection between the USA and social contract theory?",o:["The Declaration of Independence says governments derive “their just powers from the consent of the governed”","The U.S. has a king","The Constitution establishes a state religion","The U.S. began in a state of nature"],a:0,e:"The Declaration, natural rights, and “We the People” all reflect Locke’s ideas."},
+  {th:"sct",q:"What is the purpose of Rawls’s “veil of ignorance”?",o:["To choose fair rules without knowing your own place in society","To hide the government from citizens","To prove that people are naturally selfish","To decide which pleasures are higher"],a:0,e:"If you don’t know whether you’ll be rich or poor, you’ll choose rules that are fair to everyone."},
+  {th:"sct",q:"In A Letter Concerning Toleration, Locke argues the government should not force religious belief because…",o:["True belief cannot be coerced; caring for souls is not the state’s job","All religions are false","Religion causes anarchy","The general will decides religion"],a:0,e:"Locke separates the work of the state (protecting rights) from the care of souls."},
+  {th:"sct",q:"To decide what the right social contract is, you first need a view of…",o:["Human nature and the state of nature","The hedonic calculus","The theological virtues","Perfect and imperfect duties"],a:0,e:"What you think people are like without government decides how much power government needs."},
+  {th:"deon",q:"Who founded deontology?",o:["Immanuel Kant","John Locke","Jeremy Bentham","Thomas Aquinas"],a:0,e:"Kant’s Groundwork of the Metaphysics of Morals (1785)."},
+  {th:"deon",q:"What matters most to a deontologist?",o:["Intentions, because they are fully in our control","Consequences, because they affect the most people","Pleasure, because it is the only good","Habits, because they form character"],a:0,e:"Outcomes depend on luck; only the will is truly ours. A good will acting from duty has moral worth."},
+  {th:"deon",q:"A murderer asks where your friend is hiding. What does Kant say?",o:["You may not lie, even to protect your friend","Lie, since it saves a life","Lie only if no one will find out","Tell the truth only if the murderer is polite"],a:0,e:"Not lying is a perfect duty. If lying were universal, no one could trust anything said. You may stay silent, but not lie."},
+  {th:"deon",q:"What makes the categorical imperative “categorical”?",o:["It binds unconditionally, no matter what you want","It only applies in certain categories of life","It depends on your goals","It changes with culture"],a:0,e:"A hypothetical imperative says “If you want X, do Y.” A categorical one says simply “Do Y.”"},
+  {th:"deon",q:"Which is a PERFECT duty in Kant’s system?",o:["Do not make false promises","Develop your talents","Help others in need","Maximize happiness"],a:0,e:"Perfect duties (no false promises, do not destroy yourself) allow no exceptions. Imperfect duties leave room for when and how."},
+  {th:"deon",q:"Kant’s two IMPERFECT duties are…",o:["Develop your talents and help others","Do not lie and do not steal","Do not kill and do not promise falsely","Obey the law and pay taxes"],a:0,e:"The four duties: perfect to self (don’t destroy yourself), perfect to others (no false promises), imperfect to self (develop talents), imperfect to others (beneficence)."},
+  {th:"deon",q:"What does it mean that a person is an “end in themselves”?",o:["They have inherent dignity and must never be used merely as a tool","They exist to make others happy","Their life has value only if it is useful","They are the end result of evolution"],a:0,e:"This is the humanity formulation of the categorical imperative."},
+  {th:"deon",q:"What role does rationality play in deontology?",o:["Reason lets us know the moral law and give it to ourselves; it is the source of our dignity","Rationality is less important than feelings","Reason is used to calculate pleasure","Rationality is a habit formed by practice"],a:0,e:"Because rational beings are autonomous lawgivers, they have dignity rather than a price."},
+  {th:"deon",q:"How does deontology relate to legal systems?",o:["Like good laws, moral duties are universal rules that bind everyone equally, whatever the outcome","Laws are only useful if they maximize pleasure","Laws are habits taught by parents","Legal systems are unnecessary for deontologists"],a:0,e:"Kant’s ethics looks like a moral law code: the same rule for all, grounded in reason, respecting persons as ends."},
+  {th:"deon",q:"In the trolley problem, why does a deontologist refuse to push the large man off the bridge?",o:["Pushing him uses him as a mere means","It would produce less pleasure","It is not a habit","He did not consent to the social contract"],a:0,e:"Killing him is a means to stopping the trolley. Even if five are saved, you have used a person as a tool."},
+  {th:"util",q:"Who founded utilitarianism?",o:["Jeremy Bentham","John Locke","Immanuel Kant","Jean-Jacques Rousseau"],a:0,e:"Bentham developed utility as a basis for reforming law. John Stuart Mill refined it."},
+  {th:"util",q:"Why was utilitarianism founded?",o:["To reform laws and society on a rational, measurable basis: the general welfare","To defend the divine right of kings","To explain the cardinal virtues","To prove humans are naturally good"],a:0,e:"Bentham wanted laws judged by their actual effects on human happiness, not tradition."},
+  {th:"util",q:"What matters most to a utilitarian?",o:["Consequences, because results are what actually affect happiness","Intentions, because they show character","Duty, because it is universal","Consent, because it makes government legitimate"],a:0,e:"An act is right if it produces the greatest happiness. The motive doesn’t change the outcome."},
+  {th:"util",q:"What does the Greatest Happiness Principle say?",o:["Actions are right as they promote happiness and wrong as they produce pain","Always follow your duty","Virtue is the mean between extremes","Government needs the consent of the governed"],a:0,e:"The greatest happiness for the greatest number."},
+  {th:"util",q:"The key difference between Mill and Bentham is that Mill…",o:["Ranked pleasures by quality, not just quantity","Rejected pleasure as the good","Founded deontology","Said intentions matter most"],a:0,e:"“It is better to be Socrates dissatisfied than a fool satisfied.” Bentham: “pushpin is as good as poetry.”"},
+  {th:"util",q:"In Mill’s hierarchy of pleasures, which ranks highest?",o:["Intellectual and moral pleasures","Bodily pleasures","Pleasures of wealth","Pleasures of revenge"],a:0,e:"Anyone who has experienced both would prefer the higher pleasures."},
+  {th:"util",q:"Which three criteria are central to the utilitarian calculus?",o:["Intensity, duration, and extent (number of people affected)","Object, intention, and circumstances","Life, liberty, and property","Prudence, justice, and temperance"],a:0,e:"Bentham’s full felicific calculus has seven factors; intensity, duration, and extent are the core."},
+  {th:"util",q:"How does a utilitarian weigh the happiness of one person against a group?",o:["Each person counts as one and no one as more than one, so the larger total wins","The individual always wins","Only the ruler’s happiness counts","Happiness cannot be compared"],a:0,e:"This is why critics worry utilitarianism can sacrifice individuals for the majority."},
+  {th:"util",q:"What is a main utilitarian objection to deontology?",o:["Rigid rules can lead to terrible outcomes, like refusing to lie to save a life","It focuses too much on consequences","It ignores rules","It is based on pleasure"],a:0,e:"Utilitarians say a rule that makes the world worse should be broken."},
+  {th:"util",q:"In the trolley problem (with the lever), what does a utilitarian do?",o:["Pull the lever: one death is better than five","Do nothing, because acting is wrong","Refuse, since it uses someone as a means","Ask for the consent of everyone involved"],a:0,e:"Five lives outweigh one. A strict utilitarian would push the large man too."},
+  {th:"gen",q:"“Freedom for excellence” means…",o:["Freedom that grows as we practice virtue, like a pianist who can play anything","The ability to choose either option at random","Freedom from all laws","Freedom to maximize pleasure"],a:0,e:"Freedom of indifference is just the power to choose between options; freedom for excellence is the power to act well."},
+  {th:"gen",q:"Equity differs from equality because equity…",o:["Gives each person what they need for a fair outcome","Gives everyone exactly the same thing","Ignores fairness","Applies only to money"],a:0,e:"Equality: same shoes for everyone. Equity: shoes that fit each person."},
+  {th:"gen",q:"According to Aquinas, a just law must be…",o:["An ordinance of reason for the common good, made by legitimate authority, and in harmony with natural law","Whatever the ruler commands","Whatever produces the most pleasure","Whatever the majority votes for"],a:0,e:"An unjust law, Aquinas says, is “no law at all.” Martin Luther King Jr. drew on this in his Letter from Birmingham Jail."},
+  {th:"gen",q:"“The ends justify the means” best fits which theory?",o:["Utilitarianism","Deontology","Virtue ethics","Social contract theory"],a:0,e:"Utilitarians value outcomes (ends). Deontologists insist the means (the act itself) must be right."},
+  {th:"gen",q:"Something with instrumental value is valued because…",o:["It is useful for getting something else","It is good in itself","It is required by duty","It is a virtue"],a:0,e:"Money is instrumental. Kant says human dignity is inherent, never merely instrumental."}
+];
+
+const SORT = [
+  ["Consent of the governed","sct"],["The ends justify the means","util"],["Act only on a maxim you could will as a universal law","deon"],
+  ["Courage is the mean between cowardice and rashness","ve"],["Life, liberty, and property","sct"],["Higher and lower pleasures","util"],
+  ["Every human life has a telos","ve"],["The general will","sct"],["Intensity, duration, and extent","util"],["The good will is good without qualification","deon"],
+  ["We become just by doing just acts","ve"],["Leviathan","sct"],["Treat humanity always as an end, never merely as a means","deon"],
+  ["Each to count for one, and none for more than one","util"],["Eudaimonia","ve"],["The right to overthrow an unjust government","sct"],
+  ["Pain and pleasure are our two sovereign masters","util"],["The four cardinal virtues","ve"],["Perfect and imperfect duties","deon"],
+  ["The veil of ignorance","sct"],["Better to be Socrates dissatisfied than a fool satisfied","util"],["Prudence is right reason in action","ve"],
+  ["Never lie, even to a murderer at the door","deon"],["Life in the state of nature is “solitary, poor, nasty, brutish, and short”","sct"],
+  ["Push the man off the bridge if it saves five","util"],["Faith, hope, and charity","ve"],["Act from duty, not from inclination","deon"],
+  ["Tacit consent","sct"],["The greatest happiness of the greatest number","util"],["Moral character is formed by habit","ve"],
+  ["Morality is grounded in reason, not feelings or results","deon"],["People give up some freedom in exchange for security","sct"]
+];
+
+const MEAN = [
+  {s:"Facing fear and danger",v:"Courage",d:"Cowardice",x:"Rashness"},
+  {s:"Bodily pleasures (food, drink)",v:"Temperance",d:"Insensibility",x:"Self-indulgence"},
+  {s:"Giving money",v:"Generosity",d:"Stinginess",x:"Wastefulness"},
+  {s:"Spending on large projects",v:"Magnificence",d:"Cheapness",x:"Vulgar showiness"},
+  {s:"Honor and self-worth",v:"Proper pride",d:"Undue humility",x:"Vanity"},
+  {s:"Anger",v:"Good temper",d:"Lack of spirit",x:"Irascibility"},
+  {s:"Telling the truth about yourself",v:"Truthfulness",d:"False modesty",x:"Boastfulness"},
+  {s:"Humor and conversation",v:"Wittiness",d:"Boorishness",x:"Buffoonery"},
+  {s:"Getting along with others",v:"Friendliness",d:"Quarrelsomeness",x:"Flattery"},
+  {s:"Shame",v:"Modesty",d:"Shamelessness",x:"Bashfulness"},
+  {s:"Others’ good or bad fortune",v:"Righteous indignation",d:"Spitefulness",x:"Envy"}
+];
+
+const IDEAS = [
+  {k:"Categorical Imperative",th:"deon",d:"Kant’s supreme, unconditional moral law.",e:"First formulation: act only on a maxim you could will to become a universal law. Second: treat humanity always as an end, never merely as a means. It is “categorical” because it binds everyone regardless of what they want.",x:"A false promise to borrow money fails: if everyone did it, no one would believe promises, so the maxim contradicts itself."},
+  {k:"Double Effect Theory",th:"ve",d:"Aquinas’s principle for actions that have both a good and a bad effect.",e:"Allowed only if (1) the act itself is good or neutral, (2) the bad effect is foreseen but not intended, (3) the bad effect is not the means to the good, and (4) the good is proportionate to the bad.",x:"Killing an attacker in self-defense: the intention is to save your life; the attacker’s death is a side effect."},
+  {k:"Equality vs. Equity",th:"gen",d:"Equality treats everyone the same; equity gives each person what they need for a fair outcome.",e:"Equality is identical treatment. Equity accounts for different starting points so everyone can reach the same goal. Both connect to justice as giving each their due.",x:"Equality: every student gets the same size shoes. Equity: every student gets shoes that fit."},
+  {k:"Freedom for Excellence vs. Freedom of Indifference",th:"gen",d:"Two ways of understanding freedom.",e:"Freedom of indifference is the bare ability to choose between options, with no built-in direction. Freedom for excellence grows as we develop virtue: we become more able to do what is good.",x:"A beginner who can only bang piano keys has freedom of indifference. A trained pianist who can play anything has freedom for excellence."},
+  {k:"Inherent vs. Instrumental Morality",th:"gen",d:"Whether something is good in itself or good because of what it produces.",e:"Deontology treats acts like lying as inherently wrong. Utilitarianism is instrumental: acts are right or wrong based on what they produce.",x:"Telling the truth: Kant says it is right in itself; a utilitarian says it is right when it produces more happiness."},
+  {k:"Perfect vs. Imperfect Duties",th:"deon",d:"Kant’s two kinds of duties.",e:"Perfect duties must always be kept, with no exceptions (do not destroy yourself; do not make false promises). Imperfect duties must be pursued, but we have room to choose when and how (develop your talents; help others).",x:"You may never lie to get a loan (perfect), but you can choose which charity to support (imperfect)."},
+  {k:"Religious Toleration",th:"sct",d:"The principle that government should not force religious belief.",e:"In A Letter Concerning Toleration, Locke argues that true belief cannot be coerced and that the state’s job is protecting life, liberty, and property, not saving souls.",x:"The First Amendment’s ban on an established religion reflects this idea."},
+  {k:"Social Contract",th:"sct",d:"An agreement in which people give up some natural freedom to a government in exchange for security and protected rights.",e:"Hobbes, Locke, and Rousseau begin from the state of nature, ask what people would agree to, and ground government’s legitimacy in consent.",x:"The Declaration of Independence: governments derive “their just powers from the consent of the governed.”"},
+  {k:"State of Nature",th:"sct",d:"The imagined condition of humans before government.",e:"Hobbes: a war of all against all. Locke: free and equal, under natural law, but insecure. Rousseau: peaceful and good until society corrupts people. Each view decides what kind of government is needed.",x:"Hobbes says life there would be “solitary, poor, nasty, brutish, and short,” so he wants a strong sovereign."},
+  {k:"The Doctrine of the Mean",th:"ve",d:"Aristotle’s teaching that every moral virtue is a mean between a vice of deficiency and a vice of excess.",e:"The mean is not a mathematical midpoint. Prudence finds the right amount, at the right time, toward the right person, for the right reason.",x:"Courage is the mean between cowardice (deficiency) and rashness (excess)."},
+  {k:"The Greatest Happiness Principle",th:"util",d:"Actions are right as they tend to promote happiness and wrong as they produce the reverse.",e:"Happiness means pleasure and the absence of pain. We should choose the act that produces the greatest happiness for the greatest number, counting everyone equally.",x:"A city builds a park instead of a private golf course because more people will benefit."},
+  {k:"Human Dignity, Natural Law, and the Categorical Imperative",th:"deon",d:"All three hold that persons have inherent worth that cannot be traded for outcomes.",e:"Natural law (Aquinas) says reason can discover a moral order rooted in human nature. Kant says reason gives us the categorical imperative. Both conclude that rational persons have dignity and must be treated as ends, never merely as means.",x:"Neither allows harvesting one healthy patient’s organs to save five others."},
+  {k:"Universal Law of Nature / Natural Law",th:"deon",d:"Moral law that holds for everyone, discoverable by reason.",e:"Kant’s universal law formula asks whether your maxim could become a law of nature for all. Aquinas’s natural law is our rational share in God’s eternal law, directing us toward our natural goods.",x:"Stealing fails the test: if everyone stole, the idea of property would collapse."},
+  {k:"Views on Best Governments",th:"sct",d:"Each thinker’s ideal government follows from their view of human nature.",e:"Hobbes: absolute sovereign. Locke: limited, representative government that protects rights, with a right to revolt. Rousseau: a republic ruled by the general will. Aristotle: a mixed constitution (polity) aimed at the common good.",x:"The U.S. Constitution’s limited government and separation of powers are closest to Locke."},
+  {k:"Views on Human Nature",th:"gen",d:"What people are like at bottom, which shapes every ethical and political theory.",e:"Hobbes: selfish and fearful. Locke: rational and mostly reasonable. Rousseau: naturally good. Aristotle: a rational, political animal with a telos. Kant: rational and free. Bentham: governed by pleasure and pain.",x:"Because Hobbes thinks people are dangerous, he gives the sovereign almost unlimited power."},
+  {k:"What Makes a Law Just?",th:"gen",d:"The standard a law must meet to bind us morally.",e:"Aquinas: a law must be an ordinance of reason, for the common good, made by legitimate authority, and promulgated; it must agree with natural law. Social contract: it must protect rights and rest on consent. Kant: it must be universalizable and respect persons.",x:"Martin Luther King Jr. called segregation laws unjust because they degraded human dignity."},
+  {k:"Why Value Means or Ends",th:"gen",d:"Whether the morality of an act lies in how it is done or in what it achieves.",e:"Utilitarians value ends: outcomes decide right and wrong. Deontologists value means: some acts are forbidden even for good results. Virtue ethics focuses on the telos and the character the act forms.",x:"Lying to win an election: a utilitarian looks at the results; a Kantian says lying is wrong whatever the result."},
+  {k:"Mill vs. Bentham",th:"util",d:"The two main utilitarians and how they differ.",e:"Bentham measured pleasures only by quantity, using a calculus (intensity, duration, extent, and more). Mill added quality: intellectual and moral pleasures are higher than bodily ones.",x:"Bentham: “pushpin is as good as poetry.” Mill: “better Socrates dissatisfied than a fool satisfied.”"},
+  {k:"The Trolley Problem",th:"gen",d:"A thought experiment testing whether outcomes or means matter most.",e:"A trolley will kill five people unless you divert it to kill one. A utilitarian pulls the lever and would also push a man off a bridge to stop it. A deontologist refuses to push, since that uses him as a mere means. Double effect can allow the lever but not the push.",x:"Most people would pull the lever but not push the man, which shows that means matter to our intuitions."}
+];
+
+const CASES = [
+  {t:"The Cheating Friend",s:"During the final exam, you see your best friend use their phone to look up answers. Afterward, the teacher asks you privately whether you noticed anyone cheating.",i:"Honesty and justice to the class versus loyalty to a friend.",
+   ve:"A person of honesty and justice tells the truth. Prudence looks for the mean: speak to the friend first or answer the teacher truthfully without cruelty. Covering up forms a habit of dishonesty, and a true friend wants the other to be good.",
+   deon:"Lying to the teacher is forbidden (a perfect duty). A maxim of lying to protect friends cannot be universalized. You may decline to volunteer details, but if asked directly you must not lie.",
+   util:"Weigh the consequences: unfair grades harm the whole class and trust in the school; your friend faces pain but may learn. If honesty produces more total happiness over time, report it."},
+  {t:"The Transplant Surgeon",s:"A surgeon has five patients who will die without organ transplants. A healthy patient arrives for a check-up and is a perfect match for all five.",i:"Whether it is ever right to kill one innocent person to save more.",
+   ve:"Justice gives each person their due, and a doctor’s telos is to heal. Killing a patient would be a monstrous vice, not prudence. No virtuous doctor would consider it.",
+   deon:"Killing the healthy patient uses him as a mere means. He has inherent dignity and has not consented. It is absolutely forbidden.",
+   util:"A simple count says five lives beat one. But if doctors did this, no one would trust hospitals, causing far more pain. Most utilitarians (especially rule utilitarians) say no."},
+  {t:"The Murderer at the Door",s:"Your friend is hiding in your house from someone who wants to kill them. The killer knocks and asks whether your friend is inside.",i:"Whether lying is permitted to protect an innocent life.",
+   ve:"Prudence and justice look at the whole situation. The killer is not owed the truth, and protecting a friend is courageous. Many virtue ethicists would deceive or refuse to answer.",
+   deon:"Kant says you may not lie, even here. Truthfulness is a perfect duty. You may refuse to answer or shut the door, but not state a falsehood.",
+   util:"Lie. Saving an innocent life produces far more happiness than the small harm of deceiving a would-be murderer."},
+  {t:"The Covering Roommate",s:"Your dorm roommate snuck out after check-in. When the dorm head comes by, your roommate texts you: “Tell them I’m asleep in the bathroom.”",i:"Honesty and responsibility to the community versus loyalty to a roommate.",
+   ve:"Loyalty is good, but not loyalty to wrongdoing. Honesty and justice to the dorm community come first. A good friend doesn’t help someone build a habit of breaking trust.",
+   deon:"Lying to the dorm head is wrong: it fails the universal law test and treats the dorm head as a mere means. You must not lie, though you are not required to volunteer more than you are asked.",
+   util:"Consider safety: if your roommate is somewhere unsafe, the adults need to know. Covering might avoid one punishment but risks serious harm and lost trust in the dorm."},
+  {t:"The Lost Wallet",s:"You find a wallet with $300 and the owner’s ID. You are short on money for a school trip. No one saw you pick it up.",i:"Honesty and respect for others’ property when no one would ever know.",
+   ve:"Character is who you are when no one is watching. Justice gives the owner what is theirs; keeping it forms the vice of greed. Return it.",
+   deon:"A maxim of keeping found money cannot be universalized. Keeping it uses the owner as a mere means. Return it, and do so from duty, not for a reward.",
+   util:"The owner’s loss, stress, and cost of replacing ID likely outweigh your gain. Returning it also strengthens a community where people trust each other."},
+  {t:"The Scarce Medicine",s:"There is one dose of a life-saving medicine. Two patients need it: a 10-year-old child and a 70-year-old scientist who is close to finishing a cure for a disease that affects millions.",i:"How to distribute a scarce good fairly when lives are at stake.",
+   ve:"Prudence and justice look for a fair procedure: medical need, who was first, or a lottery. Choosing based on usefulness can disregard each person’s equal dignity.",
+   deon:"Both people are ends in themselves with equal dignity. Neither may be valued merely for usefulness. Use a fair rule that could be universalized, such as first come or a lottery.",
+   util:"Count the consequences: the scientist’s cure could save millions, which would outweigh the child’s many years of life. Give it to the scientist, though the uncertainty of the cure matters."},
+  {t:"The Polluting Factory",s:"You discover your company is secretly dumping toxic waste into a river. Reporting it would likely close the factory and cost 200 people their jobs, including yours.",i:"Honesty and protecting the public versus loyalty and the livelihoods of coworkers.",
+   ve:"It takes fortitude to report it despite the cost to yourself. Justice to the people downstream comes first. Silence would be cowardice.",
+   deon:"You have a duty not to take part in harming others. Concealing the dumping treats the people downstream as mere means to profit. Report it.",
+   util:"Weigh 200 lost jobs against the health of everyone who uses the river, possibly thousands, for years. The long-term harm of pollution likely outweighs the job losses."},
+  {t:"The Padded Resume",s:"You are applying for a summer job you know you would be great at. A friend suggests adding a fake leadership role to your resume. The employer will never check.",i:"Honesty and fairness to other applicants versus personal gain.",
+   ve:"Honesty is a virtue formed by practice, and this would build the habit of lying. Being truthful about yourself is the mean between boasting and false modesty.",
+   deon:"This is a lie, and it treats the employer as a mere means. If everyone lied on resumes, resumes would mean nothing. It is wrong.",
+   util:"You might gain, but an honest applicant loses, and widespread lying makes hiring unreliable for everyone. If discovered, you lose much more. The total happiness probably favors honesty."},
+  {t:"The Emergency Lockdown",s:"A deadly, contagious disease is spreading. The governor orders everyone to stay home for a month, and many citizens protest that their freedom is being violated.",i:"Individual liberty versus the government’s duty to protect public safety.",
+   ve:"Prudence weighs the real danger against the harm of the lockdown. Justice requires caring for the common good, especially the vulnerable. Temperance avoids both reckless freedom and excessive control.",
+   deon:"Every person has a duty not to put others at risk, so a universal rule of staying home when you could spread disease is reasonable. But the government must respect dignity and not treat citizens as mere means.",
+   util:"Compare lives saved and illness prevented with the economic and emotional costs of a lockdown. If it saves many more lives than it harms, it is justified."},
+  {t:"The Group Project",s:"One member of your group did no work on a major project. The teacher asks each student to grade their teammates. That student needs a good grade to keep a scholarship.",i:"Fairness to those who did the work versus compassion for a struggling classmate.",
+   ve:"Justice gives each their due, and honesty requires an accurate grade. Compassion can still lead you to talk with the student or the teacher about what happened.",
+   deon:"You must report honestly. Inflating the grade is a lie, and it treats the teacher’s grading system as something to manipulate.",
+   util:"Weigh the student’s loss of a scholarship against unfairness to the group and to students who earned their scholarships honestly. The answer depends on the total consequences."}
+];
+
+/* ================= HELPERS / STATE ================= */
+const $ = s => document.querySelector(s);
+const view = $("#view");
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const chip = th => `<span class="chip t-${th}">${esc(TH[th].short)}</span>`;
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const KEY = "ethics-study-lab-v1";
+let P = { known:{}, quizBest:null, quizRuns:0, sortBest:null, meanBest:null, ideas:{}, cases:0, describeRounds:0 };
+try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); if (s) P = Object.assign(P, s); } catch(e) {}
+const saveP = () => { try { localStorage.setItem(KEY, JSON.stringify(P)); } catch(e) {} };
+
+const filterRow = (cur, all = true, keys = ["ve","sct","deon","util","gen"]) =>
+  `<div class="filters" role="group" aria-label="Filter by theory">${all ? `<button type="button" data-act="filter" data-v="all" aria-pressed="${cur === "all"}">All</button>` : ""}${keys.map(k => `<button type="button" class="t-${k}" data-act="filter" data-v="${k}" aria-pressed="${cur === k}">${esc(TH[k].short)}</button>`).join("")}</div>`;
+
+/* ================= VIEWS ================= */
+const V = {};
+let S = {}; // per-view state
+
+/* ---- Home ---- */
+V.home = {
+  render(){
+    const known = Object.keys(P.known).length;
+    const ideasDone = Object.keys(P.ideas).length;
+    view.innerHTML = `
+      <section class="hero">
+        <span class="eyebrow">Ethics · Unit test review</span>
+        <h1>Practice every part of the test.</h1>
+        <p>Seven study stations built from the study guide. Work through them alone, or open Case Lab and Describe It with a group.</p>
+        <div class="theories">${["ve","sct","deon","util"].map(k => `<span class="chip t-${k}">${TH[k].name}</span>`).join("")}</div>
+      </section>
+
+      <h2 class="section-title">What’s on the test (60 points)</h2>
+      <div class="testmap panel" style="padding:4px 8px">
+        <table>
+          <thead><tr><th>Section</th><th>Points</th><th>What it asks</th><th>Practice with</th></tr></thead>
+          <tbody>
+            <tr><td>Multiple Choice</td><td class="pts num">19</td><td>19 questions × 1 pt</td><td><a href="#quiz">Practice Quiz</a> · <a href="#sort">Theory Sort</a></td></tr>
+            <tr><td>Word Definitions</td><td class="pts num">12</td><td>6 terms × 2 pts</td><td><a href="#flashcards">Flashcards</a> · <a href="#describe">Describe It</a></td></tr>
+            <tr><td>Key Ideas</td><td class="pts num">9</td><td>3 ideas × 3 pts</td><td><a href="#ideas">Key Ideas</a> · <a href="#mean">Mean Builder</a></td></tr>
+            <tr><td>Short Answer</td><td class="pts num">10</td><td>5 questions × 2 pts</td><td><a href="#quiz">Practice Quiz</a> · <a href="#ideas">Key Ideas</a></td></tr>
+            <tr><td>Case Study Analysis</td><td class="pts num">10</td><td>Name the moral issue, then respond from an assigned stance</td><td><a href="#cases">Case Lab</a></td></tr>
+          </tbody>
+          <tfoot><tr><td>Total</td><td class="pts num">60</td><td colspan="2"></td></tr></tfoot>
+        </table>
+      </div>
+
+      <h2 class="section-title">Study stations</h2>
+      <div class="stations">
+        ${station("flashcards","Flashcards","Solo","All 32 key terms plus the big ideas. Flip, then sort into “know it” and “still learning.”", `<span><b>${known}</b> / ${TERMS.length} known</span>`)}
+        ${station("quiz","Practice Quiz","Solo","Multiple-choice questions on every theory, with an explanation after each answer.", P.quizBest ? `<span>Best <b>${P.quizBest}</b></span>` : `<span>${QUIZ.length} questions</span>`)}
+        ${station("sort","Theory Sort","Solo or pairs","Quick-fire: which theory does this phrase, quote, or idea belong to?", P.sortBest != null ? `<span>Best <b>${P.sortBest}</b> / 20</span>` : `<span>${SORT.length} items</span>`)}
+        ${station("mean","Mean Builder","Solo","Find the deficiency, the virtue, and the excess for each of Aristotle’s virtues.", P.meanBest != null ? `<span>Best <b>${P.meanBest}</b> / ${MEAN.length}</span>` : `<span>${MEAN.length} virtues</span>`)}
+        ${station("ideas","Key Ideas","Solo","Write a 3-point answer, then check it against a model: definition, explanation, example.", `<span><b>${ideasDone}</b> / ${IDEAS.length} practiced</span>`)}
+        ${station("cases","Case Lab","Solo or group","Get a scenario and a random stance. Name the moral issue and respond, just like the test.", `<span><b>${P.cases}</b> cases worked</span>`)}
+        ${station("describe","Describe It","Group","Taboo-style vocabulary game. Get your team to say the term without the forbidden words.", `<span>2+ teams · 60s rounds</span>`)}
+      </div>`;
+  }
+};
+function station(id, name, mode, desc, meta){
+  return `<a class="station" href="#${id}"><div class="row between"><h2>${name}</h2><span class="mode-tag">${mode}</span></div><p>${desc}</p><div class="meta">${meta}<span aria-hidden="true">Start →</span></div></a>`;
+}
+
+/* ---- Flashcards ---- */
+V.flashcards = {
+  init(){ S = { filter:"all", mode:"all", deck:[], pos:0, flipped:false }; this.build(); },
+  build(){
+    let idx = TERMS.map((t, i) => i).filter(i => S.filter === "all" || TERMS[i].th === S.filter);
+    if (S.mode === "learning") idx = idx.filter(i => !P.known[TERMS[i].t]);
+    S.deck = idx; S.pos = Math.min(S.pos, Math.max(0, idx.length - 1)); S.flipped = false;
+  },
+  render(){
+    const n = S.deck.length;
+    const knownIn = TERMS.filter(t => (S.filter === "all" || t.th === S.filter) && P.known[t.t]).length;
+    const total = TERMS.filter(t => S.filter === "all" || t.th === S.filter).length;
+    let card;
+    if (!n) card = `<div class="prompt-card"><div class="big">You know every card in this set.</div><p class="muted">Switch to “All cards” to review, or pick another theory.</p></div>`;
+    else {
+      const t = TERMS[S.deck[S.pos]];
+      card = `<div class="card3d"><button type="button" class="flash${S.flipped ? " flipped" : ""}" data-act="flip" aria-label="${S.flipped ? "Show term" : "Show definition"}">
+        <div class="face t-${t.th}">${chip(t.th)}<div class="term">${esc(t.t)}</div>${P.known[t.t] ? `<span class="known-mark">✓ Known</span>` : ""}<span class="tap">Tap or press Space to flip</span></div>
+        <div class="face back t-${t.th}"><span class="eyebrow">${esc(t.t)}</span><p class="def">${esc(t.d)}</p></div>
+      </button></div>`;
+    }
+    view.innerHTML = `
+      <div class="view-head"><span class="eyebrow">Word Definitions · 12 pts</span><h1>Flashcards</h1>
+        <p>Say the definition out loud before you flip. On the test, a 2-point definition needs the meaning plus which thinker or theory it belongs to.</p></div>
+      <div class="stack">
+        <div class="row between">${filterRow(S.filter)}
+          <div class="tabs" role="group" aria-label="Which cards"><button type="button" data-act="mode" data-v="all" aria-pressed="${S.mode === "all"}">All cards</button><button type="button" data-act="mode" data-v="learning" aria-pressed="${S.mode === "learning"}">Still learning</button></div></div>
+        <div class="stats"><span>Card <b>${n ? S.pos + 1 : 0}</b> of <b>${n}</b></span><span>Known <b>${knownIn}</b> / ${total}</span></div>
+        <div class="progress" aria-hidden="true"><span style="width:${total ? knownIn / total * 100 : 0}%"></span></div>
+        ${card}
+        <div class="row between">
+          <div class="row"><button class="btn" type="button" data-act="prev" ${n ? "" : "disabled"}>← Prev</button><button class="btn" type="button" data-act="shuffle" ${n > 1 ? "" : "disabled"}>Shuffle</button></div>
+          <div class="row"><button class="btn" type="button" data-act="learning" ${n ? "" : "disabled"}>Still learning</button><button class="btn primary" type="button" data-act="know" ${n ? "" : "disabled"}>Know it →</button></div>
+        </div>
+        <button class="btn sm" type="button" data-act="resetknown" style="justify-self:start">Clear my “known” cards</button>
+      </div>`;
+  },
+  next(){ if (S.deck.length) { S.pos = (S.pos + 1) % S.deck.length; S.flipped = false; } },
+  click(act, el){
+    if (act === "filter") { S.filter = el.dataset.v; S.pos = 0; this.build(); }
+    if (act === "mode") { S.mode = el.dataset.v; S.pos = 0; this.build(); }
+    if (act === "flip") { S.flipped = !S.flipped; const f = view.querySelector(".flash"); f.classList.toggle("flipped", S.flipped); return; }
+    if (act === "prev") { S.pos = (S.pos - 1 + S.deck.length) % S.deck.length; S.flipped = false; }
+    if (act === "shuffle") { S.deck = shuffle(S.deck); S.pos = 0; S.flipped = false; }
+    if (act === "know") { const t = TERMS[S.deck[S.pos]]; P.known[t.t] = 1; saveP();
+      if (S.mode === "learning") { S.deck.splice(S.pos, 1); if (S.pos >= S.deck.length) S.pos = 0; S.flipped = false; } else this.next(); }
+    if (act === "learning") { const t = TERMS[S.deck[S.pos]]; delete P.known[t.t]; saveP(); this.next(); }
+    if (act === "resetknown") { if (el.dataset.armed) { P.known = {}; saveP(); this.build(); } else { el.dataset.armed = 1; el.textContent = "Click again to clear"; return; } }
+    this.render();
+  },
+  key(e){
+    if (e.key === " " || e.key === "Enter") { if (e.target.closest("button") && !e.target.closest(".flash")) return; e.preventDefault(); this.click("flip"); }
+    if (e.key === "ArrowRight") { this.next(); this.render(); }
+    if (e.key === "ArrowLeft") this.click("prev");
+  }
+};
+
+/* ---- Quiz ---- */
+V.quiz = {
+  init(){ S = { stage:"setup", filter:"all", len:19, qs:[], i:0, picked:null, score:0, missed:[] }; },
+  start(list){
+    const pool = list || QUIZ.filter(q => S.filter === "all" || q.th === S.filter);
+    const qs = shuffle(pool).slice(0, list ? pool.length : S.len === 0 ? pool.length : S.len)
+      .map(q => { const order = shuffle(q.o.map((_, k) => k)); return { ...q, o: order.map(k => q.o[k]), a: order.indexOf(q.a) }; });
+    Object.assign(S, { stage:"play", qs, i:0, picked:null, score:0, missed:[] });
+  },
+  render(){
+    const head = `<div class="view-head"><span class="eyebrow">Multiple Choice · 19 pts</span><h1>Practice Quiz</h1>
+      <p>Answer, then read the explanation. The “why” behind each answer is what helps on the short-answer section too.</p></div>`;
+    if (S.stage === "setup") {
+      const pool = QUIZ.filter(q => S.filter === "all" || q.th === S.filter).length;
+      view.innerHTML = head + `<div class="panel stack">
+        <div class="stack" style="gap:8px"><span class="eyebrow">Theory</span>${filterRow(S.filter)}</div>
+        <div class="stack" style="gap:8px"><span class="eyebrow">Length</span>
+          <div class="tabs" role="group" aria-label="Quiz length">${[[10,"10 questions"],[19,"19 (test length)"],[0,"All " + pool]].map(([v, l]) => `<button type="button" data-act="len" data-v="${v}" aria-pressed="${S.len === v}">${l}</button>`).join("")}</div></div>
+        <div class="row between"><span class="muted">${P.quizBest ? "Your best so far: " + esc(P.quizBest) : pool + " questions in this set"}</span><button class="btn primary" type="button" data-act="start">Start quiz</button></div>
+      </div>`;
+      return;
+    }
+    if (S.stage === "done") {
+      const n = S.qs.length, pct = Math.round(S.score / n * 100);
+      view.innerHTML = head + `<div class="stack">
+        <div class="panel stack" style="text-align:center;justify-items:center"><span class="eyebrow">Your score</span>
+          <div class="scorebig num">${S.score}/${n}</div><p class="muted">${pct}% · ${pct >= 90 ? "Test-ready on this set." : pct >= 75 ? "Solid. Review the ones you missed." : "Go back over the explanations below, then try again."}</p>
+          <div class="row" style="justify-content:center">${S.missed.length ? `<button class="btn primary" type="button" data-act="retry">Retry the ${S.missed.length} I missed</button>` : ""}<button class="btn" type="button" data-act="again">New quiz</button></div></div>
+        ${S.missed.length ? `<h2 class="section-title">Review what you missed</h2><ul class="missed">${S.missed.map(q => `<li class="stack" style="gap:6px">${chip(q.th)}<b>${esc(q.q)}</b><span><span class="muted">Answer:</span> ${esc(q.o[q.a])}</span><span class="muted">${esc(q.e)}</span></li>`).join("")}</ul>` : ""}
+      </div>`;
+      return;
+    }
+    const q = S.qs[S.i], done = S.picked !== null;
+    view.innerHTML = head + `<div class="stack">
+      <div class="stats"><span>Question <b>${S.i + 1}</b> of <b>${S.qs.length}</b></span><span>Score <b>${S.score}</b></span></div>
+      <div class="progress" aria-hidden="true"><span style="width:${(S.i + (done ? 1 : 0)) / S.qs.length * 100}%"></span></div>
+      <div class="panel stack">${chip(q.th)}<p class="q-text">${esc(q.q)}</p>
+        <div class="opts">${q.o.map((o, k) => {
+          let cls = "opt";
+          if (done) cls += k === q.a ? " right" : k === S.picked ? " wrong" : " dim";
+          return `<button type="button" class="${cls}" data-act="pick" data-k="${k}" ${done ? "disabled" : ""}><span class="k">${"ABCD"[k]}</span><span>${esc(o)}</span></button>`;
+        }).join("")}</div>
+        ${done ? `<div class="feedback${S.picked === q.a ? "" : " no"}" role="status"><b>${S.picked === q.a ? "Correct." : "Not quite. The answer is " + "ABCD"[q.a] + "."}</b>${esc(q.e)}</div>
+        <div class="row end"><button class="btn primary" type="button" data-act="next">${S.i + 1 < S.qs.length ? "Next question →" : "See my score"}</button></div>` : ""}
+      </div></div>`;
+    if (done) view.querySelector('[data-act="next"]').focus();
+  },
+  click(act, el){
+    if (act === "filter") S.filter = el.dataset.v;
+    if (act === "len") S.len = +el.dataset.v;
+    if (act === "start" || act === "again") { if (act === "again") { S.stage = "setup"; } else this.start(); }
+    if (act === "retry") this.start(S.missed.map(m => QUIZ.find(q => q.q === m.q)));
+    if (act === "pick" && S.picked === null) { S.picked = +el.dataset.k; const q = S.qs[S.i]; if (S.picked === q.a) S.score++; else S.missed.push(q); }
+    if (act === "next") {
+      if (S.i + 1 < S.qs.length) { S.i++; S.picked = null; }
+      else { S.stage = "done"; P.quizRuns++; const pct = S.score / S.qs.length;
+        const best = P.quizBest ? parseInt(P.quizBest) / 100 : -1;
+        if (S.qs.length >= 10 && pct > best) P.quizBest = Math.round(pct * 100) + "%"; saveP(); }
+    }
+    this.render(); window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+  },
+  key(e){
+    if (S.stage !== "play" || /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+    const k = "abcd1234".indexOf(e.key.toLowerCase());
+    if (k >= 0 && S.picked === null) { const b = view.querySelector(`[data-k="${k % 4}"]`); if (b) this.click("pick", b); }
+  }
+};
+
+/* ---- Theory Sort ---- */
+V.sort = {
+  init(){ S = { items: shuffle(SORT).slice(0, 20), i:0, picked:null, score:0, streak:0, bestStreak:0, done:false }; },
+  render(){
+    const head = `<div class="view-head"><span class="eyebrow">Multiple Choice warm-up</span><h1>Theory Sort</h1>
+      <p>Which theory does each phrase belong to? Answer fast. Play alone, or race a partner and take turns.</p></div>`;
+    if (S.done) {
+      view.innerHTML = head + `<div class="panel stack" style="text-align:center;justify-items:center"><span class="eyebrow">Round complete</span>
+        <div class="scorebig num">${S.score}/20</div><p class="muted">Longest streak: ${S.bestStreak}</p>
+        <button class="btn primary" type="button" data-act="again">Play another round</button></div>`;
+      return;
+    }
+    const [txt, th] = S.items[S.i], done = S.picked !== null;
+    view.innerHTML = head + `<div class="stack">
+      <div class="stats"><span>Item <b>${S.i + 1}</b> of <b>20</b></span><span>Score <b>${S.score}</b></span><span>Streak <b>${S.streak}</b></span></div>
+      <div class="progress" aria-hidden="true"><span style="width:${(S.i + (done ? 1 : 0)) / 20 * 100}%"></span></div>
+      <div class="prompt-card"><span class="eyebrow">Which theory?</span><div class="big">${esc(txt)}</div></div>
+      <div class="theory-btns">${["ve","sct","deon","util"].map((k, n) => {
+        let cls = "t-" + k; if (done && k === th) cls += " hit";
+        return `<button type="button" class="${cls}" data-act="pick" data-v="${k}" ${done ? "disabled" : ""}>${n + 1} · ${TH[k].name}</button>`;
+      }).join("")}</div>
+      ${done ? `<div class="feedback${S.picked === th ? "" : " no"}" role="status"><b>${S.picked === th ? "Correct." : "That one is " + TH[th].name + "."}</b></div>
+      <div class="row end"><button class="btn primary" type="button" data-act="next">${S.i < 19 ? "Next →" : "Finish"}</button></div>` : ""}
+    </div>`;
+    if (done) view.querySelector('[data-act="next"]').focus();
+  },
+  click(act, el){
+    if (act === "again") this.init();
+    if (act === "pick" && S.picked === null) { S.picked = el.dataset.v; if (S.picked === S.items[S.i][1]) { S.score++; S.streak++; S.bestStreak = Math.max(S.bestStreak, S.streak); } else S.streak = 0; }
+    if (act === "next") { if (S.i < 19) { S.i++; S.picked = null; } else { S.done = true; P.sortBest = Math.max(P.sortBest ?? 0, S.score); saveP(); } }
+    this.render();
+  },
+  key(e){ const k = "1234".indexOf(e.key); if (k >= 0 && S.picked === null && !S.done) this.click("pick", { dataset:{ v:["ve","sct","deon","util"][k] } }); }
+};
+
+/* ---- Mean Builder ---- */
+const SLOTS = [["d","Deficiency"],["v","Virtue (the mean)"],["x","Excess"]];
+V.mean = {
+  init(){ S = { order: shuffle(MEAN.map((_, i) => i)), i:0, score:0, done:false }; this.setup(); },
+  setup(){
+    const m = MEAN[S.order[S.i]];
+    const others = MEAN.filter(o => o !== m);
+    const decoy = others[Math.floor(Math.random() * others.length)];
+    const dv = [decoy.d, decoy.v, decoy.x][Math.floor(Math.random() * 3)];
+    S.pool = shuffle([m.d, m.v, m.x, dv]); S.placed = {}; S.step = 0; S.checked = false;
+  },
+  render(){
+    const head = `<div class="view-head"><span class="eyebrow">Key Ideas · Doctrine of the Mean</span><h1>Mean Builder</h1>
+      <p>Each virtue sits between a vice of too little and a vice of too much. Tap the words in order: deficiency, then the virtue, then the excess. One word doesn’t belong.</p></div>`;
+    if (S.done) {
+      view.innerHTML = head + `<div class="panel stack" style="text-align:center;justify-items:center"><span class="eyebrow">All virtues done</span>
+        <div class="scorebig num">${S.score}/${MEAN.length}</div><p class="muted">Perfect rows on the first try.</p>
+        <button class="btn primary" type="button" data-act="again">Go again</button></div>`;
+      return;
+    }
+    const m = MEAN[S.order[S.i]];
+    const used = Object.values(S.placed);
+    view.innerHTML = head + `<div class="stack">
+      <div class="stats"><span>Virtue <b>${S.i + 1}</b> of <b>${MEAN.length}</b></span><span>Perfect rows <b>${S.score}</b></span></div>
+      <div class="prompt-card"><span class="eyebrow">Sphere of life</span><div class="big">${esc(m.s)}</div></div>
+      <div class="slots">${SLOTS.map(([k, lab], n) => {
+        const val = S.placed[k]; let cls = "slot";
+        if (!S.checked && n === S.step) cls += " active";
+        if (val) cls += " filled";
+        if (S.checked) cls += val === m[k] ? " ok" : " no";
+        return `<div class="${cls}"><span class="lab">${lab}</span><span class="val">${val ? esc(val) : "&nbsp;"}</span>${S.checked && val !== m[k] ? `<span class="fix">Answer: ${esc(m[k])}</span>` : ""}</div>`;
+      }).join("")}</div>
+      ${S.checked ? `<div class="feedback${SLOTS.every(([k]) => S.placed[k] === m[k]) ? "" : " no"}" role="status"><b>${SLOTS.every(([k]) => S.placed[k] === m[k]) ? "Perfect row." : "Check the corrections above."}</b>${esc(m.d)} ← <b style="display:inline">${esc(m.v)}</b> → ${esc(m.x)}</div>
+        <div class="row end"><button class="btn primary" type="button" data-act="next">${S.i + 1 < MEAN.length ? "Next virtue →" : "Finish"}</button></div>`
+      : `<div class="pool">${S.pool.map(w => `<button type="button" data-act="place" data-w="${esc(w)}" ${used.includes(w) ? "disabled" : ""}>${esc(w)}</button>`).join("")}</div>
+        <div class="row" style="justify-content:center"><button class="btn sm" type="button" data-act="undo" ${S.step ? "" : "disabled"}>Undo</button></div>`}
+    </div>`;
+    if (S.checked) view.querySelector('[data-act="next"]').focus();
+  },
+  click(act, el){
+    const m = MEAN[S.order[S.i]];
+    if (act === "again") this.init();
+    if (act === "place" && S.step < 3) { S.placed[SLOTS[S.step][0]] = el.dataset.w; S.step++;
+      if (S.step === 3) { S.checked = true; if (SLOTS.every(([k]) => S.placed[k] === m[k])) S.score++; } }
+    if (act === "undo" && S.step) { S.step--; delete S.placed[SLOTS[S.step][0]]; }
+    if (act === "next") { if (S.i + 1 < MEAN.length) { S.i++; this.setup(); } else { S.done = true; P.meanBest = Math.max(P.meanBest ?? 0, S.score); saveP(); } }
+    this.render();
+  }
+};
+
+/* ---- Key Ideas ---- */
+V.ideas = {
+  init(){ S = { i:0, shown:false, checks:[false,false,false], drafts:{} }; },
+  render(){
+    const it = IDEAS[S.i];
+    const pts = S.checks.filter(Boolean).length;
+    view.innerHTML = `<div class="view-head"><span class="eyebrow">Key Ideas · 9 pts &amp; Short Answer · 10 pts</span><h1>Key Ideas</h1>
+        <p>A full 3-point answer has three parts: define it, explain it, and give an example. Write yours first, then compare.</p></div>
+      <div class="stack">
+        <div class="idea-list" role="group" aria-label="Choose a key idea">${IDEAS.map((x, n) => `<button type="button" data-act="go" data-i="${n}" aria-current="${n === S.i}">${esc(x.k)}${P.ideas[x.k] != null ? `<span class="d">${P.ideas[x.k]}/3</span>` : ""}</button>`).join("")}</div>
+        <div class="panel stack">
+          <div class="row between">${chip(it.th)}<span class="muted num">${S.i + 1} of ${IDEAS.length}</span></div>
+          <h2 style="font-size:clamp(26px,4vw,36px)">${esc(it.k)}</h2>
+          <label class="fl" for="idea-draft">Your answer<textarea id="idea-draft" placeholder="Define it. Explain how it works. Give an example.">${esc(S.drafts[S.i] || "")}</textarea></label>
+          ${S.shown ? `<div class="model">
+              <div class="model-part"><span class="pt">1</span><h3>Definition</h3><p>${esc(it.d)}</p></div>
+              <div class="model-part"><span class="pt">2</span><h3>Explanation</h3><p>${esc(it.e)}</p></div>
+              <div class="model-part"><span class="pt">3</span><h3>Example</h3><p>${esc(it.x)}</p></div>
+            </div>
+            <div class="panel" style="background:var(--sunk);border:none"><div class="checks">
+              <span class="eyebrow">Score yourself honestly</span>
+              ${["I gave an accurate definition","I explained it and named the right thinker or theory","I gave a fitting example"].map((l, n) => `<label><input type="checkbox" id="chk-${n}" data-act="check" data-n="${n}" ${S.checks[n] ? "checked" : ""}>${l}</label>`).join("")}
+              <div class="row between"><b>${pts} / 3 points</b><button class="btn primary" type="button" data-act="save">Save score &amp; next →</button></div>
+            </div></div>`
+          : `<div class="row end"><button class="btn primary" type="button" data-act="reveal">Show model answer</button></div>`}
+        </div>
+      </div>`;
+  },
+  go(n){ S.i = (n + IDEAS.length) % IDEAS.length; S.shown = false; S.checks = [false,false,false]; },
+  click(act, el){
+    const ta = $("#idea-draft"); if (ta) S.drafts[S.i] = ta.value;
+    if (act === "go") this.go(+el.dataset.i);
+    if (act === "reveal") S.shown = true;
+    if (act === "check") { S.checks[+el.dataset.n] = el.checked; }
+    if (act === "save") { P.ideas[IDEAS[S.i].k] = S.checks.filter(Boolean).length; saveP(); this.go(S.i + 1); }
+    if (act === "check") { const b = view.querySelector(".checks b"); if (b) b.textContent = S.checks.filter(Boolean).length + " / 3 points"; return; }
+    this.render(); if (act === "save" || act === "go") window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+  }
+};
+
+/* ---- Case Lab ---- */
+const STANCES = ["ve","deon","util"];
+V.cases = {
+  init(){ S = { mode:"solo", order: shuffle(CASES.map((_, i) => i)), i:0, stance:null, spinning:false, shown:false, issue:"", resp:"", names:"", group:null }; },
+  render(){
+    const c = CASES[S.order[S.i]];
+    const head = `<div class="view-head"><span class="eyebrow">Case Study Analysis · 10 pts</span><h1>Case Lab</h1>
+      <p>On the test you’ll name the key moral issue, then respond from an assigned stance. Here the stance is random, so you practice arguing views you may not hold.</p></div>`;
+    const modeTabs = `<div class="tabs" role="group" aria-label="Mode"><button type="button" data-act="mode" data-v="solo" aria-pressed="${S.mode === "solo"}">Solo</button><button type="button" data-act="mode" data-v="group" aria-pressed="${S.mode === "group"}">Group</button></div>`;
+    const caseBlock = `<div class="panel stack">
+        <div class="row between"><span class="eyebrow">Case ${S.i + 1} of ${CASES.length}</span><button class="btn sm" type="button" data-act="nextcase">New case →</button></div>
+        <h2 style="font-size:clamp(26px,4vw,36px)">${esc(c.t)}</h2>
+        <p class="case-text">${esc(c.s)}</p></div>`;
+    const lenses = mine => `<div class="stack" style="gap:10px">
+        <div class="lens t-gen"><h3>Key moral issue</h3><p>${esc(c.i)}</p></div>
+        ${STANCES.map(k => `<div class="lens t-${k}${mine === k ? " mine" : ""}"><h3>${TH[k].name}${mine === k ? " · your stance" : ""}</h3><p>${esc(c[k])}</p></div>`).join("")}</div>`;
+
+    if (S.mode === "group") {
+      view.innerHTML = head + `<div class="stack">${modeTabs}${caseBlock}
+        <div class="panel stack">
+          <label class="fl" for="group-names">Group members (separate with commas)<input type="text" id="group-names" value="${esc(S.names)}" placeholder="Maya, Jordan, Luis, Grace"></label>
+          <div class="row end"><button class="btn primary" type="button" data-act="assign">Assign stances</button></div>
+          ${S.group ? `<div class="group-list">${S.group.map(g => `<div class="group-row t-${g.k}"><b>${esc(g.n)}</b><span class="chip t-${g.k}">${TH[g.k].name}</span></div>`).join("")}</div>
+            <p class="muted">Give everyone 3 minutes to write the moral issue and their response. Then each person argues their stance, and the next person must respond to the one before.</p>` : ""}
+        </div>
+        ${S.group ? `<div class="panel stack"><div class="row between"><span class="eyebrow">Model answers</span><button class="btn sm" type="button" data-act="reveal">${S.shown ? "Hide" : "Show"}</button></div>${S.shown ? lenses(null) : ""}</div>` : ""}
+      </div>`;
+      return;
+    }
+
+    view.innerHTML = head + `<div class="stack">${modeTabs}${caseBlock}
+      <div class="panel stack">
+        <div class="stance-wrap">${S.stance ? `<span class="stance t-${S.stance}" id="stance">${TH[S.stance].name}</span>` : `<span class="muted">No stance yet.</span>`}
+          <button class="btn${S.stance ? "" : " primary"}" type="button" data-act="spin" ${S.spinning ? "disabled" : ""}>${S.stance ? "Re-roll stance" : "Roll my stance"}</button></div>
+        ${S.stance ? `<label class="fl" for="case-issue">1. What is the key moral issue?<textarea id="case-issue" style="min-height:80px">${esc(S.issue)}</textarea></label>
+        <label class="fl" for="case-resp">2. Respond as a ${TH[S.stance].name === "Utilitarianism" ? "utilitarian" : TH[S.stance].name === "Deontology" ? "deontologist" : "virtue ethicist"}. What should be done, and why?<textarea id="case-resp">${esc(S.resp)}</textarea></label>
+        <div class="row end"><button class="btn primary" type="button" data-act="reveal">${S.shown ? "Hide model answers" : "Compare with model answers"}</button></div>` : ""}
+      </div>
+      ${S.shown && S.stance ? `<div class="panel stack"><span class="eyebrow">Model answers</span>${lenses(S.stance)}
+        <div class="checks"><span class="eyebrow">Did your answer…</span>
+          ${["name the moral issue in one clear sentence?","use your stance’s key terms (virtue, duty, maxim, utility…)?","reach a clear conclusion about what to do?"].map((l, n) => `<label><input type="checkbox" id="case-chk-${n}">${l}</label>`).join("")}</div>
+        <div class="row end"><button class="btn primary" type="button" data-act="nextcase">Next case →</button></div></div>` : ""}
+    </div>`;
+  },
+  keep(){ const a = $("#case-issue"), b = $("#case-resp"), g = $("#group-names"); if (a) S.issue = a.value; if (b) S.resp = b.value; if (g) S.names = g.value; },
+  click(act, el){
+    this.keep();
+    if (act === "mode") { S.mode = el.dataset.v; S.shown = false; }
+    if (act === "nextcase") { if (S.shown || S.group) { P.cases++; saveP(); } S.i = (S.i + 1) % CASES.length; Object.assign(S, { stance:null, shown:false, issue:"", resp:"", group:null }); window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" }); }
+    if (act === "reveal") S.shown = !S.shown;
+    if (act === "assign") {
+      const names = S.names.split(",").map(s => s.trim()).filter(Boolean);
+      if (!names.length) { $("#group-names").focus(); return; }
+      let pool = []; while (pool.length < names.length) pool = pool.concat(shuffle(STANCES));
+      S.group = shuffle(names).map((n, k) => ({ n, k: pool[k] }));
+    }
+    if (act === "spin") { this.spin(); return; }
+    this.render();
+  },
+  spin(){
+    const final = STANCES[Math.floor(Math.random() * 3)];
+    if (reduceMotion) { S.stance = final; S.shown = false; this.render(); return; }
+    S.spinning = true; S.stance = S.stance || "ve"; S.shown = false; this.render();
+    let n = 0; const total = 12;
+    const tick = () => {
+      const el = $("#stance"); if (!el || V.current !== "cases") return;
+      const k = n < total ? STANCES[n % 3] : final;
+      el.className = "stance t-" + k; el.textContent = TH[k].name;
+      if (n++ < total) setTimeout(tick, 50 + n * 12); else { S.stance = final; S.spinning = false; this.render(); setTimeout(() => $("#case-issue")?.focus(), 0); }
+    };
+    tick();
+  }
+};
+
+/* ---- Describe It ---- */
+V.describe = {
+  init(){ S = { stage:"setup", teams:[{n:"Team 1",s:0},{n:"Team 2",s:0}], turn:0, secs:60, left:60, deck: shuffle(TERMS.map((_, i) => i)), di:0, timer:null, roundPts:0 }; },
+  stop(){ if (S.timer) { clearInterval(S.timer); S.timer = null; } },
+  cur(){ return TERMS[S.deck[S.di % S.deck.length]]; },
+  render(){
+    const head = `<div class="view-head"><span class="eyebrow">Word Definitions · group game</span><h1>Describe It</h1>
+      <p>One player describes the term so their team can guess it, without saying the term or any of the crossed-out words. Hand the device to the describer; everyone else guesses.</p></div>`;
+    const teams = `<div class="teams">${S.teams.map((t, i) => `<div class="team-box${S.turn === i && S.stage !== "setup" ? " up" : ""}"><input id="team-${i}" data-i="${i}" value="${esc(t.n)}" aria-label="Team ${i + 1} name" maxlength="20"><span class="s num">${t.s}</span></div>`).join("")}</div>`;
+    if (S.stage === "setup" || S.stage === "between") {
+      const t = S.teams[S.turn];
+      view.innerHTML = head + `<div class="stack">${teams}
+        <div class="panel stack">
+          ${S.stage === "setup" ? `<div class="row between"><span class="eyebrow">Setup</span><div class="row">
+              <button class="btn sm" type="button" data-act="addteam" ${S.teams.length >= 6 ? "disabled" : ""}>+ Team</button>
+              <button class="btn sm" type="button" data-act="rmteam" ${S.teams.length <= 2 ? "disabled" : ""}>− Team</button></div></div>
+            <div class="tabs" role="group" aria-label="Round length">${[45,60,90].map(v => `<button type="button" data-act="secs" data-v="${v}" aria-pressed="${S.secs === v}">${v} seconds</button>`).join("")}</div>`
+          : `<div class="feedback"><b>${esc(S.teams[(S.turn - 1 + S.teams.length) % S.teams.length].n)} scored ${S.roundPts} this round.</b>Pass the device to the next describer.</div>`}
+          <div class="row between"><span><b>${esc(t.n)}</b> <span class="muted">is up next</span></span><button class="btn primary" type="button" data-act="go">Start ${S.secs}s round</button></div>
+        </div></div>`;
+      return;
+    }
+    const term = this.cur();
+    view.innerHTML = head + `<div class="stack">${teams}
+      <div class="row between"><span><b>${esc(S.teams[S.turn].n)}</b> <span class="muted">· this round: <span class="num">${S.roundPts}</span></span></span><span class="timer${S.left <= 10 ? " low" : ""}" id="dtimer">${S.left}</span></div>
+      <div class="prompt-card">${chip(term.th)}<div class="big" style="font-size:clamp(32px,6vw,52px)">${esc(term.t)}</div>
+        <span class="eyebrow">Don’t say</span><div class="taboo">${term.x.map(w => `<span>${esc(w)}</span>`).join("")}</div></div>
+      <div class="row" style="justify-content:center"><button class="btn" type="button" data-act="skip">Skip</button><button class="btn primary" type="button" data-act="got">Got it! +1</button></div>
+      <div class="row" style="justify-content:center"><button class="btn sm" type="button" data-act="end">End round early</button></div></div>`;
+  },
+  endRound(){ this.stop(); S.turn = (S.turn + 1) % S.teams.length; S.stage = "between"; P.describeRounds++; saveP(); this.render(); },
+  click(act, el){
+    if (act === "addteam") S.teams.push({ n:"Team " + (S.teams.length + 1), s:0 });
+    if (act === "rmteam") S.teams.pop();
+    if (act === "secs") S.secs = +el.dataset.v;
+    if (act === "go") {
+      S.stage = "play"; S.left = S.secs; S.roundPts = 0; S.di++;
+      this.stop(); S.timer = setInterval(() => {
+        if (V.current !== "describe") return this.stop();
+        S.left--; const t = $("#dtimer"); if (t) { t.textContent = S.left; t.classList.toggle("low", S.left <= 10); }
+        if (S.left <= 0) this.endRound();
+      }, 1000);
+    }
+    if (act === "got") { S.teams[S.turn].s++; S.roundPts++; S.di++; }
+    if (act === "skip") S.di++;
+    if (act === "end") return this.endRound();
+    this.render();
+  },
+  input(e){ const i = e.target.dataset.i; if (i != null) S.teams[i].n = e.target.value; }
+};
+
+/* ================= ROUTER ================= */
+function route(){
+  const name = location.hash.slice(1);
+  const next = V[name] && name !== "home" ? name : "home";
+  if (V.current === "describe" && next !== "describe") V.describe.stop();
+  V.current = next;
+  $("#homeLink").hidden = next === "home";
+  if (V[next].init) V[next].init();
+  V[next].render();
+  window.scrollTo(0, 0);
+}
+view.addEventListener("click", e => {
+  const el = e.target.closest("[data-act]"); if (!el || !view.contains(el)) return;
+  const v = V[V.current]; if (v.click) v.click(el.dataset.act, el, e);
+});
+view.addEventListener("change", e => {
+  const el = e.target.closest('input[type="checkbox"][data-act]'); if (!el) return;
+  e.stopPropagation();
+});
+view.addEventListener("input", e => { const v = V[V.current]; if (v.input) v.input(e); });
+document.addEventListener("keydown", e => {
+  if (/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
+  const v = V[V.current]; if (v && v.key) v.key(e);
+});
+window.addEventListener("hashchange", route);
+route();
+</script>
+</body>
+</html>
