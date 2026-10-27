@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Class Jeopardy for the Ethics unit test: six categories, Daily Doubles, Final Jeopardy, and team scoring.">
+<title>Ethics Review Jeopardy</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+body{margin:0;min-height:100vh}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Big+Shoulders+Text:wght@500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+/* Layout: lecture-hall chalkboard. A full-width clue grid, a scoreboard rail beneath it, and each clue taking over the whole board when opened. Single dark look on purpose: it projects well. */
+:root{
+  --ink:#0d1a17;
+  --board:#152d27;
+  --tile:#1b3a32;
+  --tile-hi:#25493f;
+  --line:#2f574c;
+  --chalk:#eef1e8;
+  --chalk-dim:#a6b7ae;
+  --brass:#dbae50;
+  --brass-ink:#1a1408;
+  --right:#8ad3a3;
+  --wrong:#ef806a;
+  --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --ui:"Big Shoulders Text","Arial Narrow",system-ui,sans-serif;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  color-scheme:dark;
+}
+body{
+  background:var(--ink);color:var(--chalk);font-family:var(--ui);font-size:16px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:16px 28px;
+}
+.wrap{max-width:1500px;margin:0 auto;display:grid;gap:14px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:disabled{cursor:default}
+:focus-visible{outline:3px solid var(--brass);outline-offset:2px}
+
+/* Header */
+.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 20px}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--brass)}
+h1{font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.02em;line-height:.92;margin:4px 0 0;font-size:clamp(30px,4.4vw,56px);text-wrap:balance}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.left{font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--chalk-dim);font-variant-numeric:tabular-nums;margin-right:6px}
+.btn{font-family:var(--ui);font-weight:700;font-size:15px;letter-spacing:.08em;text-transform:uppercase;background:transparent;color:var(--chalk);border:1.5px solid var(--line);border-radius:4px;padding:9px 14px;line-height:1}
+.btn:hover:not(:disabled){border-color:var(--brass);color:var(--brass)}
+.btn.primary{background:var(--brass);border-color:var(--brass);color:var(--brass-ink)}
+.btn.primary:hover:not(:disabled){background:var(--chalk);border-color:var(--chalk);color:var(--brass-ink)}
+.btn:disabled{opacity:.4}
+.btn.armed{border-color:var(--wrong);color:var(--wrong)}
+a.btn{display:inline-block;text-decoration:none}
+
+/* Board */
+.board-wrap{overflow-x:auto;background:var(--board);border-radius:6px;padding:10px;
+  background-image:radial-gradient(120% 80% at 20% 0%,rgba(238,241,232,.05),transparent 60%),radial-gradient(90% 70% at 90% 100%,rgba(238,241,232,.035),transparent 60%)}
+.board{display:grid;grid-template-columns:repeat(6,minmax(112px,1fr));gap:7px;min-width:700px}
+.cat{font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.03em;line-height:1.02;
+  font-size:clamp(16px,1.75vw,26px);text-align:center;text-wrap:balance;display:flex;align-items:center;justify-content:center;
+  min-height:76px;padding:10px 6px 12px;border-bottom:3px solid var(--brass)}
+.tile{font-family:var(--display);font-weight:800;font-size:clamp(30px,4.2vw,64px);color:var(--brass);background:var(--tile);
+  border:none;border-radius:3px;height:clamp(66px,11.5vh,124px);font-variant-numeric:tabular-nums;position:relative;
+  transition:background .15s, transform .15s}
+.tile:hover:not(:disabled){background:var(--tile-hi);transform:translateY(-1px)}
+.tile.used{color:transparent;background:transparent;box-shadow:inset 0 0 0 1px var(--line)}
+.tile.used::after{content:"";position:absolute;left:50%;top:50%;width:22px;height:2px;margin:-1px 0 0 -11px;background:var(--line)}
+
+/* Scoreboard */
+.teams{display:flex;flex-wrap:wrap;gap:10px}
+.team{flex:1 1 190px;min-width:0;background:var(--board);border-top:3px solid var(--line);border-radius:0 0 4px 4px;padding:10px 12px 12px;display:grid;gap:4px}
+.team.lead{border-top-color:var(--brass)}
+.team-row{display:flex;gap:6px;align-items:center}
+.team input{flex:1;min-width:0;background:transparent;border:none;border-bottom:1px dashed var(--line);color:var(--chalk-dim);
+  font:700 15px var(--ui);letter-spacing:.1em;text-transform:uppercase;padding:2px 0}
+.team input:focus{color:var(--chalk);outline:none;border-bottom-color:var(--brass)}
+.x{background:transparent;border:1px solid transparent;border-radius:3px;color:var(--chalk-dim);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;white-space:nowrap}
+.x:hover{color:var(--wrong)}
+.x.armed{border-color:var(--wrong);color:var(--wrong)}
+.score{font-family:var(--display);font-weight:800;font-size:clamp(34px,4vw,54px);line-height:1;font-variant-numeric:tabular-nums}
+.score.neg{color:var(--wrong)}
+.adj{display:flex;gap:6px}
+.mini{background:var(--tile);border:none;border-radius:3px;color:var(--chalk-dim);font-weight:700;font-size:14px;padding:5px 9px;font-variant-numeric:tabular-nums}
+.mini:hover{background:var(--tile-hi);color:var(--chalk)}
+.addteam{flex:0 0 auto;align-self:stretch;background:transparent;border:1.5px dashed var(--line);border-radius:4px;color:var(--chalk-dim);font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:10px 18px}
+.addteam:hover{color:var(--brass);border-color:var(--brass)}
+.hint{font-size:14px;color:var(--chalk-dim);letter-spacing:.02em}
+.hint kbd{font-family:var(--ui);font-weight:700;border:1px solid var(--line);border-radius:3px;padding:0 5px;color:var(--chalk)}
+
+/* Clue overlay */
+.overlay{position:fixed;inset:0;z-index:20;background:var(--board);display:flex;flex-direction:column;overflow-y:auto;
+  padding:calc(18px + env(safe-area-inset-top,0px)) max(20px,calc(16px + env(safe-area-inset-right,0px))) calc(18px + env(safe-area-inset-bottom,0px)) max(20px,calc(16px + env(safe-area-inset-left,0px)));
+  background-image:radial-gradient(110% 80% at 15% 0%,rgba(238,241,232,.05),transparent 60%)}
+.ov-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.ov-cat{font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--brass);font-size:clamp(20px,2.6vw,34px);line-height:1}
+.ov-cat span{color:var(--chalk-dim);font-weight:600}
+.stage{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:22px;padding:26px 0}
+.clue-text{font-family:var(--serif);font-weight:400;font-size:clamp(24px,4vw,56px);line-height:1.22;max-width:34ch;text-wrap:balance;margin:0}
+.answer{display:grid;gap:10px;justify-items:center}
+.answer-label{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--chalk-dim)}
+.answer-text{font-family:var(--display);font-weight:800;font-size:clamp(26px,3.8vw,52px);line-height:1.05;color:var(--brass);text-wrap:balance}
+.note{font-family:var(--serif);font-size:clamp(15px,1.5vw,20px);line-height:1.45;color:var(--chalk-dim);max-width:62ch;margin:0}
+.ov-foot{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid var(--line)}
+.award{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.who{display:flex;align-items:center;gap:6px;background:var(--tile);border-radius:4px;padding:6px 6px 6px 10px}
+.who-name{font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:14px;max-width:14ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mark{border:1.5px solid currentColor;background:transparent;border-radius:3px;font-weight:700;font-size:14px;padding:5px 9px;font-variant-numeric:tabular-nums}
+.mark.ok{color:var(--right)} .mark.no{color:var(--wrong)}
+.mark.ok:hover:not(:disabled){background:var(--right);color:var(--ink)}
+.mark.no:hover:not(:disabled){background:var(--wrong);color:var(--ink)}
+.mark:disabled{opacity:.35}
+.mark.on.ok{background:var(--right);color:var(--ink)} .mark.on.no{background:var(--wrong);color:var(--ink)}
+
+.dd-title{font-family:var(--display);font-weight:800;text-transform:uppercase;color:var(--brass);font-size:clamp(56px,11vw,150px);line-height:.85;letter-spacing:.01em;margin:0;animation:pop .5s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{transform:scale(.6)}to{transform:scale(1)}}
+.prompt{font-size:clamp(16px,1.7vw,22px);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--chalk-dim)}
+.pick{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.pick button{background:var(--tile);border:1.5px solid var(--line);border-radius:4px;padding:10px 16px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.pick button[aria-pressed="true"]{background:var(--brass);border-color:var(--brass);color:var(--brass-ink)}
+.wager{display:flex;flex-wrap:wrap;align-items:center;gap:10px;justify-content:center}
+.wager input,.fw input{font:800 clamp(28px,3vw,40px) var(--display);width:5.2ch;text-align:center;background:var(--ink);color:var(--chalk);border:1.5px solid var(--line);border-radius:4px;padding:4px 6px;font-variant-numeric:tabular-nums}
+.wager input:focus,.fw input:focus{outline:none;border-color:var(--brass)}
+.fws{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.fw{display:grid;gap:6px;justify-items:center;background:var(--tile);border-radius:4px;padding:12px 16px;min-width:0}
+.fw .nm{font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:14px}
+.fw .mx{font-size:13px;color:var(--chalk-dim);font-variant-numeric:tabular-nums}
+.fw .bad{color:var(--wrong)}
+.final-cat{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:clamp(40px,7vw,96px);line-height:.9;margin:0;text-wrap:balance}
+.timer{font-family:var(--display);font-weight:800;font-size:clamp(34px,4vw,56px);font-variant-numeric:tabular-nums;color:var(--brass);min-width:3ch}
+.timer.done{color:var(--wrong)}
+.judge{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.judge .who{padding:8px 8px 8px 12px;gap:8px}
+.judge .w{color:var(--chalk-dim);font-variant-numeric:tabular-nums;font-size:14px}
+.stand{display:grid;gap:8px;width:min(560px,100%)}
+.stand-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:10px 14px;background:var(--tile);border-radius:4px}
+.stand-row.first{background:var(--brass);color:var(--brass-ink)}
+.stand-row .n{font-weight:700;letter-spacing:.1em;text-transform:uppercase;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stand-row .s{font-family:var(--display);font-weight:800;font-size:clamp(28px,3vw,40px);font-variant-numeric:tabular-nums}
+
+@media (max-width:560px){ .who-name{max-width:9ch} }
+@media (prefers-reduced-motion:reduce){ .dd-title{animation:none} .tile{transition:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow">Ethics · Unit Test Review</div>
+      <h1>Virtue, Duty &amp; Utility</h1>
+    </div>
+    <div class="tools">
+      <span class="left" id="left"></span>
+      <button class="btn primary" id="finalBtn" type="button">Final Jeopardy</button>
+      <button class="btn" id="resetBtn" type="button">New game</button>
+      <a class="btn" href="index.html">← Study Lab</a>
+    </div>
+  </header>
+
+  <div class="board-wrap"><div class="board" id="board" role="grid" aria-label="Jeopardy board"></div></div>
+
+  <section class="teams" id="teams" aria-label="Scoreboard"></section>
+  <p class="hint">Click a value to open its clue. Press <kbd>Space</kbd> to show the answer and <kbd>Esc</kbd> to step back without using the clue. Click a team name to rename it. Scores save in this browser.</p>
+</div>
+
+<div class="overlay" id="overlay" hidden role="dialog" aria-modal="true" aria-label="Clue"></div>
+
+<script>
+const DATA = {
+  categories: [
+    { name: "Virtue Ethics", clues: [
+      { v:100, q:"This Greek philosopher, author of the Nicomachean Ethics, is credited with founding virtue ethics.", a:"Who is Aristotle?", n:"Aristotle builds on Socrates and Plato, but he gives virtue ethics its systematic form." },
+      { v:200, q:"Aristotle's word for the complete, flourishing happiness that is the telos of a human life.", a:"What is eudaimonia?", n:"It is an activity of the soul in accordance with virtue over a whole life, not a passing feeling." },
+      { v:300, q:"Aristotle says we are not virtuous by nature; we become brave by doing brave acts, so virtue is formed through this.", a:"What is habit (habituation)?", n:"Virtues are inculcated through repeated practice until they become a stable part of character." },
+      { v:400, q:"Prudence, justice, fortitude, and temperance are called these, from the Latin word for \"hinge.\"", a:"What are the cardinal virtues?", n:"Every other moral virtue \"hinges\" on these four, and prudence guides the other three." },
+      { v:500, q:"This medieval theologian joined Aristotle to Christianity, adding faith, hope, and charity and placing ultimate happiness in union with God.", a:"Who is Thomas Aquinas?", n:"The Greek view aims at flourishing in this life; the Christian view adds theological virtues given by grace." }
+    ]},
+    { name: "Social Contract", clues: [
+      { v:100, q:"Author of Leviathan (1651), this English philosopher is credited with founding social contract theory.", a:"Who is Thomas Hobbes?", n:"The other main figures are John Locke and Jean-Jacques Rousseau." },
+      { v:200, q:"John Locke's three natural rights.", a:"What are life, liberty, and property?", n:"Jefferson echoes these in the Declaration of Independence as life, liberty, and the pursuit of happiness." },
+      { v:300, q:"Hobbes said that in this condition, before government, life would be \"solitary, poor, nasty, brutish, and short.\"", a:"What is the state of nature?", n:"Hobbes's grim view of human nature leads him to favor a strong, absolute sovereign." },
+      { v:400, q:"Rousseau's term for the collective will of the whole people, always aimed at the common good.", a:"What is the general will?", n:"It differs from the \"will of all,\" which is just the sum of private interests." },
+      { v:500, q:"According to Locke, a government gets its legitimacy from this, and if it violates natural rights the people may do this.", a:"What is the consent of the governed, and rebel (dissolve or replace the government)?", n:"Accept either half for partial credit if you like. This is the logic of the American Revolution." }
+    ]},
+    { name: "Deontology", clues: [
+      { v:100, q:"This 18th-century German philosopher founded deontology.", a:"Who is Immanuel Kant?", n:"Key text: Groundwork of the Metaphysics of Morals (1785)." },
+      { v:200, q:"The Greek word deon, the root of \"deontology,\" means this.", a:"What is duty?", n:"Deontology is the ethics of duty: some acts are required or forbidden regardless of results." },
+      { v:300, q:"Between intentions and consequences, a deontologist says this one matters most, because it is the only thing fully in our control.", a:"What are intentions (the good will)?", n:"For Kant, the only thing good without qualification is a good will acting from duty." },
+      { v:400, q:"Kant's name for the personal rule or principle behind an action, which must pass the universalizability test.", a:"What is a maxim?", n:"Ask: could everyone act on this rule without contradiction? If not, the maxim fails." },
+      { v:500, q:"A murderer at the door asks where your friend is hiding. Kant says you must still do this, because it is a perfect duty.", a:"What is not lie?", n:"Perfect duties (like not lying) allow no exceptions. Imperfect duties (like helping others) leave room for judgment." }
+    ]},
+    { name: "Utilitarianism", clues: [
+      { v:100, q:"This English philosopher and legal reformer founded utilitarianism and said nature placed us under two masters, pain and pleasure.", a:"Who is Jeremy Bentham?", n:"Bentham wanted a scientific way to reform laws and institutions." },
+      { v:200, q:"The principle that actions are right as they tend to promote happiness and wrong as they tend to produce its reverse.", a:"What is the Greatest Happiness Principle?", n:"Also called the principle of utility." },
+      { v:300, q:"To a utilitarian, \"happiness\" means this, along with the absence of pain.", a:"What is pleasure?", n:"Utility is an action's usefulness in producing pleasure and preventing pain." },
+      { v:400, q:"Unlike Bentham, who measured pleasures only by quantity, this philosopher ranked intellectual pleasures above bodily ones.", a:"Who is John Stuart Mill?", n:"Mill: better to be Socrates dissatisfied than a fool satisfied. Higher pleasures outrank lower ones in quality." },
+      { v:500, q:"A utilitarian would push the large man off the bridge to stop the trolley. A Kantian objects that doing so treats him this way.", a:"What is as a mere means?", n:"Utilitarians count the outcome: five lives over one. Deontologists object to using a person as a tool." }
+    ]},
+    { name: "Define It", clues: [
+      { v:100, q:"In Aristotle's ethics, rashness is this relative to the virtue of courage.", a:"What is an excess?", n:"Cowardice is the deficiency. Courage is the mean between them." },
+      { v:200, q:"The cardinal virtue that moderates our desire for physical pleasures like food and drink.", a:"What is temperance?", n:"Deficiency: insensibility. Excess: self-indulgence." },
+      { v:300, q:"Called \"right reason in action,\" this cardinal virtue guides all the others.", a:"What is prudence?", n:"Prudence is practical wisdom: seeing what the right act is here and now." },
+      { v:400, q:"Value something has in itself, rather than as a tool for getting something else.", a:"What is inherent (intrinsic) value?", n:"Contrast with instrumental value. Kant says human dignity is inherent." },
+      { v:500, q:"Opposite extremes of government: one with no authority at all, and one where the state controls every part of life.", a:"What are anarchy and totalitarianism?", n:"Social contract thinkers look for the legitimate middle ground between these two." }
+    ]},
+    { name: "Big Ideas", clues: [
+      { v:100, q:"Kant's supreme moral rule: act only on a maxim you could will to become a universal law.", a:"What is the categorical imperative?", n:"\"Categorical\" means it binds unconditionally, not \"if you want X.\"" },
+      { v:200, q:"Aristotle's principle that every virtue lies between a vice of deficiency and a vice of excess.", a:"What is the Doctrine of the Mean?", n:"Example: generosity sits between stinginess and wastefulness." },
+      { v:300, q:"Giving every student the same pair of shoes versus giving every student shoes that fit.", a:"What is equality versus equity?", n:"Equality treats everyone the same. Equity gives each what they need for a fair outcome." },
+      { v:400, q:"Kant's two kinds of duty: one that must always be kept with no exceptions, and one that leaves room for choosing when and how.", a:"What are perfect and imperfect duties?", n:"Kant's four examples: no suicide and no false promises (perfect); develop your talents and help others (imperfect)." },
+      { v:500, q:"Unlike freedom of indifference, which is just the ability to pick either option, this kind of freedom grows as we practice virtue, like a pianist who can play anything.", a:"What is freedom for excellence?", n:"The more virtuous we become, the freer we are to act well." }
+    ]}
+  ],
+  final: {
+    category: "Dignity & Duty",
+    q: "Kant grounds human dignity in rationality. Because every rational person can give themselves the moral law, they must always be treated as this, and never merely as a means.",
+    a: "What is an end in themselves?",
+    n: "This is the humanity formulation of the categorical imperative. Like natural law, it treats dignity as inherent, not earned or useful."
+  }
+};
+// Daily Doubles: "category index-row index" (Social Contract 400, Big Ideas 500)
+const DAILY = new Set(["1-3", "5-4"]);
+const KEY = "ethics-jeopardy-v1";
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fresh = () => ({ teams:[{name:"Team 1",score:0},{name:"Team 2",score:0},{name:"Team 3",score:0}], used:{} });
+let state, cur = null, timerId = null, armed = {};
+
+function load(){ try { const s = localStorage.getItem(KEY); return s ? JSON.parse(s) : null; } catch(e){ return null; } }
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){} }
+
+function arm(key, el, label, fn){
+  if (armed[key]) { clearTimeout(armed[key]); delete armed[key]; fn(); return; }
+  const orig = el.textContent;
+  el.textContent = label; el.classList.add("armed");
+  armed[key] = setTimeout(() => { delete armed[key]; el.textContent = orig; el.classList.remove("armed"); }, 3000);
+}
+
+function renderBoard(){
+  const cats = DATA.categories;
+  let html = cats.map(c => `<div class="cat" role="columnheader">${esc(c.name)}</div>`).join("");
+  for (let r = 0; r < 5; r++) {
+    html += cats.map((c, ci) => {
+      const id = ci + "-" + r, used = state.used[id], v = c.clues[r].v;
+      return used
+        ? `<button class="tile used" type="button" disabled aria-label="${esc(c.name)} ${v}, used">${v}</button>`
+        : `<button class="tile" type="button" data-cell="${id}" aria-label="${esc(c.name)} for ${v}">${v}</button>`;
+    }).join("");
+  }
+  $("#board").innerHTML = html;
+  const left = 30 - Object.keys(state.used).length;
+  $("#left").textContent = left + (left === 1 ? " clue left" : " clues left");
+}
+
+function renderTeams(){
+  const max = Math.max(...state.teams.map(t => t.score));
+  $("#teams").innerHTML = state.teams.map((t, i) => `
+    <div class="team${max > 0 && t.score === max ? " lead" : ""}">
+      <div class="team-row">
+        <input id="team-name-${i}" data-i="${i}" value="${esc(t.name)}" aria-label="Team ${i+1} name" maxlength="24">
+        ${state.teams.length > 1 ? `<button class="x" type="button" data-act="remove" data-i="${i}" aria-label="Remove ${esc(t.name)}">Remove</button>` : ""}
+      </div>
+      <div class="score${t.score < 0 ? " neg" : ""}">${t.score}</div>
+      <div class="adj">
+        <button class="mini" type="button" data-act="minus" data-i="${i}">−100</button>
+        <button class="mini" type="button" data-act="plus" data-i="${i}">+100</button>
+      </div>
+    </div>`).join("") +
+    (state.teams.length < 8 ? `<button class="addteam" type="button" data-act="add">+ Add team</button>` : "");
+}
+
+function render(){ renderBoard(); renderTeams(); save(); }
+
+/* ---------- Scoreboard events ---------- */
+$("#teams").addEventListener("input", e => {
+  const i = e.target.dataset.i; if (i == null) return;
+  state.teams[i].name = e.target.value; save();
+});
+$("#teams").addEventListener("click", e => {
+  const b = e.target.closest("[data-act]"); if (!b) return;
+  const i = +b.dataset.i, act = b.dataset.act;
+  if (act === "plus") { state.teams[i].score += 100; render(); }
+  if (act === "minus") { state.teams[i].score -= 100; render(); }
+  if (act === "add") { state.teams.push({ name:"Team " + (state.teams.length + 1), score:0 }); render(); }
+  if (act === "remove") arm("rm" + i, b, "Sure?", () => { state.teams.splice(i, 1); render(); });
+});
+$("#board").addEventListener("click", e => {
+  const b = e.target.closest("[data-cell]"); if (b) openClue(b.dataset.cell);
+});
+$("#resetBtn").addEventListener("click", e => arm("reset", e.currentTarget, "Reset scores?", () => {
+  const names = state.teams.map(t => ({ name:t.name, score:0 }));
+  state = { teams:names, used:{} }; render();
+}));
+$("#finalBtn").addEventListener("click", openFinal);
+
+/* ---------- Clue overlay ---------- */
+const ov = $("#overlay");
+function openClue(id){
+  const [ci, r] = id.split("-").map(Number);
+  const c = DATA.categories[ci];
+  const dd = DAILY.has(id);
+  cur = { kind:"clue", id, cat:c.name, clue:c.clues[r], dd, stage: dd ? "dd" : "clue", team:null, wager:"", wrongs:[], revealed:false };
+  showOverlay();
+}
+function openFinal(){
+  cur = { kind:"final", stage:"fwager", wagers: state.teams.map(() => ""), results: state.teams.map(() => null), revealed:false, t:30 };
+  showOverlay();
+}
+function showOverlay(){ ov.hidden = false; document.body.style.overflow = "hidden"; draw(); }
+function closeOverlay(markUsed){
+  if (markUsed && cur && cur.id) state.used[cur.id] = true;
+  stopTimer(); cur = null; ov.hidden = true; document.body.style.overflow = ""; render();
+}
+const ddMax = () => Math.max(state.teams[cur.team]?.score ?? 0, 500);
+const ddValid = () => cur.team != null && cur.wager !== "" && +cur.wager >= 0 && +cur.wager <= ddMax();
+const fMax = i => Math.max(state.teams[i].score, 0);
+const fValid = () => cur.wagers.every((w, i) => w !== "" && +w >= 0 && +w <= fMax(i));
+
+function answerBlock(c){
+  return `<div class="answer" ${cur.revealed ? "" : "hidden"}>
+    <div class="answer-label">Correct response</div>
+    <div class="answer-text">${esc(c.a)}</div>
+    <p class="note">${esc(c.n)}</p></div>`;
+}
+
+function draw(){
+  let head = "", body = "", foot = "";
+  if (cur.kind === "clue") {
+    head = `<div class="ov-cat">${esc(cur.cat)} <span>· ${cur.dd && cur.team != null ? "Daily Double · " + (+cur.wager) : cur.clue.v}</span></div>
+            <button class="btn" type="button" data-act="back">Back to board</button>`;
+    if (cur.stage === "dd") {
+      body = `<h2 class="dd-title">Daily Double</h2>
+        <div class="prompt">Which team picked it?</div>
+        <div class="pick">${state.teams.map((t, i) => `<button type="button" data-act="ddteam" data-i="${i}" aria-pressed="${cur.team === i}">${esc(t.name)}</button>`).join("")}</div>
+        <div class="wager" ${cur.team == null ? "hidden" : ""}>
+          <label class="prompt" for="dd-wager">Wager</label>
+          <input id="dd-wager" type="number" inputmode="numeric" min="0" step="50" value="${esc(cur.wager)}">
+          <span class="hint">Up to ${cur.team == null ? 500 : ddMax()}</span>
+        </div>`;
+      foot = `<span></span><button class="btn primary" type="button" data-act="ddgo" ${ddValid() ? "" : "disabled"}>Show clue</button>`;
+    } else {
+      body = `<p class="clue-text">${esc(cur.clue.q)}</p>${answerBlock(cur.clue)}`;
+      const rev = `<button class="btn" type="button" data-act="reveal">${cur.revealed ? "Hide answer" : "Show answer"}</button>`;
+      if (cur.dd) {
+        const t = state.teams[cur.team], w = +cur.wager;
+        foot = `${rev}<div class="award"><div class="who"><span class="who-name">${esc(t.name)}</span>
+          <button class="mark ok" type="button" data-act="ddright">Right +${w}</button>
+          <button class="mark no" type="button" data-act="ddwrong">Wrong −${w}</button></div></div>`;
+      } else {
+        const v = cur.clue.v;
+        foot = `${rev}<div class="award">${state.teams.map((t, i) => {
+          const out = cur.wrongs.includes(i);
+          return `<div class="who"><span class="who-name">${esc(t.name)}</span>
+            <button class="mark ok" type="button" data-act="right" data-i="${i}" ${out ? "disabled" : ""} aria-label="${esc(t.name)} right, plus ${v}">+${v}</button>
+            <button class="mark no" type="button" data-act="wrong" data-i="${i}" ${out ? "disabled" : ""} aria-label="${esc(t.name)} wrong, minus ${v}">−${v}</button></div>`;
+        }).join("")}
+          <button class="btn" type="button" data-act="nobody">No one · close</button></div>`;
+      }
+    }
+  } else {
+    const F = DATA.final;
+    head = `<div class="ov-cat">Final Jeopardy <span>· ${esc(F.category)}</span></div>
+            ${cur.stage === "fdone" ? "" : `<button class="btn" type="button" data-act="fback">Back to board</button>`}`;
+    if (cur.stage === "fwager") {
+      body = `<div class="prompt">The category is</div><h2 class="final-cat">${esc(F.category)}</h2>
+        <div class="prompt">Enter each team's written wager</div>
+        <div class="fws">${state.teams.map((t, i) => {
+          const w = cur.wagers[i], bad = w !== "" && (+w < 0 || +w > fMax(i));
+          return `<div class="fw"><label class="nm" for="fw-${i}">${esc(t.name)}</label>
+            <input id="fw-${i}" data-i="${i}" type="number" inputmode="numeric" min="0" step="50" value="${esc(w)}">
+            <span class="mx${bad ? " bad" : ""}" id="fwmx-${i}">Up to ${fMax(i)}</span></div>`;
+        }).join("")}</div>`;
+      foot = `<span class="hint">Teams with zero or less can wager 0.</span><button class="btn primary" type="button" data-act="fclue" ${fValid() ? "" : "disabled"}>Reveal clue</button>`;
+    } else if (cur.stage === "fclue") {
+      body = `<p class="clue-text">${esc(F.q)}</p>${answerBlock(F)}
+        <div class="judge" ${cur.revealed ? "" : "hidden"}>${state.teams.map((t, i) => `
+          <div class="who"><span class="who-name">${esc(t.name)}</span><span class="w">${+cur.wagers[i]}</span>
+            <button class="mark ok${cur.results[i] === true ? " on" : ""}" type="button" data-act="fres" data-i="${i}" data-r="1" aria-pressed="${cur.results[i] === true}">Right</button>
+            <button class="mark no${cur.results[i] === false ? " on" : ""}" type="button" data-act="fres" data-i="${i}" data-r="0" aria-pressed="${cur.results[i] === false}">Wrong</button></div>`).join("")}</div>`;
+      foot = `<div class="award"><span class="timer${cur.t === 0 ? " done" : ""}" id="timer">${cur.t}</span>
+          <button class="btn" type="button" data-act="timer">${timerId ? "Pause" : cur.t === 30 ? "Start 30s timer" : cur.t === 0 ? "Restart timer" : "Resume"}</button>
+          <button class="btn" type="button" data-act="reveal">${cur.revealed ? "Hide answer" : "Show answer"}</button></div>
+        <button class="btn primary" type="button" data-act="fapply" ${cur.revealed && cur.results.every(r => r !== null) ? "" : "disabled"}>Apply scores</button>`;
+    } else {
+      const order = state.teams.map((t, i) => ({ ...t, i })).sort((a, b) => b.score - a.score);
+      const top = order[0].score;
+      body = `<div class="prompt">Final standings</div>
+        <h2 class="final-cat">${order.filter(t => t.score === top).map(t => esc(t.name)).join(" & ")} ${order.filter(t => t.score === top).length > 1 ? "tie" : "wins"}</h2>
+        <div class="stand">${order.map(t => `<div class="stand-row${t.score === top ? " first" : ""}"><span class="n">${esc(t.name)}</span><span class="s">${t.score}</span></div>`).join("")}</div>`;
+      foot = `<span></span><button class="btn primary" type="button" data-act="fclose">Back to board</button>`;
+    }
+  }
+  ov.innerHTML = `<div class="ov-head">${head}</div><div class="stage">${body}</div><div class="ov-foot">${foot}</div>`;
+}
+
+function stopTimer(){ if (timerId) { clearInterval(timerId); timerId = null; } }
+function toggleTimer(){
+  if (timerId) { stopTimer(); draw(); return; }
+  if (cur.t === 0) cur.t = 30;
+  timerId = setInterval(() => {
+    if (!cur) return stopTimer();
+    cur.t = Math.max(0, cur.t - 1);
+    if (cur.t === 0) { stopTimer(); draw(); return; }
+    const el = document.getElementById("timer"); if (el) el.textContent = cur.t;
+  }, 1000);
+  draw();
+}
+
+ov.addEventListener("input", e => {
+  if (!cur) return;
+  if (e.target.id === "dd-wager") {
+    cur.wager = e.target.value;
+    const go = ov.querySelector('[data-act="ddgo"]'); if (go) go.disabled = !ddValid();
+  }
+  if (e.target.id && e.target.id.startsWith("fw-")) {
+    const i = +e.target.dataset.i; cur.wagers[i] = e.target.value;
+    const w = e.target.value, bad = w !== "" && (+w < 0 || +w > fMax(i));
+    document.getElementById("fwmx-" + i).classList.toggle("bad", bad);
+    const go = ov.querySelector('[data-act="fclue"]'); if (go) go.disabled = !fValid();
+  }
+});
+
+ov.addEventListener("click", e => {
+  const b = e.target.closest("[data-act]"); if (!b || !cur) return;
+  const act = b.dataset.act, i = +b.dataset.i;
+  switch (act) {
+    case "back": closeOverlay(false); break;
+    case "fback": stopTimer(); closeOverlay(false); break;
+    case "ddteam": cur.team = i; draw(); setTimeout(() => document.getElementById("dd-wager")?.focus(), 0); break;
+    case "ddgo": if (ddValid()) { cur.wager = String(Math.round(+cur.wager)); cur.stage = "clue"; draw(); } break;
+    case "reveal": cur.revealed = !cur.revealed; draw(); break;
+    case "right": state.teams[i].score += cur.clue.v; closeOverlay(true); break;
+    case "wrong": state.teams[i].score -= cur.clue.v; cur.wrongs.push(i); renderTeams(); save(); draw(); break;
+    case "nobody": closeOverlay(true); break;
+    case "ddright": state.teams[cur.team].score += +cur.wager; closeOverlay(true); break;
+    case "ddwrong": state.teams[cur.team].score -= +cur.wager; closeOverlay(true); break;
+    case "fclue": if (fValid()) { cur.wagers = cur.wagers.map(w => Math.round(+w)); cur.stage = "fclue"; draw(); } break;
+    case "timer": toggleTimer(); break;
+    case "fres": cur.results[i] = b.dataset.r === "1"; draw(); break;
+    case "fapply":
+      stopTimer();
+      state.teams.forEach((t, k) => { t.score += cur.results[k] ? cur.wagers[k] : -cur.wagers[k]; });
+      save(); renderTeams(); cur.stage = "fdone"; draw(); break;
+    case "fclose": closeOverlay(false); break;
+  }
+});
+
+document.addEventListener("keydown", e => {
+  if (!cur) return;
+  const typing = /INPUT|TEXTAREA/.test(e.target.tagName);
+  if (e.key === "Escape" && cur.stage !== "fdone") { e.preventDefault(); stopTimer(); closeOverlay(false); }
+  if (e.key === " " && !typing && e.target.tagName !== "BUTTON" && (cur.stage === "clue" || cur.stage === "fclue")) {
+    e.preventDefault(); cur.revealed = !cur.revealed; draw();
+  }
+});
+
+function boot(data){
+  state = (data && data.state) || load() || fresh();
+  if (!state.teams || !state.teams.length) state = fresh();
+  state.used = state.used || {};
+  render();
+}
+window.claude?.hot?.snapshot?.(() => ({ state }));
+window.claude?.hot?.ready ? window.claude.hot.ready(boot) : boot(window.claude?.hot?.data ?? {});
+</script>
+</body>
+</html>

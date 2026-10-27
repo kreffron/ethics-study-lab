@@ -13,15 +13,16 @@ Study games for the Ethics unit test, covering Virtue Ethics, Social Contract Th
 | Key Ideas | Key Ideas (9 pts) and Short Answer (10 pts) | Solo |
 | Case Lab | Case Study Analysis (10 pts) | Solo or group |
 | Describe It | Word Definitions | Group (teams) |
+| Class Jeopardy | Multiple Choice and review | Group or whole class |
 
-Each station has its own link, for example `.../#quiz` or `.../#cases`, so you can send students straight to one activity.
+Each station has its own link, for example `.../#quiz` or `.../#cases`, so you can send students straight to one activity. Class Jeopardy is its own page at `.../jeopardy.html`; it is designed for a projector or a shared screen.
 
 Progress (known flashcards, best quiz score, and so on) is saved in each student's own browser. Nothing is collected or sent anywhere.
 
 ## Publish with GitHub Pages
 
 1. Create a new **public** repository on GitHub, for example `ethics-study-lab`.
-2. Click **Add file → Upload files**, drag in `index.html` and `README.md`, then click **Commit changes**.
+2. Click **Add file → Upload files**, drag in `index.html`, `jeopardy.html`, and `README.md`, then click **Commit changes**.
 3. Go to **Settings → Pages**. Under **Build and deployment**, set **Source** to **Deploy from a branch**, choose the **main** branch and the **/ (root)** folder, and click **Save**.
 4. After a minute or two, the site is live at `https://YOUR-USERNAME.github.io/ethics-study-lab/`.
 
@@ -35,6 +36,8 @@ All of the questions and answers are near the top of the `<script>` section in `
 - `MEAN`: Doctrine of the Mean rows (deficiency, virtue, excess)
 - `IDEAS`: key ideas with a model definition, explanation, and example
 - `CASES`: case studies with the key moral issue and model responses for each stance
+
+Jeopardy clues are in `jeopardy.html`, in the `DATA` object near the top of its `<script>` section. Each clue has `q` (the clue), `a` (the correct response), and `n` (a teaching note). The two Daily Doubles are set in the `DAILY` line just below it.
 
 Theory codes: `ve` Virtue Ethics, `sct` Social Contract, `deon` Deontology, `util` Utilitarianism, `gen` across theories.
 

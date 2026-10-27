@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Study games for the Ethics unit test: flashcards, practice quiz, theory sort, Doctrine of the Mean, key ideas, case studies, and a group vocabulary game.">
+<meta name="description" content="Study games for the Ethics unit test: flashcards, practice quiz, theory sort, Doctrine of the Mean, key ideas, case studies, Describe It, and Class Jeopardy.">
 <title>Ethics Study Lab</title>
 <style>
 *,*::before,*::after{box-sizing:border-box}
@@ -438,7 +438,7 @@ V.home = {
       <section class="hero">
         <span class="eyebrow">Ethics · Unit test review</span>
         <h1>Practice every part of the test.</h1>
-        <p>Seven study stations built from the study guide. Work through them alone, or open Case Lab and Describe It with a group.</p>
+        <p>Eight study stations built from the study guide. Work through them alone, or open Case Lab, Describe It, or Class Jeopardy with a group.</p>
         <div class="theories">${["ve","sct","deon","util"].map(k => `<span class="chip t-${k}">${TH[k].name}</span>`).join("")}</div>
       </section>
 
@@ -447,7 +447,7 @@ V.home = {
         <table>
           <thead><tr><th>Section</th><th>Points</th><th>What it asks</th><th>Practice with</th></tr></thead>
           <tbody>
-            <tr><td>Multiple Choice</td><td class="pts num">19</td><td>19 questions × 1 pt</td><td><a href="#quiz">Practice Quiz</a> · <a href="#sort">Theory Sort</a></td></tr>
+            <tr><td>Multiple Choice</td><td class="pts num">19</td><td>19 questions × 1 pt</td><td><a href="#quiz">Practice Quiz</a> · <a href="#sort">Theory Sort</a> · <a href="jeopardy.html">Class Jeopardy</a></td></tr>
             <tr><td>Word Definitions</td><td class="pts num">12</td><td>6 terms × 2 pts</td><td><a href="#flashcards">Flashcards</a> · <a href="#describe">Describe It</a></td></tr>
             <tr><td>Key Ideas</td><td class="pts num">9</td><td>3 ideas × 3 pts</td><td><a href="#ideas">Key Ideas</a> · <a href="#mean">Mean Builder</a></td></tr>
             <tr><td>Short Answer</td><td class="pts num">10</td><td>5 questions × 2 pts</td><td><a href="#quiz">Practice Quiz</a> · <a href="#ideas">Key Ideas</a></td></tr>
@@ -466,11 +466,12 @@ V.home = {
         ${station("ideas","Key Ideas","Solo","Write a 3-point answer, then check it against a model: definition, explanation, example.", `<span><b>${ideasDone}</b> / ${IDEAS.length} practiced</span>`)}
         ${station("cases","Case Lab","Solo or group","Get a scenario and a random stance. Name the moral issue and respond, just like the test.", `<span><b>${P.cases}</b> cases worked</span>`)}
         ${station("describe","Describe It","Group","Taboo-style vocabulary game. Get your team to say the term without the forbidden words.", `<span>2+ teams · 60s rounds</span>`)}
+        ${station("jeopardy.html","Class Jeopardy","Group or class","Thirty clues across six categories, with Daily Doubles and Final Jeopardy. Best on a big screen.", `<span>30 clues · team scoring</span>`)}
       </div>`;
   }
 };
 function station(id, name, mode, desc, meta){
-  return `<a class="station" href="#${id}"><div class="row between"><h2>${name}</h2><span class="mode-tag">${mode}</span></div><p>${desc}</p><div class="meta">${meta}<span aria-hidden="true">Start →</span></div></a>`;
+  return `<a class="station" href="${id.includes(".") ? id : "#" + id}"><div class="row between"><h2>${name}</h2><span class="mode-tag">${mode}</span></div><p>${desc}</p><div class="meta">${meta}<span aria-hidden="true">Start →</span></div></a>`;
 }
 
 /* ---- Flashcards ---- */
