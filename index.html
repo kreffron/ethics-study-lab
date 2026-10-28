@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Study games for the Ethics unit test: flashcards, practice quiz, theory sort, Doctrine of the Mean, key ideas, case studies, Describe It, and Class Jeopardy.">
+<meta name="description" content="Ethics study games for Unit 1 (foundations and moral language), Unit 2 (virtue ethics), and Unit 3 (normative theories): drills, quizzes, case study practice, pitch practice, and Class Jeopardy.">
 <title>Ethics Study Lab</title>
 <style>
 *,*::before,*::after{box-sizing:border-box}
@@ -23,6 +23,7 @@ img{max-width:100%}
   --accent:#1f4e79; --accent-ink:#ffffff;
   --ve:#4b7a26; --sct:#a5432c; --deon:#2b5ea8; --util:#a8730c; --gen:#5e6876;
   --good:#2f7d4a; --bad:#b23a2a;
+  --pru:#24708a; --jus:#8b3a6f; --tem:#3b7a44; --for:#b4561a;
   --display:"Spectral",Georgia,"Times New Roman",serif;
   --body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
@@ -30,12 +31,12 @@ img{max-width:100%}
   --bg:#11151b; --surface:#1a2029; --sunk:#232b36; --ink:#e7ecf1; --muted:#9ba7b5; --line:#2e3845;
   --accent:#8fb9e6; --accent-ink:#0e1620;
   --ve:#9cc874; --sct:#ec8a72; --deon:#8bb2f2; --util:#e6b552; --gen:#a7b0bc;
-  --good:#7fd29a; --bad:#f08977; color-scheme:dark}}
+  --good:#7fd29a; --bad:#f08977; --pru:#73bfd9; --jus:#e195c6; --tem:#8fcf8a; --for:#f0a06a; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#11151b; --surface:#1a2029; --sunk:#232b36; --ink:#e7ecf1; --muted:#9ba7b5; --line:#2e3845;
   --accent:#8fb9e6; --accent-ink:#0e1620;
   --ve:#9cc874; --sct:#ec8a72; --deon:#8bb2f2; --util:#e6b552; --gen:#a7b0bc;
-  --good:#7fd29a; --bad:#f08977; color-scheme:dark}
+  --good:#7fd29a; --bad:#f08977; --pru:#73bfd9; --jus:#e195c6; --tem:#8fcf8a; --for:#f0a06a; color-scheme:dark}
 
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 40px}
@@ -195,6 +196,139 @@ textarea:focus,input:focus,select:focus{outline:none;border-color:var(--accent)}
 .team-box .s{font-family:var(--display);font-weight:800;font-size:36px;line-height:1}
 .team-box input{min-width:0;width:100%;border:none;padding:0;background:transparent;font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-radius:0;border-bottom:1px dashed var(--line)}
 
+@media (max-width:480px){.brand small{display:none}}
+/* Unit 1 */
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.u1c{--c:var(--accent)}
+.u1face{border-top-color:var(--accent)}
+.core-tag{display:inline-block;font-family:var(--body);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);border:1.5px solid var(--accent);border-radius:999px;padding:2px 8px;vertical-align:middle}
+.returns{display:block;font-size:14px;color:var(--muted);margin-top:6px;font-weight:700}
+.glossary{display:grid;margin:0;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.glossary > div{display:grid;grid-template-columns:minmax(140px,230px) minmax(0,1fr);gap:6px 18px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.glossary > div:last-child{border-bottom:none}
+.glossary dt{font-weight:700;font-family:var(--display);font-size:18px}
+.glossary dd{margin:0;font-size:16px}
+.toggle{display:inline-flex;gap:8px;align-items:center;font-weight:700;font-size:15px;cursor:pointer}
+.toggle input{width:18px;height:18px;accent-color:var(--accent)}
+.defq{margin:0;padding:12px 16px;border-left:4px solid var(--accent);background:var(--sunk);border-radius:0 8px 8px 0;font-size:18px}
+.view-head .formula{font-family:var(--display);font-weight:700;font-size:clamp(18px,2.6vw,24px);color:var(--accent)}
+.calc-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:10px 16px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px}
+.calc-row > div:first-child{display:grid;gap:2px;min-width:0}
+.calc-row.total{border:1.5px solid var(--accent)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{flex:1 1 auto;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:9px 10px;font-weight:700;font-size:15px}
+.seg button:hover:not(:disabled){border-color:var(--accent)}
+.seg button[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,var(--surface));color:var(--accent)}
+.seg button.right{border-color:var(--good);background:color-mix(in srgb,var(--good) 16%,var(--surface));color:var(--ink)}
+.seg button.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 14%,var(--surface));color:var(--ink)}
+.seg button:disabled{cursor:default}
+.seg.rub{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.seg.rub button{display:grid;gap:2px;text-align:left;font-weight:400;font-size:13px;align-content:start;line-height:1.35}
+.seg.rub button b{font-size:15px}
+.rub-row{display:grid;gap:6px;padding-bottom:12px;border-bottom:1px dashed var(--line)}
+.testlist{margin:0;padding-left:20px;display:grid;gap:4px;color:var(--muted);font-size:15px}
+.clock{font-family:var(--display);font-weight:800;font-size:clamp(52px,10vw,84px);line-height:1}
+.zone-good{color:var(--good)} .zone-warn{color:var(--util)} .zone-bad{color:var(--bad)}
+.zone-label{font-weight:700}
+.zonebar{position:relative;height:12px;border-radius:99px;background:linear-gradient(90deg,color-mix(in srgb,var(--bad) 45%,transparent) 0 28.57%,color-mix(in srgb,var(--util) 45%,transparent) 28.57% 42.86%,color-mix(in srgb,var(--good) 60%,transparent) 42.86% 71.43%,color-mix(in srgb,var(--util) 45%,transparent) 71.43% 85.71%,color-mix(in srgb,var(--bad) 45%,transparent) 85.71%)}
+.zonebar span{position:absolute;top:-4px;width:4px;height:20px;background:var(--ink);border-radius:2px;transform:translateX(-50%);transition:left .25s linear}
+.zonelabels{position:relative;height:18px;font-size:12px;margin:0 8px}
+.zonelabels span{position:absolute;transform:translateX(-50%);font-variant-numeric:tabular-nums}
+.counter b{margin-left:4px}
+.runs{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.runs li{display:flex;gap:8px;align-items:baseline;background:var(--sunk);border-radius:8px;padding:6px 10px}
+.runs .num{font-weight:800;font-family:var(--display);font-size:18px}
+@media (max-width:700px){.calc-row{grid-template-columns:1fr}}
+@media (max-width:640px){.seg.rub{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.glossary > div{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.zonebar span{transition:none}}
+
+/* Unit 2 */
+.v-pru{--c:var(--pru)} .v-jus{--c:var(--jus)} .v-tem{--c:var(--tem)} .v-for{--c:var(--for)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+body[data-view="landing"] .bar{display:none}
+.landing{display:grid;gap:28px;padding-block:clamp(16px,6vh,56px) 8px}
+.landing-head{display:grid;gap:10px}
+.landing-head h1{font-size:clamp(46px,9vw,84px);font-weight:800;letter-spacing:-.015em;line-height:.98}
+.landing-head p{font-size:20px;color:var(--muted)}
+.unit-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
+.unit-card{display:grid;grid-template-rows:auto auto 1fr auto auto;gap:10px;text-decoration:none;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:clamp(18px,4vw,28px);transition:border-color .15s,transform .15s}
+.unit-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.unit-card h2{font-size:clamp(30px,5vw,40px);font-weight:800}
+.unit-card p{color:var(--muted);font-size:17px}
+.unit-card .go{font-weight:700;color:var(--accent);padding-top:10px;border-top:1px dashed var(--line);font-size:15px}
+@media (prefers-reduced-motion:reduce){.unit-card{transition:none}}
+.unit-switch{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.unit-switch a{flex:1 1 180px;display:flex;gap:10px;align-items:baseline;text-decoration:none;color:var(--muted);font-weight:700;border:1.5px solid var(--line);border-radius:10px;padding:10px 14px}
+.unit-switch a b{font-family:var(--display);font-size:20px;color:var(--ink)}
+.unit-switch a:hover{border-color:var(--accent)}
+.unit-switch a[aria-current="page"]{border-color:var(--accent);background:var(--surface);color:var(--accent)}
+.method{list-style:none;margin:0 0 28px;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.method li{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;min-width:0}
+.method li div{display:grid;gap:4px;min-width:0}
+.method li span:not(.num){font-size:14px;color:var(--muted)}
+.num{font-family:var(--display);font-weight:800;color:var(--accent);line-height:1}
+.method .num{font-size:26px;min-width:.9em}
+.basics{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:0 0 18px}
+.basics div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.basics dt{font-family:var(--display);font-weight:700;font-size:19px}
+.basics dd{margin:4px 0 0;font-size:15px;color:var(--muted)}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:14px}
+.vcard{background:var(--surface);border:1px solid var(--line);border-top:5px solid var(--c);border-radius:12px;padding:clamp(14px,4vw,20px);display:grid;gap:14px;align-content:start;min-width:0}
+.vcard h2{font-size:30px;font-weight:800;color:var(--c)}
+.vdef{font-family:var(--display);font-size:21px;font-weight:600;margin-top:4px}
+.charlist{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.charlist li{border:1.5px solid var(--c);color:var(--c);border-radius:999px;padding:4px 11px;font-weight:700;font-size:14px}
+.meanrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;text-align:center}
+.meanrow div{background:var(--sunk);border-radius:8px;padding:8px 6px;display:grid;gap:2px;min-width:0}
+.meanrow .mid{background:color-mix(in srgb,var(--c) 15%,var(--surface))}
+.meanrow b{font-size:15px;overflow-wrap:anywhere;hyphens:auto}
+.meanrow .lab{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.more{margin:0;padding-left:18px;display:grid;gap:6px;font-size:15px}
+.voices{display:grid;gap:6px;font-size:15px}
+.voices .who{font-weight:700;color:var(--c)}
+.role{font-size:15px;display:grid;gap:4px;padding-top:10px;border-top:1px dashed var(--line)}
+.case-pick{display:flex;flex-wrap:wrap;gap:6px}
+.case-pick button{font-size:14px;font-weight:700;border:1.5px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 11px;color:var(--muted)}
+.case-pick button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.case-pick .d{color:var(--good)}
+.case-card summary{cursor:pointer;list-style:none;display:grid;gap:4px}
+.case-card summary::-webkit-details-marker{display:none}
+.case-card h2{font-size:clamp(24px,4vw,32px);font-weight:800}
+.case-body{display:grid;gap:12px;margin-top:12px;font-size:18px;line-height:1.6;max-width:68ch}
+.stepper{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.stepper button{width:100%;display:flex;gap:8px;align-items:center;border:1.5px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 10px;text-align:left;font-weight:700;font-size:14px}
+.stepper button[aria-current="step"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--surface))}
+.stepper .num{font-size:20px}
+.stepper .lbl{min-width:0}
+.step-h{font-size:clamp(22px,3.2vw,28px);font-weight:700;display:flex;gap:10px;align-items:baseline}
+.prompts{margin:0;padding-left:20px;display:grid;gap:4px}
+.feedback.hint{border-left-color:var(--accent)}
+.quickref{background:var(--sunk);border-radius:10px;padding:10px 14px}
+.quickref summary{cursor:pointer;font-weight:700}
+.quickref a{color:var(--accent)}
+.qr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin-top:10px}
+.qr{background:var(--surface);border-left:4px solid var(--c);border-radius:0 8px 8px 0;padding:8px 10px;display:grid;gap:2px;font-size:14px}
+.qr b{color:var(--c)}
+.compare-step{display:grid;gap:10px}
+.compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.compare > div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:8px;align-content:start;min-width:0}
+.compare .model{border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+div.model{display:grid;gap:8px}
+.model ul{margin:0;padding-left:20px}
+.pre{white-space:pre-wrap;overflow-wrap:anywhere}
+.routine{margin:0;padding:14px 14px 14px 34px;background:var(--surface);border:1px solid var(--line);border-radius:12px;display:grid;gap:4px}
+.bb-bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--bg);padding-block:8px;border-bottom:1px solid var(--line)}
+.bb-bar .timer{font-size:clamp(28px,5vw,40px)}
+.recall{display:grid;gap:4px;padding-left:12px;border-left:4px solid var(--c,var(--line))}
+.recall .ok{color:var(--good);font-weight:700;font-size:15px}
+.recall .miss{color:var(--bad);font-size:15px}
+.recall .miss b{color:var(--ink)}
+.vtxt{color:var(--c)}
+.big.spot{font-family:var(--body);font-weight:400;font-size:clamp(19px,2.6vw,24px);line-height:1.45}
+@media (max-width:700px){.compare{grid-template-columns:1fr}}
+@media (max-width:640px){.stepper{grid-template-columns:repeat(5,auto);justify-content:start}.stepper .lbl{display:none}}
+
 @media (max-width:560px){
   .slots{grid-template-columns:1fr}
   .slot{min-height:0}
@@ -207,7 +341,7 @@ textarea:focus,input:focus,select:focus{outline:none;border-color:var(--accent)}
 <body>
 <div class="shell">
   <header class="bar">
-    <a class="brand" href="#">Ethics Study Lab<small>Unit test review</small></a>
+    <a class="brand" href="#">Ethics Study Lab<small>Units 1–3</small></a>
     <a class="home-link" id="homeLink" href="#" hidden>All stations</a>
   </header>
   <main id="view"></main>
@@ -438,11 +572,13 @@ let S = {}; // per-view state
 /* ---- Home ---- */
 V.home = {
   render(){
+    if ((P.unit || "u3") === "u2") return V.home2.render();
+    if (P.unit === "u1") return V.home1.render();
     const known = Object.keys(P.known).length;
     const ideasDone = Object.keys(P.ideas).length;
-    view.innerHTML = `
+    view.innerHTML = unitSwitch("u3") + `
       <section class="hero">
-        <span class="eyebrow">Ethics · Unit test review</span>
+        <span class="eyebrow">Unit 3 · Unit test review</span>
         <h1>Practice every part of the test.</h1>
         <p>Eight study stations built from the study guide. Work through them alone, or open Case Lab, Describe It, or Class Jeopardy with a group.</p>
         <div class="theories">${["ve","sct","deon","util"].map(k => `<span class="chip t-${k}">${TH[k].name}</span>`).join("")}</div>
@@ -855,13 +991,985 @@ V.describe = {
   input(e){ const i = e.target.dataset.i; if (i != null) S.teams[i].n = e.target.value; }
 };
 
+/* ================= UNIT 2 CONTENT ================= */
+const VIRTUE_BASICS = [
+  ["Virtue", "A stable and effective disposition oriented towards right action. Stable means habitual; effective means impactful."],
+  ["Vice", "Too much or too little of a quality: excess or deficiency (Aristotle). Augustine and Aquinas describe vice as a privation, or absence, of virtue."],
+  ["The mean", "The proper amount in a situation, relative to the self and the situation. It is not a mathematical midpoint."],
+  ["Habit", "Formed over time with intention, and always changeable. Habits shape both who we are and the world around us."]
+];
+
+const VIRTUES = [
+  { k:"pru", n:"Prudence", d:"Right deliberation in action",
+    ch:["Seeing truthfully","The role of conscience","Discerning how we achieve good desires"],
+    lo:"Irresoluteness", hi:"Thoughtlessness",
+    more:[
+      "Not mechanistic rules: the context of the specific situation is essential.",
+      "The charioteer: prudence helps decide what the virtuous act is, balances our many commitments, and sets a specific path for putting virtuous desire into action.",
+      "Grows first through experience, then through knowledge, understanding, and wisdom.",
+      "Conscience is “a judgment of reason whereby the human person recognizes the moral quality of a concrete act” (CCC 1778). It can err through vincible ignorance (we should have known better) or invincible ignorance (we could not have known)."
+    ],
+    voices:[["Augustine","“Prudence is love distinguishing with sagacity between what hinders it and what helps it.” (Of the Morals 15)"],["Mattison","“We cannot act rightly if we do not see rightly.” (96)"]],
+    role:"Prudence determines the proper, virtuous method to approach any particular situation: which virtues to use, and how, in different ethical dilemmas." },
+  { k:"jus", n:"Justice", d:"Giving what is due",
+    ch:["Harmony of the soul","Right relationship","Dynamic and organic","Personal vs. relational vs. societal"],
+    lo:"Leniency", hi:"Harshness",
+    more:[
+      "Key parts to weigh: proportionality, right relationship, the common good, and mercy and redemption.",
+      "Ius: “right” or the proper order of things; peace, harmony, and right relationship.",
+      "Dynamic and organic: some things are situational (who does which chores), while some are universal (abuse is never acceptable).",
+      "A just law is a dictate of reason, made by proper authority, properly promulgated, and serves the common good."
+    ],
+    voices:[["Augustine","“That virtue which gives every one his due.” (City of God 19)"],["Aquinas","“The steadfast and perpetual will to give to each individual what is the right for him.”"],["Mattison","“A steady disposition (habit) in someone to give other people their due.” (136)"]],
+    role:"Justice sustains our focus on the morally right action and helps us to be outwardly focused in our virtuous efforts." },
+  { k:"tem", n:"Temperance", d:"Self-control/moderation of desires, pleasures, and emotions",
+    ch:["Harmony of the soul","Relationship of rationality to desires and emotions","Focused primarily on physical sensations"],
+    lo:"No self-control", hi:"Prudishness",
+    more:[
+      "Desire is good. It is just as intemperate to refuse needed food as to overeat.",
+      "Ask whether our desires “displace goals or purposes we should hold more important” (Mattison 77).",
+      "Four stages: intemperance (habitually acting on disordered desire), incontinence (aware it is wrong but still acting), continence (desires remain but are not acted on), temperance (virtuous desire paired with temperate action).",
+      "Emotions can be habituated: we cannot always control a feeling in the moment, but we can form how we respond."
+    ],
+    voices:[["Augustine","“Temperance is love giving itself entirely to that which is loved.” (Of the Morals 15)"],["Aquinas","Temperance is “moderating or tempering that is done by reason.”"],["Mattison","“The virtue of desiring things in a reasonable or moderate manner.” (76)"]],
+    role:"Temperance enables us to find the golden mean of virtue and to maintain necessary detachment from emotions and desires." },
+  { k:"for", n:"Fortitude", d:"Facing difficulties/challenges well",
+    ch:["Correct belief","Relationship to fear and hardship","Endurance and attack"],
+    lo:"Cowardice", hi:"Rashness",
+    more:[
+      "Correct belief: knowing what should and should not be feared (Plato). Brave people still feel fear; failing to fear a real threat is a failure of prudence.",
+      "Attack seeks to remove the difficulty. Endurance stands firm in it, and is the greater of the two, because it lasts longer with less hope of victory.",
+      "Something must be at risk. The object must be just: it is not courageous to suffer for an evil.",
+      "Magnitude of hardship suffered + magnitude of good = magnitude of fortitude achieved."
+    ],
+    voices:[["Augustine","“Fortitude is love readily bearing all things for the sake of the loved object.” (Of the Morals 15)"],["Aquinas","“The principal act of fortitude is to remain steadfast in the midst of dangers, rather than to attack.”"],["Mattison","“Life is hard.” (180)"]],
+    role:"Fortitude strengthens our resolve to remain virtuous when it isn’t easy to do so." }
+];
+
+const STEPS = [
+  { n:1, t:"Name the issues", q:["Primary issue (in question form)","Secondary issues","Key stakeholders: who is impacted by, or impacts, the case"], tip:"Bullet points are fine. Write the primary issue as one question about what someone should do." },
+  { n:2, t:"Name the virtues", q:["Name and define each virtue that applies to the case","What key elements of each virtue apply, broadly, to this case?"], tip:"Use the class definitions, then name one or two essential characteristics of each virtue that fit this case." },
+  { n:3, t:"Match virtues to people", q:["What virtues apply to each key stakeholder?","How and why do they apply?"], tip:"Go stakeholder by stakeholder. Use details from the case: names, quotes, and the choices people make." },
+  { n:4, t:"Respond and defend", q:["What is the most virtuous response to the primary issue, and why? Defend it using virtue ethics.","What objection might someone have to your stance, and why are you right?"], tip:"Open with a clear answer. Defend it with the virtues working together, then write: “Some would argue… but…”" }
+];
+
+const RUBRIC = [
+  [1,"My primary issue is one question about what someone should do."],
+  [1,"I named at least two secondary issues."],
+  [1,"I listed every key stakeholder, including people affected who are not in the spotlight."],
+  [2,"I named each virtue that applies and gave its class definition."],
+  [2,"I named key elements of each virtue that fit this case."],
+  [3,"I matched virtues to each stakeholder, not just the main character."],
+  [3,"I explained how and why, using specific details from the case."],
+  [4,"I gave a clear answer to the primary issue."],
+  [4,"I defended it with virtue language: the cardinal virtues working together, the mean, or habit."],
+  [4,"I stated a fair objection and answered it."]
+];
+
+const VCASES = [
+  { id:"captain", t:"The Captain’s Choice", tag:"Athletics", teacher:true,
+    s:["Maya is a senior and captain of the girls’ varsity soccer team at a boarding school. On Saturday the team plays the state semifinal, the furthest the program has gone in twelve years.",
+       "On Thursday night, an hour after dorm check-in, Maya looks out her window and sees two teammates crossing the quad back toward the dorm. One is Jess, her best friend since freshman year and the team’s starting goalkeeper. The other is Riley, a junior midfielder. Friday morning Maya finds a vape between the couch cushions in the dorm common room. When she asks Jess about it, Jess admits they slipped off campus to a party in town. She says she vaped “just to take the edge off before Saturday” and that it was the only time.",
+       "School policy is clear. Leaving campus after check-in means automatic suspension from the next athletic contest, and substance use goes to the disciplinary committee. The backup goalkeeper is a sophomore who has never played a varsity minute.",
+       "At Friday practice, the coach pulls the captains aside: “If anything happened this week that I need to know about, I need to hear it before tomorrow.” That afternoon Jess texts Maya: “A college coach is coming Saturday to watch me. This is my shot. It was one night. Please.” Riley says nothing to Maya, but a freshman on the team quietly tells Maya that she saw the two of them leave and asks what she should do.",
+       "Maya also wants to win Saturday’s game more than anything she has wanted in high school."],
+    h1:"Who else is affected besides Maya, Jess, and Riley? Think about the freshman who saw them, the coach who asked, and the sophomore keeper.",
+    h3:"Look closely at Jess’s words “just to take the edge off” and her text to Maya. What do they show about temperance and justice?",
+    m:{ p:"Is it ethical for Maya to withhold the information about Jess and Riley from her coach and the school?",
+        sec:["Vaping","Sneaking off campus","Competing in the state semifinal"],
+        st:["Maya","Jess","Riley","The freshman"],
+        v:"Prudence, right deliberation in action, is needed in this case study. It provides a sense of the conscience as well as appropriate discernment that is needed here. Likewise, there is a need for justice, giving what is due. Justice offers the elements of right relationships and duties based upon different forms of relationships (i.e. personal, communal, institutional). Temperance, self-moderation of desires, pleasures, and emotions, is also important. Temperance reminds us to maintain a healthy balance of pursuing physical pleasures by placing rationality over appetites. Finally, fortitude, facing challenges well, is also needed. Fortitude helps us to endure or attack different challenges while making sure fear does not rule our lives.",
+        a:["Maya needs all four virtues. Prudence helps her see truthfully: she saw Jess and Riley herself and Jess admitted it, so this is not a rumor, and the coach has asked the captains directly. Justice asks what she owes each person: honesty to her coach, fairness to the sophomore keeper and the rest of the team, and real friendship to Jess, which wants Jess to be good and not just happy. Temperance keeps her desire to win, and her wish to avoid a fight with her best friend, from overruling moral truth. Fortitude lets her take the right course of action before Saturday, even though it is hard.",
+           "Jess and Riley needed temperance to avoid creating the situation in the first place. Jess used a pleasure to manage an emotion (“just to take the edge off”), the opposite of placing reason over desire. If they had used prudence to see that a semifinal and a college coach’s visit were not worth a night’s satisfaction, we would not have this case. They owe justice to their teammates by living up to the code of conduct, and Jess now fails in justice again by using their friendship (“Please”) to pressure Maya. Riley’s silence shows a lack of fortitude; the just and courageous move is for both of them to go to the coach themselves.",
+           "The freshman has shown fortitude by approaching Maya with the truth and prudence by seeking counsel from someone more experienced. She probably needs a little more fortitude to tell the coach, even though she risks her social standing and reputation. As captain, Maya owes her a good example."],
+        r:"Although not easy, Maya needs to tell her coach the truth as a matter of justice. It will take great courage, knowing that victory might be sacrificed by losing two key players; however, prudence dictates that we must take the right action. As the rules of the school are not unjust, the right relationship to the institution requires this honesty of Maya. Although some would argue that nobody experienced hurt from this situation, by enabling her friends Maya will be supporting the building up of vicious habits that might lead to more detrimental actions and consequences further down the road." } },
+
+  { id:"lights", t:"Lights Out", tag:"Dorm life",
+    s:["Theo is a junior whose phone screen time averages over seven hours a day, most of it after lights-out. He runs a gaming commentary channel with 40,000 followers, and a sponsor pays him $300 a month as long as he streams four nights a week.",
+       "His grades have dropped from A’s to C’s this semester, and he has fallen asleep twice in morning chapel. Last week he deleted the apps for two days and said he felt “lighter,” then reinstalled them when followers started asking where he went.",
+       "His roommate, Omar, is a varsity swimmer with 6 a.m. practices. Omar says the light and noise keep him awake and has asked Theo to keep his phone out of the room after 11 p.m. Theo’s parents, who pay his tuition with help from financial aid, don’t know the channel exists. The dorm head has noticed Theo’s light on late and plans to talk to him on Friday."],
+    h1:"Theo isn’t the only one affected by his phone. Who shares his room, pays for his school, and is responsible for his dorm?",
+    h3:"What does it tell you that Theo felt “lighter” without the apps but reinstalled them anyway? Which of the four stages of temperance is that?",
+    m:{ p:"Should Theo agree to keep his phone out of the room after 11 p.m., even if it costs him his sponsorship?",
+        sec:["Theo’s falling grades and lack of sleep","Keeping the channel secret from his parents","Omar’s sleep before 6 a.m. practice","The dorm’s lights-out expectations"],
+        st:["Theo","Omar","Theo’s parents","The dorm head","Theo’s followers and sponsor"],
+        v:"Temperance, self-control and moderation of desires, pleasures, and emotions, is at the center of this case. Its key elements are the harmony of the soul and placing rationality over our desires; desire itself is good, but it must not displace more important goals. Prudence, right deliberation in action, is needed so Theo can see his situation truthfully and choose the best means to good goals. Justice, giving what is due, applies because Theo shares a room and a family, so his habits affect his right relationships with others. Fortitude, facing challenges and difficulties well, is needed to endure the loss of income and attention that change would bring.",
+        a:["Theo needs temperance most. His desire for followers and the stream has displaced goals that matter more: sleep, school, and his health. Deleting the apps and feeling “lighter” shows he is at the stage of incontinence, aware the habit is wrong but still acting on it. Prudence asks him to see truthfully that C’s and falling asleep in chapel are the real cost. Justice requires him to give Omar a room where he can sleep before 6 a.m. practice, and to give his parents the honesty they are due, since they sacrifice for his education. Fortitude helps him endure losing $300 a month and some followers.",
+           "Omar shows justice by asking for what he is due without harshness, and prudence by going to Theo first instead of straight to the dorm head. He may need fortitude to hold to his request if Theo pushes back.",
+           "Theo’s parents and the dorm head both need justice when they learn the truth: a proportionate response that is neither lenient nor harsh. They also need prudence to help Theo form a better habit, not just punish a late light."],
+        r:"Theo should agree to keep his phone out of the room after 11 p.m. and cut his streaming to hours that fit his schoolwork and sleep, even if he loses the sponsor. He should also tell his parents about the channel. Temperance is not about rejecting desire; streaming can be good, but right now it rules Theo instead of reason ruling it. Justice to Omar settles the question, because in a shared room Theo’s habit is not only his own. Some would argue that it is Theo’s time and money and the channel could become a career. But a habit that drops his grades and keeps his roommate awake is a vice whatever it earns, and a temperate Theo could still build the channel at reasonable hours." } },
+
+  { id:"register", t:"Six Dollars Short", tag:"Work",
+    s:["Dana, 19, works the register at a grocery store to pay for community college. A regular customer, a mother with two young kids, pays with her SNAP (EBT) card. Her benefits come up $6.40 short for a cart of milk, bread, eggs, apples, and a box of cereal.",
+       "She starts putting items back, embarrassed, while the line grows. A man behind her mutters that “people on welfare should learn to budget.”",
+       "Store policy forbids employees from paying for customers’ purchases at their own register, a rule meant to prevent fraud. Dana’s manager wrote her up last month when her drawer came up short. Dana has a ten-dollar bill in her apron from tips she earned carrying groceries to cars, and the tips are hers to keep."],
+    h1:"Count everyone at that register, including the people in line. Is the store policy itself an issue worth naming?",
+    h3:"Dana owes something to more than one person here. List what is due to the mother, the manager, and the man in line.",
+    m:{ p:"Should Dana use her own money to cover the customer’s shortfall when store policy forbids it?",
+        sec:["The mother’s dignity in front of the line","The man’s comment about people on welfare","Dana’s write-up last month","Whether the policy itself is just"],
+        st:["Dana","The mother and her children","Dana’s manager and the store","The man in line and the other customers"],
+        v:"Justice, giving what is due, is the main virtue here. Its key elements are right relationship and the common good, and in a case like this proportionality and mercy matter too. Prudence, right deliberation in action, helps Dana see the whole situation truthfully and find the best means to a good desire. Temperance, moderation of desires, pleasures, and emotions, applies to the anger and embarrassment of the moment. Fortitude, facing challenges well, is needed to speak up in front of an impatient line.",
+        a:["Dana owes justice in several directions: mercy and dignity to a mother trying to feed her kids, honesty to an employer whose rule exists to prevent fraud, and care for her own job after last month’s write-up. Prudence helps her see that the choice is not only “break the rule or send the kids home without cereal”; she can call the manager over and ask, openly, to cover it. Fortitude lets her do that, and respond to the man’s comment, with the whole line watching. Temperance keeps her irritation at him from turning into harshness.",
+           "The mother shows fortitude by putting items back with her kids beside her instead of leaving. She is owed the dignity of not being shamed for using a program meant for exactly this.",
+           "The man in line fails in justice: his comment withholds the respect every person is due, and his impatience shows a lack of temperance. The manager, if called, needs prudence to see that a rule meant to stop fraud is not threatened by an open, approved act of kindness."],
+        r:"Dana should not quietly break the policy, but she should not let the moment pass either. The most virtuous response is to call the manager over, ask permission to cover the $6.40 from her tips, and tell the man calmly that the customer deserves respect. This keeps right relationship with her employer while giving the mother the mercy and dignity she is due. Some would argue that feeding children matters more than any store rule, so Dana should just pay. But justice includes honesty toward her employer, and prudence shows she can almost certainly help the family without deceiving anyone. If the manager refuses, Dana can still help once she is off the register." } },
+
+  { id:"letters", t:"Two Acceptance Letters", tag:"Family",
+    s:["Grace, a senior, has been admitted to two schools. Her dream school is a private university across the country, which would cost $38,000 a year after financial aid. Her state’s flagship university has offered her a full-tuition scholarship in its honors college.",
+       "Her parents say they will “find a way” for the dream school, which would mean taking out a second mortgage on their house. Her younger brother is a freshman and will start college in four years. Grace wants to be a pediatrician, which means medical school, and medical school debt, after college.",
+       "Her two best friends are going to the state school, and Grace honestly can’t tell whether she leans toward it for good reasons or because she is afraid of starting over somewhere new. The deposit deadline is May 1, nine days away."],
+    h1:"Grace’s choice reaches beyond Grace. Who else will live with the cost of it, now and in four years?",
+    h3:"What is Grace’s real goal, her telos here: a school, or a career as a pediatrician? How does prudence treat the schools if they are means to that end?",
+    m:{ p:"Should Grace accept the full scholarship at the state honors college, or attend her dream school with a second mortgage?",
+        sec:["Her parents’ finances and the second mortgage","Her brother’s college costs in four years","Future medical school debt","Whether fear of starting over is shaping her choice"],
+        st:["Grace","Her parents","Her younger brother","Her friends"],
+        v:"Prudence, right deliberation in action, is the main virtue in this decision. Its key elements are seeing truthfully, the role of conscience, and discerning how to achieve good desires. Justice, giving what is due, applies because her choice affects her right relationships with her parents and brother. Temperance, moderation of desires, pleasures, and emotions, helps her moderate both her desire for a dream school and her fear of a new place. Fortitude, facing challenges well, is needed whichever way she goes: to disappoint herself or her parents, or to start over somewhere new.",
+        a:["Grace needs prudence above all. Her good desire is to become a pediatrician, and both schools are means to that end. Seeing truthfully means facing the numbers: $38,000 a year, a second mortgage, and medical school debt still to come. It also means honestly asking whether fear of starting over, rather than good reasons, is pulling her toward the state school. Justice reminds her that her parents’ offer is a gift and not something she is owed, and that her brother is owed a fair chance at college too. Temperance moderates her desire for the prestige of a “dream school.” Fortitude gives her courage to make the choice and live with it.",
+           "Her parents show love and generosity, but they also need prudence to see their finances truthfully, including their son’s future, and fortitude to tell Grace honestly if the mortgage would strain the family.",
+           "Her brother cannot speak in this decision, but justice still counts him. Grace’s friends should not decide it for her; leaning on them would be choosing comfort over prudence."],
+        r:"Grace should accept the full scholarship at the state honors college. Prudence keeps her eyes on her telos: becoming a pediatrician. The honors college gets her there without debt that would follow her family for years. Justice to her parents and brother weighs against putting the family home at risk for a school’s name, and temperance moderates the desire for prestige. Some would argue that her parents freely offered and she only gets one shot at her dream. But the dream is to be a doctor, not to attend a particular school, and a generous offer does not make it prudent to accept. If, after honest reflection, fear were her only reason, she should talk it through again before May 1." } },
+
+  { id:"peace", t:"Keeping the Peace", tag:"Relationships",
+    s:["Jordan and Sam, both seniors, have been dating for ten months. Over the last few months Sam has started asking Jordan to share her location at all times, gets upset when she spends time with friends, and goes silent for a day or two when she doesn’t reply quickly.",
+       "To “keep the peace,” Jordan has stopped going to Friday movie nights with her friends and dropped out of the school play. Her best friend, Ava, recently told her that Sam is “controlling” and that Jordan has “become a different person.”",
+       "Jordan still cares about Sam and knows his parents are going through a difficult divorce. She is also afraid of being alone for the rest of senior year. Prom is in three weeks, and Sam has already bought the tickets."],
+    h1:"Name the secondary issues hiding in the details: the play, Friday nights, Sam’s family, and the prom tickets.",
+    h3:"Look back at the Virtue as Mean slides: love’s deficiency is selfishness and its excess is enablement. Where does “keeping the peace” fall?",
+    m:{ p:"Should Jordan stay in her relationship with Sam?",
+        sec:["Jordan giving up her friends and the school play","Sam’s family going through a divorce","Ava’s honesty and how Jordan receives it","The prom tickets"],
+        st:["Jordan","Sam","Ava and Jordan’s friends"],
+        v:"Fortitude, facing challenges and difficulties well, is central here. Its key elements are correct belief about what should be feared, our relationship to fear and hardship, and the choice between endurance and attack. Prudence, right deliberation in action, helps Jordan see truthfully what the relationship has become. Justice, giving what is due, applies to right relationship between Jordan and Sam and with her friends. Temperance, moderation of desires, pleasures, and emotions, applies to Sam’s jealousy and to Jordan’s fear and attachment.",
+        a:["Jordan needs prudence to see truthfully: quitting the play and Friday nights is not peace, and Ava’s words that she has “become a different person” are evidence worth taking seriously. The telos of dating should be two people growing toward the good together. Fortitude needs correct belief about what to fear: being alone is a real fear, but losing who she is matters more. This calls for attack, an honest conversation, rather than enduring something that should not be endured. Justice means she owes Sam honesty and owes her friends the friendship she has let go. Temperance helps her moderate the fear and attachment that keep her silent.",
+           "Sam lacks temperance in his emotions; jealousy and days of silence are emotions ruling him. His parents’ divorce explains some of this but does not excuse it. Tracking Jordan’s location does not give her what is due in a relationship: trust and freedom.",
+           "Ava shows justice and fortitude by telling her friend a hard truth. She needs prudence in how she keeps saying it, so that Jordan hears care rather than harshness."],
+        r:"Jordan should have an honest conversation with Sam now, naming the specific behaviors and asking for real change. If Sam will not change, she should end the relationship before prom, not after. In the Virtue as Mean slides, love sits between selfishness and enablement; staying silent to keep the peace is enablement, not love. Fortitude gives her the courage to act, and justice asks for honesty with both Sam and her friends. Some would argue that ending things during Sam’s parents’ divorce would be cruel. But Jordan can show mercy in how she speaks and still refuse to enable controlling behavior, and waiting until after prom would only avoid difficulty, not show kindness." } },
+
+  { id:"council", t:"The Honor Council", tag:"School",
+    s:["Elijah, a senior, sits on the student honor council. A junior, Marcus, has admitted taking $300 from the lacrosse team’s fundraiser cash box. He says he used it to pay for his younger sister’s prescription after his family’s insurance lapsed. He has already repaid $100 and offered to work off the rest.",
+       "This is Marcus’s second honor offense; as a freshman he plagiarized an essay. The handbook says a second major offense “may result in dismissal.” Marcus is on full financial aid, so dismissal would also cost him his housing.",
+       "The parents who ran the fundraiser are angry and want Marcus expelled. Elijah plays lacrosse with Marcus and likes him. The council votes tomorrow, and Elijah’s vote may decide the outcome."],
+    h1:"Elijah’s friendship with Marcus is an issue in its own right. What else is at stake for the school community, not just Marcus?",
+    h3:"Use the Week 8 key parts of justice: proportionality, right relationship, the common good, and mercy and redemption. Which apply to Marcus, and which to the parents?",
+    m:{ p:"Should Elijah vote to recommend that Marcus be dismissed?",
+        sec:["Elijah’s friendship with Marcus and his impartiality","The parents’ demand for expulsion","Marcus’s family situation and his sister’s prescription","Marcus’s first offense and what a proportional consequence looks like"],
+        st:["Elijah","Marcus","Marcus’s sister and family","The lacrosse team and its parents","The honor council and the school community"],
+        v:"Justice, giving what is due, is at the heart of this case. Its key elements are proportionality, right relationship, the common good, and mercy and redemption, with leniency and harshness as its vices. Prudence, right deliberation in action, helps Elijah see the whole situation truthfully. Fortitude, facing challenges well, is needed to vote for what is just under pressure. Temperance, moderation of desires, pleasures, and emotions, keeps both his affection for Marcus and the parents’ anger from deciding the case.",
+        a:["Elijah’s main virtue is justice. The consequence should be proportional: Marcus stole $300, has repaid $100, and this is his second offense. Doing nothing would be leniency; dismissal, which also costs a student on aid his housing, may be harshness. Prudence means seeing both the theft and the reason for it, and disclosing his friendship to the council so his vote can be trusted. Temperance keeps his friendship and the parents’ anger from steering him. Fortitude lets him vote for what he believes is just even if teammates or parents are upset.",
+           "Marcus failed in justice by taking what was not his and in prudence by not asking the school for help. But confessing, repaying $100, and offering to work off the rest are the beginning of redemption and of restoring right relationship.",
+           "The parents are owed repayment and a real response, and their anger is understandable. Justice asks for proportion, not revenge, and temperance asks them to moderate their emotions. The school community’s common good needs both trust in its fundraisers and a council that can restore someone who has done wrong."],
+        r:"Elijah should disclose his friendship with Marcus and then vote against dismissal, recommending a serious, restorative consequence instead: full repayment, service hours, suspension from lacrosse, and a clear final warning. This is proportional and leaves room for mercy and redemption while still treating the theft seriously, so it is not leniency. Some would argue that this is a second offense, the handbook allows dismissal, and going easy invites more theft. But the handbook says “may,” which leaves room for prudence. The consequence is costly and real, and dismissal would also punish his sister and family. The common good is served when wrongdoing is answered and the person is restored to right relationship." } },
+
+  { id:"lab", t:"The Missing Data", tag:"Science",
+    s:["Priya, 22, is a lab assistant in a university lab testing a new asthma medication. While preparing figures for a paper, she notices that her supervisor, Dr. Hale, removed three patients from the results. Their data made the drug look less effective, and there is no note explaining why they were removed.",
+       "The paper is due to a journal in one week, and a large grant renewal depends on it. Priya is applying to medical school, and her application relies on a strong recommendation letter from Dr. Hale.",
+       "When she mentions it to a postdoc, he shrugs: “Everyone cleans data. Don’t make this your problem.” The university has an anonymous research-integrity office. Priya is not certain the removal was improper; there could be a medical reason she doesn’t know about."],
+    h1:"Who is affected by a published drug study besides the people in the lab?",
+    h3:"Priya isn’t certain anything wrong happened. How does prudence (seeing truthfully) shape what fortitude asks of her first?",
+    m:{ p:"What should Priya do about the patients removed from the study?",
+        sec:["Her medical school recommendation letter","The lab’s grant renewal","The postdoc’s claim that “everyone cleans data”","Uncertainty about whether there was a medical reason"],
+        st:["Priya","Dr. Hale","The postdoc and the lab team","Future patients who would take the drug","The university and the scientific community"],
+        v:"Fortitude, facing challenges and difficulties well, is central: correct belief about what to fear, our relationship to fear and hardship, and the choice between attack and endurance. Prudence, right deliberation in action, applies through seeing truthfully and the role of conscience. Justice, giving what is due, applies to future patients, to science, and to Dr. Hale, who is owed a fair hearing. Temperance, moderation of desires, pleasures, and emotions, keeps her ambition and fear in check.",
+        a:["Priya needs prudence first. She is not certain anything improper happened, so seeing truthfully means finding out whether there was a medical reason before accusing anyone, while still listening to her conscience. Justice: future patients are owed honest results about a drug they will take, and Dr. Hale is owed a fair hearing. Fortitude requires correct belief about what to fear: losing a letter is a real loss, but less serious than patients relying on false data. Here that means attack, asking directly, rather than quietly enduring. Temperance keeps her desire for medical school from overruling all of this.",
+           "Dr. Hale owes justice to patients and to science, and the pressure of the grant tests his temperance. If the removal was not justified, his desire for funding has displaced a far more important goal.",
+           "The postdoc shows a lack of fortitude and justice. “Everyone cleans data” is how vicious habits become normal in a community, and his advice puts the lab’s comfort ahead of what patients are due."],
+        r:"Priya should ask Dr. Hale directly and respectfully why the three patients were removed and ask that the reason be documented in the paper. If there is no legitimate reason, she should report it to the research-integrity office, even if it costs her the recommendation letter. Asking first is prudence; acting on the answer is fortitude; and both serve justice to the patients who will rely on this study. Some would argue that she might be wrong and could ruin her career over a misunderstanding. But that is exactly why she asks first, which is courage guided by prudence rather than rashness. And a future doctor who stays silent about bad data for a drug would betray the very purpose of medicine." } },
+
+  { id:"tradition", t:"The Tradition", tag:"Dorm life",
+    s:["Every fall in Birch House, the seniors hold “Freshman Olympics” the night before the first home game. Freshmen wear costumes the seniors pick, eat spoonfuls of hot sauce, and sing the school fight song in the dining hall while seniors film it. The videos end up on a private account that the whole dorm follows. Seniors call it “the best night of the year” and point out that they all went through it as freshmen.",
+       "This year, a freshman named Leo quietly told Ben, one of six senior proctors, that he has been dreading it and asked whether he has to go. The other five proctors want to keep the tradition exactly as it is and say “nobody actually gets hurt.” The dorm head, an adult, has never asked about it.",
+       "Ben is also running for head proctor next semester, and the other proctors’ votes count heavily in that decision."],
+    h1:"A tradition affects more than the people in the room. Think about the videos, the dorm head, and the freshmen who haven’t said anything.",
+    h3:"A tradition is a community’s habit. What do the other proctors’ words “nobody actually gets hurt” and “we went through it too” reveal about their virtues?",
+    m:{ p:"Should Ben try to stop or change Freshman Olympics?",
+        sec:["The videos on a private account","Leo’s request to sit out","Ben’s head proctor election","The dorm head not knowing what happens"],
+        st:["Ben","Leo and the other freshmen","The other senior proctors","The dorm head","The Birch House community"],
+        v:"Fortitude, facing challenges and difficulties well, is central to Ben’s choice. Its key elements are correct belief about what to fear and the choice between attack and endurance. Justice, giving what is due, applies through right relationship in the dorm community and the dignity owed to each freshman. Prudence, right deliberation in action, helps Ben find the best means of changing things. Temperance, moderation of desires, pleasures, and emotions, applies to the seniors’ desire to relive their night and to Ben’s own desire to be liked and elected.",
+        a:["Ben needs fortitude: speaking up may cost him the head proctor vote. That is a real risk, but correct belief tells him it is less important than freshmen being humiliated on camera. Justice means that, as a proctor, he owes the freshmen protection and dignity, owes the other proctors honesty, and owes the dorm head the truth if it comes to that. Prudence helps him find the best means, such as proposing a version of the night that keeps the fun and bonding without humiliation. Temperance moderates his own desire to be popular.",
+           "The other proctors lack temperance: their desire to repeat “the best night of the year” is overruling reason. “We went through it too” shows how a community’s habit can become a vice, and “nobody actually gets hurt” ignores what Leo has told Ben, a failure of justice.",
+           "Leo shows fortitude and prudence by going to a proctor he trusts. The dorm head owes the community justice through oversight, and prudence would have asked about the night long ago."],
+        r:"Ben should propose that the proctors keep the night but drop the hot sauce, the filming, and any costume a freshman doesn’t choose, and make it opt-in. He should tell Leo that he does not have to take part. If the other proctors refuse, Ben should tell the dorm head before the night happens. This is justice to the freshmen, prudence in seeking change before going over anyone’s head, and fortitude in accepting the cost. Some would argue that it is harmless bonding and that freshmen who skip it will be left out. But bonding does not require humiliation, a filmed video lasts long after the night ends, and the greater the cost to Ben, the greater the fortitude his choice shows." } }
+];
+
+/* ================= UNIT 2 VIEWS ================= */
+const vchip = k => { const v = VIRTUES.find(x => x.k === k); return `<span class="chip v-${k}">${esc(v.n)}</span>`; };
+const unitSwitch = u => `<nav class="unit-switch" aria-label="Choose a unit">${[["u1","unit1","Unit 1","Foundations"],["u2","unit2","Unit 2","Virtue Ethics"],["u3","unit3","Unit 3","Normative Theories"]].map(([k, h, n, l]) => `<a href="#${h}" ${u === k ? 'aria-current="page"' : ""}><b>${n}</b> ${l}</a>`).join("")}</nav>`;
+
+function virtueCard(v){
+  return `<article class="vcard v-${v.k}">
+    <div class="vcard-head"><h2>${esc(v.n)}</h2><p class="vdef">${esc(v.d)}</p></div>
+    <div class="stack" style="gap:6px"><span class="eyebrow">Essential characteristics</span>
+      <ul class="charlist">${v.ch.map(c => `<li>${esc(c)}</li>`).join("")}</ul></div>
+    <div class="meanrow" aria-label="The mean">
+      <div><span class="lab">Deficiency</span><b>${esc(v.lo)}</b></div>
+      <div class="mid"><span class="lab">Virtue</span><b>${esc(v.n)}</b></div>
+      <div><span class="lab">Excess</span><b>${esc(v.hi)}</b></div></div>
+    <ul class="more">${v.more.map(m => `<li>${esc(m)}</li>`).join("")}</ul>
+    <div class="voices">${v.voices.map(([w, q]) => `<p><span class="who">${esc(w)}</span> ${esc(q)}</p>`).join("")}</div>
+    <p class="role"><span class="eyebrow">With the other virtues</span>${esc(v.role)}</p>
+  </article>`;
+}
+function quickRef(){
+  return `<details class="quickref"><summary>Quick reference: the four cardinal virtues</summary>
+    <div class="qr-grid">${VIRTUES.map(v => `<div class="qr v-${v.k}"><b>${esc(v.n)}</b><span>${esc(v.d)}</span><small>${v.ch.map(esc).join(" · ")}</small><small class="muted">${esc(v.lo)} ← → ${esc(v.hi)}</small></div>`).join("")}</div>
+    <p class="muted" style="margin-top:8px">Full notes are in the <a href="#toolkit">Virtue Toolkit</a>.</p></details>`;
+}
+function modelStep(c, n){
+  const m = c.m;
+  if (n === 1) return `<p><b>Primary issue:</b> ${esc(m.p)}</p>
+    <p><b>Secondary issues</b></p><ul>${m.sec.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+    <p><b>Key stakeholders</b></p><ul>${m.st.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`;
+  if (n === 2) return `<p>${esc(m.v)}</p>`;
+  if (n === 3) return m.a.map(p => `<p>${esc(p)}</p>`).join("");
+  return `<p>${esc(m.r)}</p>`;
+}
+const modelLabel = c => c.teacher ? "Teacher’s sample answer" : "Model answer";
+function caseCard(c, open = true){
+  return `<details class="case-card panel" ${open ? "open" : ""}><summary><span class="eyebrow">${esc(c.tag)} · Case ${VCASES.indexOf(c) + 1} of ${VCASES.length}</span><h2>${esc(c.t)}</h2></summary>
+    <div class="case-body">${c.s.map(p => `<p>${esc(p)}</p>`).join("")}</div></details>`;
+}
+
+/* ---- Unit 2 home ---- */
+V.home2 = {
+  render(){
+    const done = Object.keys(P.u2done || {}).length;
+    view.innerHTML = unitSwitch("u2") + `
+      <section class="hero">
+        <span class="eyebrow">Unit 2 · Virtue Ethics</span>
+        <h1>Analyze a case like a virtue ethicist.</h1>
+        <p>Lock in the four definitions and the elements of each cardinal virtue, then put them to work on practice case studies written at blue book length.</p>
+        <div class="theories">${VIRTUES.map(v => vchip(v.k)).join("")}</div>
+      </section>
+      <h2 class="section-title">The four-step method</h2>
+      <ol class="method">${STEPS.map(s => `<li><span class="num">${s.n}</span><div><b>${esc(s.t)}</b><span>${esc(s.q.join(" · "))}</span></div></li>`).join("")}</ol>
+      <h2 class="section-title">Study stations</h2>
+      <div class="stations">
+        ${station("vlab","Virtue Case Lab","Solo, pairs, or timed","Work through a case one step at a time, practice with a partner, or write a timed blue book answer. Then compare with the model.", `<span><b>${done}</b> / ${VCASES.length} cases completed</span>`)}
+        ${station("defs","Definition Drill","Solo","Match each cardinal virtue to its definition, then write all four (and virtue itself) from memory.", P.recallBest != null ? `<span>Best recall <b>${P.recallBest}</b> / ${RECALL.length}</span>` : `<span>Match, then recall</span>`)}
+        ${station("traits","Characteristics Sort","Solo or pairs","Sort the elements, vices, and roles of each virtue from class into the right virtue. This is the raw material for Steps 2 and 3.", P.traitsBest != null ? `<span>Best <b>${P.traitsBest}</b> / 16</span>` : `<span>${TRAITS.length} elements</span>`)}
+        ${station("spot","Spot the Virtue","Solo or pairs","Short real-life moments: name the virtue most at stake, then see which element shows it.", P.spotBest != null ? `<span>Best <b>${P.spotBest}</b> / 12</span>` : `<span>${SPOTS.length} moments</span>`)}
+        ${station("toolkit","Virtue Toolkit","Reference","Definitions, essential characteristics, the mean, and key quotes for prudence, justice, temperance, and fortitude.", `<span>4 cardinal virtues</span>`)}
+      </div>`;
+  }
+};
+
+/* ---- Toolkit ---- */
+V.toolkit = {
+  render(){
+    view.innerHTML = `<div class="view-head"><span class="eyebrow">Unit 2 · Reference</span><h1>Virtue Toolkit</h1>
+        <p>Everything you need for Step 2 of a case study: the class definition of each cardinal virtue, its essential characteristics, its vices, and how it works with the others.</p></div>
+      <dl class="basics">${VIRTUE_BASICS.map(([t, d]) => `<div><dt>${esc(t)}</dt><dd>${esc(d)}</dd></div>`).join("")}</dl>
+      <div class="vgrid">${VIRTUES.map(virtueCard).join("")}</div>`;
+  }
+};
+
+/* ---- Virtue Case Lab ---- */
+const blankDraft = () => ({1:"",2:"",3:"",4:""});
+V.vlab = {
+  init(){ S = { ci:0, mode:"steps", step:1, hints:{}, checks:{}, revealed:{}, mins:30, left:0, timer:null, started:false }; },
+  stop(){ if (S.timer) { clearInterval(S.timer); S.timer = null; } },
+  c(){ return VCASES[S.ci]; },
+  key(){ return S.mode === "bluebook" ? "bb" : "st"; },
+  draft(){ P.u2 = P.u2 || {}; const c = this.c(); P.u2[c.id] = P.u2[c.id] || {}; return P.u2[c.id][this.key()] = P.u2[c.id][this.key()] || blankDraft(); },
+  render(){
+    const c = this.c();
+    const head = `<div class="view-head"><span class="eyebrow">Unit 2 · Case Study Practice</span><h1>Virtue Case Lab</h1>
+      <p>Use the four-step method from class. Your writing saves in this browser as you go.</p></div>`;
+    const picker = `<div class="case-pick" role="group" aria-label="Choose a case">${VCASES.map((x, i) => `<button type="button" data-act="case" data-i="${i}" aria-pressed="${i === S.ci}">${esc(x.t)}${P.u2done && P.u2done[x.id] ? ' <span class="d" aria-label="completed">✓</span>' : ""}</button>`).join("")}</div>`;
+    const modes = `<div class="tabs" role="group" aria-label="Practice mode">${[["steps","Step by step"],["pairs","Pairs"],["bluebook","Blue book (timed)"]].map(([k, l]) => `<button type="button" data-act="mode" data-v="${k}" aria-pressed="${S.mode === k}">${l}</button>`).join("")}</div>`;
+    let body;
+    if (S.mode === "pairs") body = this.pairs(c);
+    else if (S.mode === "bluebook") body = this.bluebook(c);
+    else body = S.step === 5 ? this.compare(c) : this.steps(c);
+    view.innerHTML = head + `<div class="stack">${picker}<div class="row between">${modes}</div>${body}</div>`;
+  },
+  stepper(){
+    return `<ol class="stepper">${STEPS.map(s => `<li><button type="button" data-act="go" data-n="${s.n}" aria-current="${S.step === s.n ? "step" : "false"}"><span class="num">${s.n}</span><span class="lbl">${esc(s.t)}</span></button></li>`).join("")}
+      <li><button type="button" data-act="go" data-n="5" aria-current="${S.step === 5 ? "step" : "false"}"><span class="num">✓</span><span class="lbl">Compare</span></button></li></ol>`;
+  },
+  prompts(s){ return `<ul class="prompts">${s.q.map(q => `<li>${esc(q)}</li>`).join("")}</ul>`; },
+  steps(c){
+    const s = STEPS[S.step - 1], d = this.draft();
+    const hint = S.step === 1 ? c.h1 : S.step === 3 ? c.h3 : null;
+    const hk = c.id + S.step;
+    return caseCard(c) + this.stepper() + `<section class="panel stack" aria-labelledby="step-title">
+        <div class="row between"><span class="eyebrow">Step ${s.n} of 4</span>${hint ? `<button class="btn sm" type="button" data-act="hint" data-k="${hk}">${S.hints[hk] ? "Hide hint" : "Need a hint?"}</button>` : ""}</div>
+        <h2 id="step-title" class="step-h">${esc(s.t)}</h2>
+        ${this.prompts(s)}
+        <p class="muted">${esc(s.tip)}</p>
+        ${hint && S.hints[hk] ? `<div class="feedback hint"><b>Hint</b>${esc(hint)}</div>` : ""}
+        ${S.step === 2 || S.step === 3 ? quickRef() : ""}
+        <label class="fl" for="u2-ans-${s.n}">Your answer<textarea id="u2-ans-${s.n}" data-step="${s.n}" rows="${s.n === 1 ? 6 : 8}">${esc(d[s.n])}</textarea></label>
+        <div class="row between"><button class="btn" type="button" data-act="go" data-n="${S.step - 1}" ${S.step === 1 ? "disabled" : ""}>← Back</button>
+          <button class="btn primary" type="button" data-act="go" data-n="${S.step + 1}">${S.step === 4 ? "Compare with the model →" : "Next step →"}</button></div>
+      </section>`;
+  },
+  compare(c){
+    const d = this.draft(), ck = S.checks[c.id] || {};
+    const got = Object.values(ck).filter(Boolean).length;
+    return caseCard(c, false) + (S.mode === "steps" ? this.stepper() : "") + `
+      <p class="muted">Read the ${c.teacher ? "teacher’s sample" : "model answer"} next to yours, step by step. It shows one strong answer at about blue book length; yours can reach a different conclusion if you defend it well.</p>
+      ${STEPS.map(s => `<section class="compare-step"><h2 class="step-h"><span class="num">${s.n}</span>${esc(s.t)}</h2>
+        <div class="compare">
+          <div class="yours"><span class="eyebrow">Your answer</span>${d[s.n].trim() ? `<div class="pre">${esc(d[s.n])}</div>` : `<p class="muted">You didn’t write anything for this step.</p>`}</div>
+          <div class="model"><span class="eyebrow">${modelLabel(c)}</span>${modelStep(c, s.n)}</div>
+        </div></section>`).join("")}
+      <section class="panel stack"><div class="row between"><span class="eyebrow">Check your work</span><b class="num" id="ckcount">${got} / ${RUBRIC.length}</b></div>
+        <div class="checks">${RUBRIC.map(([n, l], i) => `<label><input type="checkbox" id="u2chk-${i}" data-act="check" data-i="${i}" ${ck[i] ? "checked" : ""}><span><span class="muted">Step ${n} ·</span> ${esc(l)}</span></label>`).join("")}</div>
+        <div class="row between"><button class="btn" type="button" data-act="restart">Clear my answers</button><button class="btn primary" type="button" data-act="next">Next case →</button></div>
+      </section>`;
+  },
+  pairs(c){
+    return `<ol class="routine"><li><b>Break into pairs.</b></li><li><b>Read</b> (and annotate?) the case study.</li><li>Use the <b>whiteboards</b> to answer Steps 1 and 2.</li><li><b>Discuss</b> your answers to Steps 3 and 4.</li></ol>` +
+      caseCard(c) + quickRef() +
+      STEPS.map(s => { const k = c.id + s.n; return `<section class="panel stack">
+        <div class="row between"><span class="eyebrow">Step ${s.n} · ${s.n <= 2 ? "Whiteboard" : "Discuss"}</span>
+          <button class="btn sm" type="button" data-act="reveal" data-k="${k}">${S.revealed[k] ? "Hide model" : "Reveal model for this step"}</button></div>
+        <h2 class="step-h">${esc(s.t)}</h2>${this.prompts(s)}
+        ${S.revealed[k] ? `<div class="model"><span class="eyebrow">${modelLabel(c)}</span>${modelStep(c, s.n)}</div>` : ""}
+      </section>`; }).join("");
+  },
+  bluebook(c){
+    if (S.bbDone) return this.compare(c);
+    if (!S.started) return `<section class="panel stack" style="text-align:center;justify-items:center">
+        <span class="eyebrow">Blue book practice</span><h2 class="step-h">Write the whole case study, timed</h2>
+        <p class="muted" style="max-width:52ch">Like the real thing: one case, all four steps, no hints or toolkit. The case appears when you start the clock. This attempt is saved separately from step-by-step practice.</p>
+        <div class="tabs" role="group" aria-label="Time limit">${[20,30,40].map(m => `<button type="button" data-act="mins" data-v="${m}" aria-pressed="${S.mins === m}">${m} minutes</button>`).join("")}</div>
+        <button class="btn primary" type="button" data-act="start">Start the clock</button></section>`;
+    const d = this.draft();
+    return `<div class="bb-bar"><span class="eyebrow">Blue book · ${esc(c.t)}</span><span class="timer${S.left <= 60 ? " low" : ""}" id="bbtimer" aria-live="off">${fmt(S.left)}</span></div>` +
+      caseCard(c) + STEPS.map(s => `<section class="panel stack"><h2 class="step-h"><span class="num">${s.n}</span>${esc(s.t)}</h2>${this.prompts(s)}
+        <label class="fl" for="u2-bb-${s.n}">Step ${s.n}<textarea id="u2-bb-${s.n}" data-step="${s.n}" rows="${s.n === 1 ? 5 : 7}">${esc(d[s.n])}</textarea></label></section>`).join("") +
+      `<div class="row end"><button class="btn primary" type="button" data-act="finish">Finish and compare</button></div>`;
+  },
+  markDone(){ const c = this.c(); const d = this.draft(); if (Object.values(d).some(x => x.trim())) { P.u2done = P.u2done || {}; P.u2done[c.id] = 1; } saveP(); },
+  click(act, el){
+    const c = this.c();
+    if (act === "case") { this.stop(); Object.assign(S, { ci:+el.dataset.i, step:1, started:false, bbDone:false }); }
+    if (act === "mode") { this.stop(); Object.assign(S, { mode:el.dataset.v, step:1, started:false, bbDone:false }); }
+    if (act === "go") { const n = +el.dataset.n; if (n < 1) return; S.step = n; if (n === 5) this.markDone(); }
+    if (act === "hint") S.hints[el.dataset.k] = !S.hints[el.dataset.k];
+    if (act === "reveal") S.revealed[el.dataset.k] = !S.revealed[el.dataset.k];
+    if (act === "check") { S.checks[c.id] = S.checks[c.id] || {}; S.checks[c.id][el.dataset.i] = el.checked;
+      const n = Object.values(S.checks[c.id]).filter(Boolean).length; const b = $("#ckcount"); if (b) b.textContent = n + " / " + RUBRIC.length; return; }
+    if (act === "restart") { if (el.dataset.armed) { P.u2[c.id][this.key()] = blankDraft(); saveP(); S.step = 1; S.bbDone = false; S.started = false; S.checks[c.id] = {}; } else { el.dataset.armed = 1; el.textContent = "Click again to clear"; return; } }
+    if (act === "next") { this.stop(); Object.assign(S, { ci:(S.ci + 1) % VCASES.length, step:1, started:false, bbDone:false }); }
+    if (act === "mins") S.mins = +el.dataset.v;
+    if (act === "start") { S.started = true; S.left = S.mins * 60; this.stop();
+      S.timer = setInterval(() => { if (V.current !== "vlab") return this.stop(); S.left = Math.max(0, S.left - 1);
+        const t = $("#bbtimer"); if (t) { t.textContent = S.left ? fmt(S.left) : "Time"; t.classList.toggle("low", S.left <= 60); }
+        if (!S.left) this.stop(); }, 1000); }
+    if (act === "finish") { this.stop(); S.bbDone = true; this.markDone(); }
+    this.render();
+    if (["go","next","case","finish","start"].includes(act)) window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+  },
+  input(e){ const n = e.target.dataset.step; if (!n) return; this.draft()[n] = e.target.value; clearTimeout(this._t); this._t = setTimeout(saveP, 400); }
+};
+const fmt = s => Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+
+/* ================= UNIT 2 DRILLS ================= */
+const VK = ["pru","jus","tem","for"];
+const vname = k => VIRTUES.find(v => v.k === k).n;
+
+/* Definition recall: key words that must appear */
+const RECALL = [
+  { k:"pru", n:"Prudence", ans:"Right deliberation in action", need:[["right"],["deliberation","deliberate"],["action","act"]] },
+  { k:"tem", n:"Temperance", ans:"Self-control/moderation of desires, pleasures, and emotions", need:[["self-control","self control","selfcontrol"],["moderation","moderate","moderating"],["desires","desire"],["pleasures","pleasure"],["emotions","emotion"]] },
+  { k:"for", n:"Fortitude", ans:"Facing difficulties/challenges well", need:[["facing","face"],["difficulties","difficulty","challenges","challenge"],["well"]] },
+  { k:"jus", n:"Justice", ans:"Giving what is due", need:[["giving","give","gives"],["due"]] },
+  { k:"vir", n:"Virtue", ans:"A stable and effective disposition oriented towards right action", need:[["stable"],["effective"],["disposition"],["oriented","orientation"],["right action","right actions"]] }
+];
+
+/* Characteristics sort: k = correct virtue(s) */
+const TRAITS = [
+  ["Seeing truthfully",["pru"]],["The role of conscience",["pru"]],["Discerning how we achieve good desires",["pru"]],
+  ["Not mechanistic rules: context is essential",["pru"]],["The charioteer that guides the other virtues",["pru"]],
+  ["Grows first through experience",["pru"]],["Vices: irresoluteness and thoughtlessness",["pru"]],
+  ["Determines the proper method to approach any particular situation",["pru"]],
+  ["Augustine: love distinguishing what hinders it from what helps it",["pru"]],
+  ["Ignatian discernment: weighing reasons for and against before deciding",["pru"]],
+  ["Right relationship",["jus"]],["Dynamic and organic",["jus"]],["Personal vs. relational vs. societal",["jus"]],
+  ["Proportionality",["jus"]],["The common good",["jus"]],["Mercy and redemption",["jus"]],
+  ["Vices: leniency and harshness",["jus"]],["A just law is reasonable, properly authorized, promulgated, and serves the common good",["jus"]],
+  ["Sustains our focus on the right action and keeps us outwardly focused",["jus"]],
+  ["Augustine: rightly ordered love (ordo amoris)",["jus"]],
+  ["Relationship of rationality to desires and emotions",["tem"]],["Focused primarily on physical sensations",["tem"]],
+  ["Desire is good; it must not displace more important goals",["tem"]],["Four stages: intemperance, incontinence, continence, virtue",["tem"]],
+  ["Vices: no self-control and prudishness",["tem"]],["Enables us to find the golden mean and stay detached from desires",["tem"]],
+  ["Abstaining for health or a role (like an athlete) can be virtuous",["tem"]],
+  ["Augustine: love giving itself entirely to that which is loved",["tem"]],
+  ["Correct belief about what should be feared",["for"]],["Relationship to fear and hardship",["for"]],["Endurance and attack",["for"]],
+  ["Endurance is the greater part",["for"]],["Something must be at risk",["for"]],["The object must be just",["for"]],
+  ["Vices: cowardice and rashness",["for"]],["Strengthens our resolve to stay virtuous when it isn’t easy",["for"]],
+  ["Martyrdom is its ultimate act",["for"]],["Augustine: love readily bearing all things for the sake of the loved object",["for"]],
+  ["Harmony of the soul",["jus","tem"]]
+];
+
+/* Spot the virtue: short moments */
+const SPOTS = [
+  { s:"Before replying to a friend’s angry text, Nia waits until morning, rereads it, and asks herself what is really going on.", k:"pru", el:"Seeing truthfully and right deliberation: she makes sure she sees the situation accurately before she acts." },
+  { s:"Facing a college decision, Ana lists the reasons for and against each school, talks to people she trusts, and notices which choice brings her peace.", k:"pru", el:"Discernment: she deliberates carefully about how to reach a good desire." },
+  { s:"Sam never decided not to study for the exam. He just kept putting off the choice until it was too late.", k:"pru", el:"Negligence, a failure of prudence: prudence requires making a choice, and negligence avoids it." },
+  { s:"Lena refuses to commit to any summer plan because every option might turn out to be the wrong one.", k:"pru", el:"Irresoluteness, the deficiency of prudence: she never moves from deliberation to action." },
+  { s:"After months of calling her friend’s constant lateness “no big deal,” Maya finally admits to herself that it really bothers her.", k:"pru", el:"Seeing truthfully: an accurate grasp of reality has to come before right action." },
+  { s:"A judge sentences a first-time shoplifter to community service and restitution instead of jail.", k:"jus", el:"Proportionality, mercy, and redemption: the consequence fits the wrong and leaves room to restore the person." },
+  { s:"Before the new dress code takes effect, the student council makes sure it is posted and explained to every student.", k:"jus", el:"A just law must be properly promulgated: everyone affected has to actually know about it." },
+  { s:"A cashier calls a customer back to correct a mistake that undercharged her, even though no one would ever notice.", k:"jus", el:"Giving what is due: honest exchange keeps right relationship." },
+  { s:"A coach benches the star player for missing practice, the same consequence any other player would get.", k:"jus", el:"Giving what is due and right relationship: she avoids leniency toward the star." },
+  { s:"A teacher gives extra time on a test to a student who missed class for a funeral, but not to a student who skipped.", k:"jus", el:"Dynamic and organic: justice responds to the real situation rather than one rule for every case." },
+  { s:"Marco notices he checks his phone every few minutes during homework, so he leaves it in another room until he’s finished.", k:"tem", el:"Reason over desire: he is moving from incontinence (knowing it’s a problem) to continence (not acting on the desire)." },
+  { s:"After snapping at his little brother, Eli apologizes and starts counting to five before he answers when he’s angry.", k:"tem", el:"Moderation of emotions: we can habituate how we respond to what provokes us." },
+  { s:"A senior passes on a third slice of pizza at the team dinner because she wants to feel good for the morning run, not because she thinks pizza is bad.", k:"tem", el:"Desire is good: temperance moderates it so it doesn’t displace a more important goal." },
+  { s:"A wrestler cuts out dessert during the season to make weight and enjoys it again in the off-season.", k:"tem", el:"Abstention for a role or for health can be the proper form of temperance." },
+  { s:"Jake is so strict about his diet that he skips his best friend’s birthday party to avoid the cake.", k:"tem", el:"Prudishness, the excess of temperance: the rule about pleasure has displaced a more important good." },
+  { s:"A goalkeeper with a sprained wrist keeps diving for shots through double overtime.", k:"for", el:"Endurance: standing firm in the difficulty, the greater part of fortitude." },
+  { s:"A freshman at varsity tryouts admits she is nervous about the older players’ speed and spends extra time working on her first touch.", k:"for", el:"Correct belief: she fears what should be feared and responds well instead of pretending she’s unafraid." },
+  { s:"A captain is afraid of how her coach will react but tells him about the rule violation anyway.", k:"for", el:"Relationship to fear: courage recognizes a real fear and overcomes it for a good end." },
+  { s:"To impress his friends, a student jumps off a 40-foot cliff into water he has never checked for rocks.", k:"for", el:"Rashness, the excess of fortitude: excessive confidence without correct belief about the danger." },
+  { s:"Martin Luther King Jr. leads a nonviolent march for civil rights knowing he will probably be arrested.", k:"for", el:"Attack for a just object: fortitude has to serve a good and just end." }
+];
+
+/* ---- Definition Drill ---- */
+V.defs = {
+  init(){ this.newRound(); },
+  newRound(){
+    const items = [];
+    shuffle(VK).forEach(k => items.push({ type:"n2d", k }));
+    shuffle(VK).forEach(k => items.push({ type:"d2n", k }));
+    S = { stage:"match", items: shuffle(items), i:0, picked:null, score:0, recall:{}, checked:false };
+  },
+  def(k){ return RECALL.find(r => r.k === k).ans; },
+  render(){
+    const head = `<div class="view-head"><span class="eyebrow">Unit 2 · Definitions</span><h1>Definition Drill</h1>
+      <p>First match each virtue to its definition, then write all four from memory. Step 2 of every case study starts here.</p></div>`;
+    const tabs = `<div class="tabs" role="group" aria-label="Drill part"><button type="button" data-act="stage" data-v="match" aria-pressed="${S.stage !== "recall"}">1 · Match</button><button type="button" data-act="stage" data-v="recall" aria-pressed="${S.stage === "recall"}">2 · Write from memory</button></div>`;
+    if (S.stage === "recall") { view.innerHTML = head + `<div class="stack">${tabs}${this.recallView()}</div>`; return; }
+    if (S.stage === "done") {
+      view.innerHTML = head + `<div class="stack">${tabs}<div class="panel stack" style="text-align:center;justify-items:center"><span class="eyebrow">Matching complete</span>
+        <div class="scorebig num">${S.score}/${S.items.length}</div><p class="muted">Now write them from memory, the way you will in your blue book.</p>
+        <div class="row" style="justify-content:center"><button class="btn" type="button" data-act="again">Match again</button><button class="btn primary" type="button" data-act="stage" data-v="recall">Write from memory →</button></div></div></div>`;
+      return;
+    }
+    const it = S.items[S.i], done = S.picked !== null;
+    const opts = it.type === "n2d" ? VK.map(k => ({ k, l:this.def(k) })) : VK.map(k => ({ k, l:vname(k) }));
+    const prompt = it.type === "n2d" ? `What is the definition of <b class="v-${it.k} vtxt">${esc(vname(it.k))}</b>?` : `Which virtue is defined as “${esc(this.def(it.k))}”?`;
+    view.innerHTML = head + `<div class="stack">${tabs}
+      <div class="stats"><span>Question <b>${S.i + 1}</b> of <b>${S.items.length}</b></span><span>Score <b>${S.score}</b></span></div>
+      <div class="progress" aria-hidden="true"><span style="width:${(S.i + (done ? 1 : 0)) / S.items.length * 100}%"></span></div>
+      <div class="panel stack"><p class="q-text">${prompt}</p>
+        <div class="opts">${opts.map((o, n) => { let cls = "opt"; if (done) cls += o.k === it.k ? " right" : o.k === S.picked ? " wrong" : " dim";
+          return `<button type="button" class="${cls}" data-act="pick" data-k="${o.k}" ${done ? "disabled" : ""}><span class="k">${"ABCD"[n]}</span><span>${esc(o.l)}</span></button>`; }).join("")}</div>
+        ${done ? `<div class="feedback${S.picked === it.k ? "" : " no"}" role="status"><b>${S.picked === it.k ? "Correct." : "Not quite."}</b>${esc(vname(it.k))}: ${esc(this.def(it.k))}</div>
+        <div class="row end"><button class="btn primary" type="button" data-act="next">${S.i + 1 < S.items.length ? "Next →" : "Finish matching"}</button></div>` : ""}
+      </div></div>`;
+    if (done) view.querySelector('[data-act="next"]').focus();
+  },
+  grade(r, txt){
+    const t = " " + txt.toLowerCase().replace(/[^a-z\s-]/g, " ").replace(/\s+/g, " ") + " ";
+    const missing = r.need.filter(alts => !alts.some(a => t.includes(" " + a + " ") || t.includes(" " + a + "s ") || (a.includes(" ") && t.includes(a))));
+    return missing;
+  },
+  recallView(){
+    return `<div class="panel stack"><p class="muted">Type each definition the way you learned it in class. The check looks for the key words, so small wording differences are fine.</p>
+      ${RECALL.map(r => { const v = S.recall[r.k] || ""; const miss = S.checked ? this.grade(r, v) : null;
+        return `<div class="recall ${r.k === "vir" ? "" : "v-" + r.k}">
+          <label class="fl" for="rc-${r.k}">${esc(r.n)}<input type="text" id="rc-${r.k}" data-rk="${r.k}" value="${esc(v)}" autocomplete="off" spellcheck="false"></label>
+          ${S.checked ? (miss.length === 0 ? `<p class="ok">✓ All the key words are there.</p>` : `<p class="miss">Missing: ${miss.map(m => esc(m[0])).join(", ")}. Class definition: <b>${esc(r.ans)}</b></p>`) : ""}
+        </div>`; }).join("")}
+      <div class="row between"><button class="btn" type="button" data-act="clear">Clear and try again</button><button class="btn primary" type="button" data-act="check">Check my definitions</button></div></div>`;
+  },
+  click(act, el){
+    if (act === "stage") { S.stage = el.dataset.v === "match" && S.stage === "done" ? "done" : el.dataset.v; if (el.dataset.v === "match" && S.i >= S.items.length - 1 && S.picked !== null) S.stage = "done"; }
+    if (act === "again") this.newRound();
+    if (act === "pick" && S.picked === null) { S.picked = el.dataset.k; if (S.picked === S.items[S.i].k) S.score++; }
+    if (act === "next") { if (S.i + 1 < S.items.length) { S.i++; S.picked = null; } else { S.stage = "done"; P.defsBest = Math.max(P.defsBest ?? 0, S.score); saveP(); } }
+    if (act === "check") { S.checked = true; const ok = RECALL.filter(r => this.grade(r, S.recall[r.k] || "").length === 0).length; P.recallBest = Math.max(P.recallBest ?? 0, ok); saveP(); }
+    if (act === "clear") { S.recall = {}; S.checked = false; }
+    this.render();
+  },
+  input(e){ const k = e.target.dataset.rk; if (k) { S.recall[k] = e.target.value; } },
+  key(e){ if (S.stage !== "match" || S.picked !== null) return; const n = "1234".indexOf(e.key); if (n < 0) return;
+    const it = S.items[S.i]; const b = view.querySelectorAll('[data-act="pick"]')[n]; if (b) this.click("pick", b); }
+};
+
+/* ---- Characteristics Sort ---- */
+V.traits = {
+  init(){ S = { filter:"all", items: shuffle(TRAITS).slice(0, 16), i:0, picked:null, score:0, done:false, missed:[] }; },
+  render(){
+    const head = `<div class="view-head"><span class="eyebrow">Unit 2 · Elements and characteristics</span><h1>Characteristics Sort</h1>
+      <p>Which cardinal virtue does each element belong to? These are the “key elements” Step 2 asks you to name, and the details that make Step 3 specific.</p></div>`;
+    if (S.done) {
+      view.innerHTML = head + `<div class="stack"><div class="panel stack" style="text-align:center;justify-items:center"><span class="eyebrow">Round complete</span>
+        <div class="scorebig num">${S.score}/${S.items.length}</div>
+        <button class="btn primary" type="button" data-act="again">Sort another 16</button></div>
+        ${S.missed.length ? `<h2 class="section-title">Review these</h2><ul class="missed">${S.missed.map(([t, ks]) => `<li class="row between"><span>${esc(t)}</span><span class="row">${ks.map(vchip).join("")}</span></li>`).join("")}</ul>` : ""}</div>`;
+      return;
+    }
+    const [txt, ks] = S.items[S.i], done = S.picked !== null;
+    view.innerHTML = head + `<div class="stack">
+      <div class="stats"><span>Item <b>${S.i + 1}</b> of <b>${S.items.length}</b></span><span>Score <b>${S.score}</b></span></div>
+      <div class="progress" aria-hidden="true"><span style="width:${(S.i + (done ? 1 : 0)) / S.items.length * 100}%"></span></div>
+      <div class="prompt-card"><span class="eyebrow">Which virtue?</span><div class="big">${esc(txt)}</div></div>
+      <div class="theory-btns">${VK.map((k, n) => { let cls = "v-" + k; if (done && ks.includes(k)) cls += " hit";
+        return `<button type="button" class="${cls}" style="--c:var(--${k})" data-act="pick" data-v="${k}" ${done ? "disabled" : ""}>${n + 1} · ${esc(vname(k))}</button>`; }).join("")}</div>
+      ${done ? `<div class="feedback${ks.includes(S.picked) ? "" : " no"}" role="status"><b>${ks.includes(S.picked) ? "Correct." : "That one belongs to " + ks.map(vname).join(" and ") + "."}</b>${ks.length > 1 ? "Your notes list it under both justice and temperance: each is a kind of right order within the soul." : esc(vname(ks[0])) + ": " + esc(VIRTUES.find(v => v.k === ks[0]).d) + "."}</div>
+      <div class="row end"><button class="btn primary" type="button" data-act="next">${S.i + 1 < S.items.length ? "Next →" : "Finish"}</button></div>` : ""}
+    </div>`;
+    if (done) view.querySelector('[data-act="next"]').focus();
+  },
+  click(act, el){
+    if (act === "again") this.init();
+    if (act === "pick" && S.picked === null) { S.picked = el.dataset.v; const ks = S.items[S.i][1]; if (ks.includes(S.picked)) S.score++; else S.missed.push(S.items[S.i]); }
+    if (act === "next") { if (S.i + 1 < S.items.length) { S.i++; S.picked = null; } else { S.done = true; P.traitsBest = Math.max(P.traitsBest ?? 0, S.score); saveP(); } }
+    this.render();
+  },
+  key(e){ const n = "1234".indexOf(e.key); if (n >= 0 && S.picked === null && !S.done) this.click("pick", { dataset:{ v:VK[n] } }); }
+};
+
+/* ---- Spot the Virtue ---- */
+V.spot = {
+  init(){ S = { items: shuffle(SPOTS).slice(0, 12), i:0, picked:null, score:0, done:false }; },
+  render(){
+    const head = `<div class="view-head"><span class="eyebrow">Unit 2 · Applying the virtues</span><h1>Spot the Virtue</h1>
+      <p>Which cardinal virtue is most at stake in each moment, whether it is being lived out or missing? Then read which element shows it. This is the move Step 3 asks you to make with every stakeholder.</p></div>`;
+    if (S.done) {
+      view.innerHTML = head + `<div class="panel stack" style="text-align:center;justify-items:center"><span class="eyebrow">Round complete</span>
+        <div class="scorebig num">${S.score}/${S.items.length}</div><button class="btn primary" type="button" data-act="again">Try 12 more</button></div>`;
+      return;
+    }
+    const it = S.items[S.i], done = S.picked !== null;
+    view.innerHTML = head + `<div class="stack">
+      <div class="stats"><span>Moment <b>${S.i + 1}</b> of <b>${S.items.length}</b></span><span>Score <b>${S.score}</b></span></div>
+      <div class="progress" aria-hidden="true"><span style="width:${(S.i + (done ? 1 : 0)) / S.items.length * 100}%"></span></div>
+      <div class="prompt-card"><span class="eyebrow">Which virtue is most at stake?</span><div class="big spot">${esc(it.s)}</div></div>
+      <div class="theory-btns">${VK.map((k, n) => { let cls = "v-" + k; if (done && k === it.k) cls += " hit";
+        return `<button type="button" class="${cls}" style="--c:var(--${k})" data-act="pick" data-v="${k}" ${done ? "disabled" : ""}>${n + 1} · ${esc(vname(k))}</button>`; }).join("")}</div>
+      ${done ? `<div class="feedback${S.picked === it.k ? "" : " no"}" role="status"><b>${S.picked === it.k ? "Correct: " : "This one is "}${esc(vname(it.k))}.</b>${esc(it.el)}</div>
+      <div class="row end"><button class="btn primary" type="button" data-act="next">${S.i + 1 < S.items.length ? "Next →" : "Finish"}</button></div>` : ""}
+    </div>`;
+    if (done) view.querySelector('[data-act="next"]').focus();
+  },
+  click(act, el){
+    if (act === "again") this.init();
+    if (act === "pick" && S.picked === null) { S.picked = el.dataset.v; if (S.picked === S.items[S.i].k) S.score++; }
+    if (act === "next") { if (S.i + 1 < S.items.length) { S.i++; S.picked = null; } else { S.done = true; P.spotBest = Math.max(P.spotBest ?? 0, S.score); saveP(); } }
+    this.render();
+  },
+  key(e){ const n = "1234".indexOf(e.key); if (n >= 0 && S.picked === null && !S.done) this.click("pick", { dataset:{ v:VK[n] } }); }
+};
+
+/* ================= UNIT 1 CONTENT ================= */
+const U1CATS = {
+  em:"Ethics and Morality", tn:"Truth and Natural Law", ha:"Human Agency", mc:"The Moral Calculus", ee:"Ends and Eudaimonia", tt:"Thinkers and Texts"
+};
+/* core: carries into later units; r: where it returns */
+const MTERMS = [
+  { c:"em", t:"Ethics", core:1, d:"Also called moral philosophy or moral theology: the study of what leads to a fulfilling life, and the development of one’s moral character. Compared with morality, ethics concerns natural law and the objective nature of actions (good, neutral, evil).", r:"Every unit" },
+  { c:"em", t:"Morality", core:1, d:"“Some identifiable way to live one’s life, evident through the myriad of choices one makes” (Mattison 28). It is the formation of our own rules of life and conscience: how we understand and interpret ethics.", r:"Every unit" },
+  { c:"em", t:"Rule (Precept)", d:"“Some sort of principle that guides our action” (Mattison 29). In natural law, a precept is a fundamental rule that guides human behavior." },
+  { c:"em", t:"Morality of Obligation", d:"Morality as following moral rules out of duty. We are obliged to keep them but don’t naturally want to, and moral living is not seen as the path to true happiness." },
+  { c:"em", t:"Morality of Happiness", d:"Morality as what we truly want, even when we don’t recognize it. Moral living makes up the happy, fulfilled life." },
+  { c:"em", t:"Primary Good", core:1, d:"The foundational good, principle, idea, or goal at the core of a moral code; the most essential thing that must be uplifted above all others. Examples from class: eudaimonia, human dignity, pleasure.", r:"Unit 3: each normative theory builds on one" },
+  { c:"em", t:"Guiding Principles", core:1, d:"Major, secondary ethical pieces that more fully form the beliefs of a moral philosophy. They flow from the primary good. Examples from class: teleology, relationships, the categorical imperative.", r:"Unit 3" },
+  { c:"em", t:"Human Nature", core:1, d:"The core identity and underlying foundation of who we are; for our first thinkers, a person’s substance or essence. With the primary good, it is one of the “two lungs” of a moral code.", r:"Unit 3: the state of nature" },
+  { c:"em", t:"MacIntyre’s Disquieting Suggestion", d:"In After Virtue, MacIntyre argues that “the language of morality is in the same state of grave disorder” as science would be if it were rebuilt from fragments after a catastrophe. Words like good, evil, culpability, and truth may have lost their full meaning." },
+
+  { c:"tn", t:"Objective Truth", core:1, d:"Truth that does not change no matter people’s opinions: unchanging, universal principles. “This is how things always are.” (2 + 2 = 4.)" },
+  { c:"tn", t:"Subjective Truth", d:"The view that truth always comes down to the opinions of individuals: ever-changing, independent principles. “My truth vs. your truth.”" },
+  { c:"tn", t:"Truth", d:"For Makinde, a “correspondence between reality and what is claimed about reality,” and “the condition that makes all other values possible.”" },
+  { c:"tn", t:"Objective Moral Truth", core:1, d:"Moral truth that holds even when people disagree. Genocide and slavery are always morally evil, no matter how many people support them.", r:"Unit 3: natural law and deontology" },
+  { c:"tn", t:"Natural Law", core:1, d:"“A rule of justice is natural that has the same validity everywhere, and does not depend on our accepting it or not” (Aristotle, NE 1134b). For Aquinas, the moral law written in the human heart and known by reason.", r:"Unit 2 and Unit 3" },
+  { c:"tn", t:"Primary (Synderesis) Principle", d:"The first principle that directs every precept of natural law: pursue good, avoid evil." },
+  { c:"tn", t:"Primary Precepts", d:"The universal precepts of natural law, which can never be wiped from the human heart: preserve life, live in an ordered society, know the truth of God, educate children, and reproduce the species." },
+  { c:"tn", t:"Universal Principles", core:1, d:"The broad, overarching truths that apply in all places and times.", r:"Unit 2: Essential Content Review" },
+  { c:"tn", t:"Particular Conclusions", core:1, d:"Specific instances and moments that need to be understood through reason. Natural law is the same for everyone in universal principles, but not always in particular conclusions.", r:"Unit 2: Essential Content Review" },
+  { c:"tn", t:"Speculative Reason", d:"Rational reflection that seeks truth without needing to apply it." },
+  { c:"tn", t:"Practical Reason", d:"Applying moral reason to particular circumstances and events." },
+  { c:"tn", t:"Human Dignity", core:1, d:"The inherent, co-equal value of all people, rooted in the Imago Dei. One of the foundations of natural law.", r:"Unit 3: Kant and natural law" },
+  { c:"tn", t:"Common Good", core:1, d:"That which supports the good of all peoples, including care and concern for the most vulnerable. One of the foundations of natural law.", r:"Unit 2: justice" },
+  { c:"tn", t:"Imago Dei", d:"Latin for “image of God”: the belief that humanity is made in God’s image, the root of human dignity." },
+
+  { c:"ha", t:"Human Agency", core:1, d:"The use of free will: our capacity to act with intention and shape ourselves and the world through our choices.", r:"Unit 3" },
+  { c:"ha", t:"Free Will", core:1, d:"The ability to choose the good. Free will is a capacity, not a yes-or-no switch; outside influences such as commitments shape our choices without necessarily limiting our freedom.", r:"Unit 2 and Unit 3" },
+  { c:"ha", t:"Freedom of Indifference", core:1, d:"Freedom as the ability to choose what I want. What you choose doesn’t matter, only whether you truly chose it: “You are free, no matter what you choose.”", r:"Unit 3: Key Ideas" },
+  { c:"ha", t:"Freedom for Excellence", core:1, d:"Freedom as the ability to choose the good. Human freedom has a purpose, flourishing, and includes freedom from attachment to what is not good.", r:"Unit 3: Key Ideas" },
+  { c:"ha", t:"Intention", core:1, d:"A self-directed goal or purpose that leads to action; an act of the will. Intentions give actions meaning and shape who we are. “Each of us is a constellation of intentions” (Mattison 44).", r:"Unit 3: deontology" },
+  { c:"ha", t:"Transitive and Intransitive Effects", d:"Our intentions shape the world around us through our actions (transitive) and also shape us (intransitive)." },
+  { c:"ha", t:"Habit", core:1, d:"“A disposition whereby someone is disposed, well or ill” (Aristotle). Habits form over time with intention.", r:"Unit 2: virtue as habit" },
+
+  { c:"mc", t:"Moral Quality of Actions", core:1, d:"Every action, by its nature and regardless of intent or circumstances, is morally good, neutral, or evil. This quality is known through natural law, reason, and revelation.", r:"Unit 3: moral calculus" },
+  { c:"mc", t:"Morally Neutral Act", d:"An action whose nature carries no moral value of its own, so intention and outcome become the main factors in judging it (for example, playing basketball or tossing a ball)." },
+  { c:"mc", t:"Means", core:1, d:"The methods, intentions, and actions taken to achieve a specific outcome.", r:"Unit 3: deontology" },
+  { c:"mc", t:"Ends (Outcomes)", core:1, d:"The outcomes, impact, and moral fallout of an action: its consequences.", r:"Unit 3: utilitarianism" },
+  { c:"mc", t:"Circumstances", core:1, d:"The context surrounding an action. Circumstances can mitigate or intensify culpability. They matter little for universal principles but are nearly impossible to ignore in particular judgments.", r:"Unit 3" },
+  { c:"mc", t:"Basic Moral Calculus", core:1, d:"Action(s) + Intention(s) + Circumstance(s) = Moral Culpability. A useful tool, but “flawed because of its simplicity.”", r:"Unit 2 and Unit 3" },
+  { c:"mc", t:"Moral Culpability", core:1, d:"How much moral responsibility, or blame, a person bears for an action, weighed through the action, the intention, and the circumstances.", r:"Every unit" },
+  { c:"mc", t:"Principle of Double Effect", core:1, d:"For an action with good and bad effects: (1) the action must be good or neutral as to object, motive, and circumstances; (2) the evil effect must not be directly intended, only tolerated; (3) the good effect must be caused at least as directly as the bad; (4) the good must be proportionate to compensate for the bad.", r:"Unit 3: the trolley problem" },
+
+  { c:"ee", t:"Ends (Purposes)", d:"Purpose, goal, or final destination: what an action is for." },
+  { c:"ee", t:"Intrinsic Ends", d:"Ends pursued for their own sake." },
+  { c:"ee", t:"Instrumental Ends", d:"Stepping stones: ends pursued for the sake of something else." },
+  { c:"ee", t:"Ultimate End", core:1, d:"The definitive end that all others serve. For Aristotle, eudaimonia; for Augustine and Aquinas, union with God.", r:"Unit 2" },
+  { c:"ee", t:"Eudaimonia", core:1, d:"Eu (well, good) + daimon (spirit): happiness, flourishing, or fulfillment, understood as an ongoing process. For Aristotle it is the one good that is “complete without qualification,” chosen always for itself.", r:"Unit 2 and Unit 3" },
+  { c:"ee", t:"Telos", core:1, d:"An entity’s final cause: the purpose for its existence. We find it by identifying a thing’s most unique capacity and asking whether it is being fulfilled.", r:"Unit 2 and Unit 3" },
+  { c:"ee", t:"The Four Causes", d:"Aristotle’s four ways a thing is caused: material (what it’s made of), formal (its form, essence, or design), efficient (the agent that creates or changes it), and final (its purpose)." },
+  { c:"ee", t:"Love", core:1, d:"Willing the good of the beloved. For Augustine, love (caritas) is the ultimate good, and every virtue exists in its service.", r:"Unit 2 (and Unit 4)" },
+
+  { c:"tt", t:"Socratic Method", d:"Finding truth through questions, wonder, examination, and refining hypotheses. Having wrong ideas is fine; sticking to them is not." },
+  { c:"tt", t:"Theory of Forms", d:"Plato’s idea that each thing has an eternal, unchanging, truest version (its Form), and that the world we experience is an imperfect reflection of the Forms." },
+  { c:"tt", t:"Allegory of the Cave", d:"Plato’s image in the Republic of prisoners who mistake shadows for reality. It contrasts objective truth with experience and asks whether people are willing to face the truth." },
+  { c:"tt", t:"Ring of Gyges", d:"Plato’s story of a ring that makes its wearer invisible. It asks whether anyone would stay just if they could never be caught." },
+  { c:"tt", t:"Deductive Logic", d:"Reasoning from universal truths to specific conclusions: all humans are mortal; Mr. Effron is human; therefore Mr. Effron is mortal." },
+  { c:"tt", t:"Inductive Logic", d:"Reasoning from specific observations to universal generalizations." },
+  { c:"tt", t:"Three Kinds of Friendship", d:"Aristotle’s friendships of utility, pleasure, and virtue (the good). Only friendship of virtue is complete." },
+  { c:"tt", t:"Evil as Privation", core:1, d:"Augustine’s view that evil is not a substance or force but an absence, or privation, of the good.", r:"Unit 2: vice" },
+  { c:"tt", t:"Concupiscence", d:"Augustine’s term for humanity’s inclination toward sin: good by nature, but drawn by desires for pleasure, power, and fame that undermine reason." },
+  { c:"tt", t:"The Problem of Evil", d:"If God is perfectly good, powerful, and loving, why does God allow evil? Augustine’s answer points to the misuse of human free will." },
+  { c:"tt", t:"Rationalism vs. Fideism", d:"Augustine rejects both: rationalism (reason alone) as human pride, and fideism (faith alone, rejecting reason) as laziness that refuses God’s gifts." }
+];
+
+/* Concept questions (applied); a = index of correct option */
+const MCQ = [
+  { q:"“The phone was my only way to reach my parents.” Which part of the basic moral calculus is this?", o:["Circumstances","Action","Intention","Primary good"], a:0, e:"Circumstances give context and can mitigate or intensify culpability." },
+  { q:"According to the reading, why is driving under the influence wrong even if you arrive home safely?", o:["The action itself is morally evil","The outcome was bad","The intention was to cause harm","There were no circumstances"], a:0, e:"Choosing a morally wrong act puts culpability high no matter the outcome, intent, or circumstances." },
+  { q:"The reading says “the ends do not justify the means,” then adds that…", o:["The means do not justify the ends either","The means always justify the ends","Only the ends matter","Intentions never matter"], a:0, e:"Neither a good intention nor a good outcome automatically makes an action morally good." },
+  { q:"Which pair does the reading call the “two lungs” of a moral code?", o:["Primary good and human nature","Means and ends","Intention and circumstances","Reason and revelation"], a:0, e:"Everything else flows from these two as our method of moral evaluation." },
+  { q:"What is the primary (synderesis) principle of natural law?", o:["Pursue good, avoid evil","Preserve life at all costs","Do unto others as they do unto you","Obey the law of the land"], a:0, e:"Aquinas says goodness is the goal of natural law, and every precept flows from this first principle." },
+  { q:"For Aquinas, natural law is the same for everyone in its universal principles. Where can it differ?", o:["In particular conclusions reached by practical reason","In its primary precepts","In the synderesis principle","Nowhere at all"], a:0, e:"Particular conclusions depend on circumstances and must be worked out through practical reason." },
+  { q:"Which belongs to Mattison’s “morality of happiness”?", o:["Moral rules are what we truly want, even if we don’t recognize it","We follow rules out of duty though we don’t want to","Morality is not the path to happiness","Morality is whatever feels good"], a:0, e:"In the morality of obligation, rules are duties we don’t naturally want." },
+  { q:"Freedom for excellence defines freedom as…", o:["The ability to choose the good","The ability to choose whatever I want","Freedom from all rules","The absence of commitments"], a:0, e:"Freedom of indifference is the ability to choose what I want." },
+  { q:"To find something’s telos, we identify…", o:["Its most unique capacity, and whether it is being fulfilled","What it is made of","Who made it","What most people want from it"], a:0, e:"Telos is the final cause: the purpose for a thing’s existence." },
+  { q:"A table’s wood is which of Aristotle’s four causes?", o:["Material cause","Formal cause","Efficient cause","Final cause"], a:0, e:"Material is what it’s made of; formal is its design; efficient is the carpenter; final is its purpose." },
+  { q:"Augustine calls evil a “privation of the good.” This means evil is…", o:["An absence of good, not a substance of its own","An equal force opposed to God","Something God created","An illusion"], a:0, e:"Evil is a lack of what should be there, which is why Augustine traces it to the misuse of free will." },
+  { q:"MacIntyre’s “disquieting suggestion” is that…", o:["Our moral language is in grave disorder, like science rebuilt from fragments","Science will one day be abolished","Morality is purely subjective","Only experts can do ethics"], a:0, e:"Terms like good, evil, culpability, and truth may have lost their full meaning." },
+  { q:"Which is an example of deductive logic?", o:["All humans are mortal; Mr. Effron is human; so Mr. Effron is mortal","Every swan I have seen is white, so all swans are white","Most students like pizza, so you probably do","It rained the last three days, so it will rain tomorrow"], a:0, e:"Deduction moves from universal truths to specific conclusions; induction moves from observations to generalizations." },
+  { q:"Which friendship does Aristotle call complete?", o:["Friendship of virtue","Friendship of utility","Friendship of pleasure","Every friendship equally"], a:0, e:"Friendships of utility and pleasure last only as long as the use or pleasure does." },
+  { q:"What did the Milgram experiment study?", o:["How far people will go in obeying authority","Whether prison guards become brutal","How people react to rewards","Whether people lie to protect friends"], a:0, e:"65% of participants continued to the maximum 450 volts. The Stanford Prison Experiment studied guard brutality." },
+  { q:"Which statement best expresses objective moral truth?", o:["Slavery is always wrong, even where it was legal and popular","Slavery was right for those who believed in it","Morality is whatever a culture decides","Moral truth changes with each generation"], a:0, e:"Moral truth does not become subjective simply because people disagree about it." },
+  { q:"In the Principle of Double Effect, the evil effect must be…", o:["Not directly intended, only tolerated","Greater than the good effect","The means of the good effect","Intended but regretted"], a:0, e:"It must also be outweighed by a proportionate good." },
+  { q:"Human dignity is defined in class as…", o:["The inherent, co-equal value of all people","The value a person earns by their actions","A right granted by the government","The pursuit of pleasure"], a:0, e:"It is rooted in the Imago Dei and is one foundation of natural law." }
+];
+
+/* Moral calculus scenarios */
+const ACTQ = ["Good","Neutral","Evil"], INTQ = ["Good","No ill intent","Bad"], CIRQ = ["Mitigate","Little effect","Intensify"], CULQ = ["Little or none","Some","Substantial","Grave"];
+const MCALC = [
+  { id:"phone", t:"The Cracked Phone", reading:true, s:"Your best friend is looking at a video on your phone, fumbles it, and the screen cracks. The phone is your only way to reach your parents while you’re at boarding school.",
+    m:{ a:1, i:1, c:1, k:0, e:"Holding and looking at a phone is a neutral action, and barring malintent your friend never meant to break it. The circumstances raise the stakes of the harm but not your friend’s blame. There is limited to no moral culpability, though as a matter of justice they probably owe you a new phone." } },
+  { id:"hoop", t:"The Hoop by the Car", reading:true, s:"You and your sibling are playing basketball in the driveway. A neighbor’s car is parked well within shooting range of the hoop. Chasing a rebound, you crash into the car and dent the door.",
+    m:{ a:1, i:1, c:2, k:2, e:"Playing basketball is neutral, and no one plans to damage property while playing. The circumstances carry the most weight: even a half second of thought would show the danger to the car, and prudence would say to play elsewhere. A substantial amount of culpability falls on you, and justice demands that you make amends." } },
+  { id:"dui", t:"The Drive Home", reading:true, s:"After a party, someone who has been drinking decides they are “fine” and drives home. They have no intention of hurting anyone, and they arrive home without an accident.",
+    m:{ a:2, i:1, c:1, k:3, e:"Driving under the influence is a morally wrong act in itself because of the serious risk it creates. It is not causing an accident that makes it wrong. There are few to no legitimate circumstances that could justify it, so culpability is high no matter the outcome or the intent." } },
+  { id:"copy", t:"The Copied Homework", s:"A student spends the night at the hospital with her grandmother after a sudden fall. The next morning, out of time, she copies a friend’s homework answers and turns them in as her own.",
+    m:{ a:2, i:2, c:0, k:1, e:"Copying work and presenting it as your own is dishonest, an evil act, and the intention is to receive credit that isn’t hers. The hospital night genuinely mitigates her culpability, but it does not erase it; asking the teacher for an extension was still possible. She bears some culpability." } },
+  { id:"wallet", t:"The Reward", s:"A teenager finds a lost wallet with $200 inside and returns it to the owner, mostly because he hopes there will be a reward.",
+    m:{ a:0, i:1, c:1, k:0, e:"Returning lost property is a good act, so there is nothing to blame him for. His motive is mixed, and that makes the act less admirable, but the calculus shows that a good action done for a lesser reason is still good. Little or no culpability." } },
+  { id:"deer", t:"The Deer", s:"Driving carefully at the speed limit, a woman swerves to avoid a deer that leaps onto the road and clips a mailbox.",
+    m:{ a:1, i:0, c:0, k:0, e:"Driving is neutral, her intention (avoiding a collision) is good, and the sudden circumstances mitigate further. Little or no culpability, though justice would have her pay for the mailbox." } },
+  { id:"rumor", t:"The Group Chat Joke", s:"A student posts a made-up rumor about a classmate in a large group chat “as a joke,” knowing it will spread. The classmate is left out of a team trip because of it.",
+    m:{ a:2, i:2, c:2, k:2, e:"Spreading a false rumor is an evil act (detraction and lying), and posting it for a laugh shows disregard for the harm. Knowing it would spread intensifies the culpability. Substantial culpability, and justice requires correcting the record and apologizing." } },
+  { id:"label", t:"The Mislabeled Bottle", s:"A nurse gives a patient medication exactly as prescribed, but the pharmacy mislabeled the bottle, and the patient has a bad reaction.",
+    m:{ a:0, i:0, c:0, k:0, e:"Giving prescribed medication is a good act with a good intention. The nurse was duly attentive and could not have known about the pharmacy’s error, so the circumstances mitigate fully. Little or no culpability for the nurse; the culpability lies with whoever mislabeled it." } },
+  { id:"bread", t:"The Loaf of Bread", s:"After losing his job, a father steals bread from a grocery store to feed his hungry children.",
+    m:{ a:2, i:0, c:0, k:1, e:"Stealing is an evil act, but the intention (feeding his children) is good and the circumstances heavily mitigate. Most would say some culpability remains, but far less than for ordinary theft. This is also a case where the simple calculus shows its limits." } },
+  { id:"record", t:"The Secret Recording", s:"A student secretly records a teacher’s lecture and edits it into a video to mock her, then posts it online.",
+    m:{ a:2, i:2, c:2, k:2, e:"Secretly recording and publicly mocking someone violates her dignity, and the intention is to ridicule. Posting it online widens the harm and intensifies culpability. Substantial culpability." } }
+];
+
+/* Build Your Moral Code (Week 4 case study) */
+const MCODE = [
+  { k:"pg", q:"What is your primary good?", help:"The foundational good at the core of your moral code, the one thing that must be uplifted above all others. Examples from class: eudaimonia, human dignity, pleasure, love, freedom." },
+  { k:"hn", q:"What is human nature?", help:"Are humans good, evil, or neutral? Do we have inclinations that work with or against that nature? Augustine: good by nature but inclined toward evil." },
+  { k:"gp", q:"What are your guiding principles?", help:"The secondary principles that flow from your primary good, such as teleology, relationships, care for the most needy, or putting family first." },
+  { k:"me", q:"What role do means and ends play?", help:"Means are the methods, intentions, and actions; ends are the outcomes and moral fallout. Remember: the ends do not justify the means, and the means do not justify the ends either." },
+  { k:"act", q:"How much does the act itself matter to moral evaluation?", help:"Are actions inherently good, neutral, or evil? How much weight does the act carry compared with intention and outcome?" },
+  { k:"calc", q:"How do you calculate the morality of an action?", help:"Start from Action + Intention + Circumstance = Moral Culpability. What would you add or change, since the formula is “flawed because of its simplicity”?" }
+];
+
+/* Elevator pitch */
+const PITCH_QS = [
+  { q:"Why should ethics matter for every human being?", test:["Does your answer apply to every person, not only to you?","Which idea from class grounds it? Think back to eudaimonia, human nature, natural law, the Stanford and Milgram studies, or MacIntyre’s warning about moral language.","Could you say it in two or three sentences?"] },
+  { q:"Why do you personally need an understanding of ethics for your future life, goals, or career? What role will it play in your future?", test:["Have you named a specific goal, career, or part of your life?","What real ethical situation will you face there? (Week 1 named healthcare, law, business, tech, science, journalism, politics, academia, and athletics.)","Is it about you, not a general field?"] },
+  { q:"What will success look like for you in this class, and how will you be a different person because of it? Why would you call this success?", test:["What will you be able to do or understand by the end of the year that you can’t now?","How will you, and Mr. Effron, know it happened?","Have you explained why that counts as success?"] }
+];
+const PITCH_RUBRIC = [
+  ["Attention to the first question", ["The first question is unanswered","A poor and unconvincing answer","A reasonable and somewhat convincing answer","A complete and convincing answer"]],
+  ["Attention to the second question", ["The second question is unanswered","A poor and unconvincing answer","A reasonable and somewhat convincing answer","A complete and convincing answer"]],
+  ["Attention to the third question", ["The third question is unanswered","A poor and unconvincing answer","A reasonable and somewhat convincing answer","A complete and convincing answer"]],
+  ["Time limit", ["No pitch is given","Over a minute outside 3–5 minutes","Within a minute outside 3–5 minutes","Takes 3–5 minutes"]],
+  ["Quality of speaking", ["No pitch is given","Poorly prepared; struggles to give it","Reasonably prepared; minimal issues","Well prepared; no filler words, well paced, stays on topic"]]
+];
+
+/* ================= UNIT 1 VIEWS ================= */
+const U1_VIEWS = ["unit1","mlang","mquiz","mcalc","mcode","pitch"];
+const catChip = c => `<span class="chip u1c">${esc(U1CATS[c])}</span>`;
+
+V.home1 = {
+  render(){
+    const known = Object.keys(P.u1known || {}).length;
+    const coreN = MTERMS.filter(t => t.core).length;
+    view.innerHTML = unitSwitch("u1") + `
+      <section class="hero">
+        <span class="eyebrow">Unit 1 · Foundations of Ethics</span>
+        <h1>Learn the language of morality.</h1>
+        <p>The words you learn in Unit 1 (morality, intention, circumstances, natural law, telos) come back in every unit after this one and on the semester final. Make them yours, then get ready for your elevator pitch.</p>
+      </section>
+      <h2 class="section-title">Moral language</h2>
+      <div class="stations">
+        ${station("mlang","Moral Language Flashcards","Solo",`${MTERMS.length} terms from Unit 1, grouped by topic. Each card shows where the term comes back later. Filter to the ${coreN} core terms.`, `<span><b>${known}</b> / ${MTERMS.length} known</span>`)}
+        ${station("mcalc","Moral Calculus Lab","Solo or pairs","Weigh the action, the intention, and the circumstances, then judge the moral culpability. Starts with the cases from your reading.", P.mcalcDone ? `<span><b>${Object.keys(P.mcalcDone).length}</b> / ${MCALC.length} cases</span>` : `<span>${MCALC.length} cases</span>`)}
+        ${station("mquiz","Moral Language Quiz","Solo","Match definitions to terms and apply the concepts. Fifteen questions a round, with an explanation after each.", P.mquizBest != null ? `<span>Best <b>${P.mquizBest}</b> / 15</span>` : `<span>15 per round</span>`)}
+        ${station("mcode","Build Your Moral Code","Solo","Answer the six questions from the Week 4 case study in your own words. Your moral code saves here so you can come back to it all year.", `<span>${Object.values(P.mcode || {}).filter(v => v && v.trim()).length} / 6 answered</span>`)}
+      </div>
+      <h2 class="section-title" style="margin-top:28px">Unit 1 summative</h2>
+      <div class="stations">
+        ${station("pitch","Elevator Pitch Practice","Solo","“Why Ethics?” Check your answers to the three questions against the rubric, then time your pitch against the 3–5 minute window.", P.pitchLog && P.pitchLog.length ? `<span>Last run <b>${fmt(P.pitchLog[0].s)}</b></span>` : `<span>Timer, filler counter, rubric</span>`)}
+      </div>`;
+  }
+};
+
+/* ---- Moral Language Flashcards ---- */
+V.mlang = {
+  init(){ S = { cat:"all", core:false, view:"cards", deck:[], pos:0, flipped:false }; this.build(); },
+  pool(){ return MTERMS.map((t, i) => i).filter(i => (S.cat === "all" || MTERMS[i].c === S.cat) && (!S.core || MTERMS[i].core)); },
+  build(){ S.deck = this.pool(); S.pos = 0; S.flipped = false; },
+  render(){
+    P.u1known = P.u1known || {};
+    const n = S.deck.length, pool = this.pool(), knownIn = pool.filter(i => P.u1known[MTERMS[i].t]).length;
+    const filters = `<div class="filters" role="group" aria-label="Topic"><button type="button" data-act="cat" data-v="all" aria-pressed="${S.cat === "all"}">All topics</button>${Object.entries(U1CATS).map(([k, l]) => `<button type="button" data-act="cat" data-v="${k}" aria-pressed="${S.cat === k}">${esc(l)}</button>`).join("")}</div>`;
+    const toggles = `<div class="row"><label class="toggle"><input type="checkbox" id="core-only" data-act="core" ${S.core ? "checked" : ""}> Core moral language only</label>
+      <div class="tabs" role="group" aria-label="View"><button type="button" data-act="view" data-v="cards" aria-pressed="${S.view === "cards"}">Cards</button><button type="button" data-act="view" data-v="list" aria-pressed="${S.view === "list"}">Glossary</button></div></div>`;
+    let body;
+    if (S.view === "list") {
+      body = `<dl class="glossary">${pool.map(i => { const t = MTERMS[i]; return `<div><dt>${esc(t.t)}${t.core ? ' <span class="core-tag">Core</span>' : ""}</dt><dd>${esc(t.d)}${t.r ? `<span class="returns">Returns in: ${esc(t.r)}</span>` : ""}</dd></div>`; }).join("")}</dl>`;
+    } else if (!n) {
+      body = `<div class="prompt-card"><div class="big">No cards in this set.</div></div>`;
+    } else {
+      const t = MTERMS[S.deck[S.pos]];
+      body = `<div class="stats"><span>Card <b>${S.pos + 1}</b> of <b>${n}</b></span><span>Known <b>${knownIn}</b> / ${pool.length}</span></div>
+        <div class="progress" aria-hidden="true"><span style="width:${pool.length ? knownIn / pool.length * 100 : 0}%"></span></div>
+        <div class="card3d"><button type="button" class="flash${S.flipped ? " flipped" : ""}" data-act="flip" aria-label="${S.flipped ? "Show term" : "Show definition"}">
+          <div class="face u1face">${catChip(t.c)}<div class="term">${esc(t.t)}</div>${t.core ? '<span class="core-tag">Core moral language</span>' : ""}${P.u1known[t.t] ? '<span class="known-mark">✓ Known</span>' : ""}<span class="tap">Tap or press Space to flip</span></div>
+          <div class="face back u1face"><span class="eyebrow">${esc(t.t)}</span><p class="def">${esc(t.d)}</p>${t.r ? `<span class="returns">Returns in: ${esc(t.r)}</span>` : ""}</div>
+        </button></div>
+        <div class="row between">
+          <div class="row"><button class="btn" type="button" data-act="prev">← Prev</button><button class="btn" type="button" data-act="shuffle" ${n > 1 ? "" : "disabled"}>Shuffle</button></div>
+          <div class="row"><button class="btn" type="button" data-act="learning">Still learning</button><button class="btn primary" type="button" data-act="know">Know it →</button></div>
+        </div>`;
+    }
+    view.innerHTML = `<div class="view-head"><span class="eyebrow">Unit 1 · Moral language</span><h1>Moral Language Flashcards</h1>
+        <p>Say the definition out loud before you flip. “Core” terms are the ones you’ll keep using in Units 2 and 3 and on the semester final.</p></div>
+      <div class="stack">${filters}${toggles}${body}</div>`;
+  },
+  next(){ if (S.deck.length) { S.pos = (S.pos + 1) % S.deck.length; S.flipped = false; } },
+  click(act, el){
+    if (act === "cat") { S.cat = el.dataset.v; this.build(); }
+    if (act === "core") { S.core = el.checked; this.build(); }
+    if (act === "view") S.view = el.dataset.v;
+    if (act === "flip") { S.flipped = !S.flipped; view.querySelector(".flash").classList.toggle("flipped", S.flipped); return; }
+    if (act === "prev") { S.pos = (S.pos - 1 + S.deck.length) % S.deck.length; S.flipped = false; }
+    if (act === "shuffle") { S.deck = shuffle(S.deck); S.pos = 0; S.flipped = false; }
+    if (act === "know") { P.u1known[MTERMS[S.deck[S.pos]].t] = 1; saveP(); this.next(); }
+    if (act === "learning") { delete P.u1known[MTERMS[S.deck[S.pos]].t]; saveP(); this.next(); }
+    this.render();
+  },
+  key(e){
+    if (S.view !== "cards") return;
+    if (e.key === " " || e.key === "Enter") { if (e.target.closest("button") && !e.target.closest(".flash")) return; e.preventDefault(); this.click("flip"); }
+    if (e.key === "ArrowRight") { this.next(); this.render(); }
+    if (e.key === "ArrowLeft") this.click("prev");
+  }
+};
+
+/* ---- Moral Language Quiz ---- */
+V.mquiz = {
+  init(){
+    const defs = shuffle(MTERMS).slice(0, 9).map(t => {
+      const same = MTERMS.filter(x => x !== t && x.c === t.c), other = MTERMS.filter(x => x !== t && x.c !== t.c);
+      const wrong = shuffle(same).slice(0, 3); while (wrong.length < 3) wrong.push(shuffle(other)[0]);
+      const o = shuffle([t, ...wrong]);
+      return { q:"Which term matches this definition?", d:t.d, o:o.map(x => x.t), a:o.indexOf(t), e:t.t + ": " + t.d, cat:t.c };
+    });
+    const con = shuffle(MCQ).slice(0, 6).map(x => { const ord = shuffle([0,1,2,3]); return { q:x.q, o:ord.map(k => x.o[k]), a:ord.indexOf(x.a), e:x.e }; });
+    S = { qs: shuffle([...defs, ...con]), i:0, picked:null, score:0, missed:[], done:false };
+  },
+  render(){
+    const head = `<div class="view-head"><span class="eyebrow">Unit 1 · Moral language</span><h1>Moral Language Quiz</h1>
+      <p>Nine definition matches and six questions that apply the ideas. Read the explanation after each answer.</p></div>`;
+    if (S.done) {
+      view.innerHTML = head + `<div class="stack"><div class="panel stack" style="text-align:center;justify-items:center"><span class="eyebrow">Your score</span>
+        <div class="scorebig num">${S.score}/${S.qs.length}</div><button class="btn primary" type="button" data-act="again">New round</button></div>
+        ${S.missed.length ? `<h2 class="section-title">Review what you missed</h2><ul class="missed">${S.missed.map(q => `<li class="stack" style="gap:4px"><b>${esc(q.d ? q.o[q.a] : q.q)}</b><span class="muted">${esc(q.e)}</span></li>`).join("")}</ul>` : ""}</div>`;
+      return;
+    }
+    const q = S.qs[S.i], done = S.picked !== null;
+    view.innerHTML = head + `<div class="stack">
+      <div class="stats"><span>Question <b>${S.i + 1}</b> of <b>${S.qs.length}</b></span><span>Score <b>${S.score}</b></span></div>
+      <div class="progress" aria-hidden="true"><span style="width:${(S.i + (done ? 1 : 0)) / S.qs.length * 100}%"></span></div>
+      <div class="panel stack">${q.cat ? catChip(q.cat) : ""}<p class="q-text">${esc(q.q)}</p>${q.d ? `<blockquote class="defq">${esc(q.d)}</blockquote>` : ""}
+        <div class="opts">${q.o.map((o, k) => { let cls = "opt"; if (done) cls += k === q.a ? " right" : k === S.picked ? " wrong" : " dim";
+          return `<button type="button" class="${cls}" data-act="pick" data-k="${k}" ${done ? "disabled" : ""}><span class="k">${"ABCD"[k]}</span><span>${esc(o)}</span></button>`; }).join("")}</div>
+        ${done ? `<div class="feedback${S.picked === q.a ? "" : " no"}" role="status"><b>${S.picked === q.a ? "Correct." : "Not quite. The answer is " + "ABCD"[q.a] + "."}</b>${esc(q.e)}</div>
+        <div class="row end"><button class="btn primary" type="button" data-act="next">${S.i + 1 < S.qs.length ? "Next question →" : "See my score"}</button></div>` : ""}
+      </div></div>`;
+    if (done) view.querySelector('[data-act="next"]').focus();
+  },
+  click(act, el){
+    if (act === "again") this.init();
+    if (act === "pick" && S.picked === null) { S.picked = +el.dataset.k; const q = S.qs[S.i]; if (S.picked === q.a) S.score++; else S.missed.push(q); }
+    if (act === "next") { if (S.i + 1 < S.qs.length) { S.i++; S.picked = null; } else { S.done = true; P.mquizBest = Math.max(P.mquizBest ?? 0, S.score); saveP(); } }
+    this.render();
+  },
+  key(e){ if (S.done || S.picked !== null) return; const k = "abcd1234".indexOf(e.key.toLowerCase()); if (k >= 0) { const b = view.querySelector(`[data-k="${k % 4}"]`); if (b) this.click("pick", b); } }
+};
+
+/* ---- Moral Calculus Lab ---- */
+const CALC_ROWS = [["a","1. Action","What is the moral quality of the action itself?",ACTQ],["i","2. Intention","What was the intention of the person who acted?",INTQ],["c","3. Circumstances","Do the circumstances mitigate or intensify culpability?",CIRQ],["k","= Moral culpability","How much moral culpability does the person bear?",CULQ]];
+V.mcalc = {
+  init(){ S = { ci:0, pick:{}, checked:false, why:"" }; },
+  render(){
+    const c = MCALC[S.ci];
+    const picker = `<div class="case-pick" role="group" aria-label="Choose a case">${MCALC.map((x, i) => `<button type="button" data-act="case" data-i="${i}" aria-pressed="${i === S.ci}">${esc(x.t)}${P.mcalcDone && P.mcalcDone[x.id] ? ' <span class="d">✓</span>' : ""}</button>`).join("")}</div>`;
+    const right = CALC_ROWS.filter(([k]) => S.pick[k] === c.m[k]).length;
+    view.innerHTML = `<div class="view-head"><span class="eyebrow">Unit 1 · The moral calculus</span><h1>Moral Calculus Lab</h1>
+        <p class="formula">Action(s) + Intention(s) + Circumstance(s) = Moral Culpability</p>
+        <p>Judge each part, then compare with the model reasoning. The formula is “flawed because of its simplicity,” so read the explanation even when you match it.</p></div>
+      <div class="stack">${picker}
+        <div class="panel stack"><span class="eyebrow">${c.reading ? "From your reading · " : ""}Case ${S.ci + 1} of ${MCALC.length}</span><h2 class="step-h">${esc(c.t)}</h2><p class="case-text">${esc(c.s)}</p></div>
+        ${CALC_ROWS.map(([k, lab, q, opts]) => `<section class="calc-row${k === "k" ? " total" : ""}"><div><b>${lab}</b><span class="muted">${esc(q)}</span></div>
+          <div class="seg" role="group" aria-label="${esc(lab)}">${opts.map((o, n) => { let cls = ""; if (S.checked) { if (n === c.m[k]) cls = "right"; else if (S.pick[k] === n) cls = "wrong"; }
+            return `<button type="button" class="${cls}" data-act="pick" data-k="${k}" data-n="${n}" aria-pressed="${S.pick[k] === n}" ${S.checked ? "disabled" : ""}>${esc(o)}</button>`; }).join("")}</div></section>`).join("")}
+        <label class="fl" for="calc-why">Your reasoning (optional)<textarea id="calc-why" rows="3" data-why="1" placeholder="Why did you judge it this way?">${esc(S.why)}</textarea></label>
+        ${S.checked ? `<div class="feedback${right === 4 ? "" : " no"}" role="status"><b>${right} of 4 match the model.</b>${esc(c.m.e)}</div>
+          <div class="row end"><button class="btn primary" type="button" data-act="next">Next case →</button></div>`
+        : `<div class="row end"><button class="btn primary" type="button" data-act="check" ${Object.keys(S.pick).length === 4 ? "" : "disabled"}>Compare with the model</button></div>`}
+      </div>`;
+  },
+  click(act, el){
+    if (act === "case") { S = { ci:+el.dataset.i, pick:{}, checked:false, why:"" }; }
+    if (act === "pick") { S.pick[el.dataset.k] = +el.dataset.n; }
+    if (act === "check") { S.checked = true; P.mcalcDone = P.mcalcDone || {}; P.mcalcDone[MCALC[S.ci].id] = 1; saveP(); }
+    if (act === "next") { S = { ci:(S.ci + 1) % MCALC.length, pick:{}, checked:false, why:"" }; window.scrollTo({ top:0, behavior: reduceMotion ? "auto" : "smooth" }); }
+    this.render();
+  },
+  input(e){ if (e.target.dataset.why) S.why = e.target.value; }
+};
+
+/* ---- Build Your Moral Code ---- */
+V.mcode = {
+  render(){
+    P.mcode = P.mcode || {};
+    view.innerHTML = `<div class="view-head"><span class="eyebrow">Unit 1 · Week 4 case study</span><h1>Build Your Moral Code</h1>
+        <p>Answer each question in your own words. Your moral code saves in this browser, so you can return to it as your thinking grows over the year.</p></div>
+      <div class="stack">${MCODE.map((m, n) => `<section class="panel stack"><h2 class="step-h"><span class="num">${n + 1}</span>${esc(m.q)}</h2>
+          <p class="muted">${esc(m.help)}</p>
+          <label class="fl" for="mc-${m.k}"><span class="sr">${esc(m.q)}</span><textarea id="mc-${m.k}" data-mc="${m.k}" rows="4">${esc(P.mcode[m.k] || "")}</textarea></label></section>`).join("")}
+        <div class="row between"><button class="btn" type="button" data-act="clear">Clear my moral code</button>
+          <div class="row"><span class="muted" id="copy-msg" role="status"></span><button class="btn primary" type="button" data-act="copy">Copy my moral code</button></div></div>
+        <textarea id="mc-all" class="sr" readonly tabindex="-1" aria-hidden="true"></textarea>
+      </div>`;
+  },
+  text(){ return "MY MORAL CODE\n\n" + MCODE.map((m, n) => `${n + 1}. ${m.q}\n${(P.mcode[m.k] || "").trim() || "(not answered yet)"}`).join("\n\n"); },
+  click(act, el){
+    if (act === "copy") {
+      const t = this.text(), msg = $("#copy-msg");
+      const fallback = () => { const a = $("#mc-all"); a.value = t; a.classList.remove("sr"); a.select(); msg.textContent = "Press Ctrl+C or ⌘C to copy."; };
+      try { navigator.clipboard.writeText(t).then(() => { msg.textContent = "Copied."; }, fallback); } catch (e) { fallback(); }
+      return;
+    }
+    if (act === "clear") { if (el.dataset.armed) { P.mcode = {}; saveP(); this.render(); } else { el.dataset.armed = 1; el.textContent = "Click again to clear"; } }
+  },
+  input(e){ const k = e.target.dataset.mc; if (k) { P.mcode[k] = e.target.value; clearTimeout(this._t); this._t = setTimeout(saveP, 400); } }
+};
+
+/* ---- Elevator Pitch Practice ---- */
+const zone = s => s < 120 ? ["bad","Under 2:00 · 1/3 range"] : s < 180 ? ["warn","2:00–3:00 · 2/3 range"] : s <= 300 ? ["good","3:00–5:00 · on time"] : s <= 360 ? ["warn","5:00–6:00 · 2/3 range"] : ["bad","Over 6:00 · 1/3 range"];
+V.pitch = {
+  init(){ S = { running:false, t0:0, acc:0, timer:null, fill:{um:0,like:0,yk:0}, rub:{} }; },
+  stop(){ if (S.timer) { clearInterval(S.timer); S.timer = null; } },
+  secs(){ return Math.floor((S.acc + (S.running ? performance.now() - S.t0 : 0)) / 1000); },
+  render(){
+    P.pitch = P.pitch || {}; P.pitchLog = P.pitchLog || [];
+    const s = this.secs(), [zc, zl] = zone(s), tot = Object.values(S.rub).reduce((a, b) => a + b, 0);
+    view.innerHTML = `<div class="view-head"><span class="eyebrow">Unit 1 summative</span><h1>Elevator Pitch Practice</h1>
+        <p>“Why Ethics?” You have 3–5 minutes to convince Mr. Effron of your commitment to this course.</p></div>
+      <div class="stack">
+        <div class="feedback hint"><b>The rules</b>Prepare outside of class, using only class readings, videos, and notes. Build your own argument: no outside articles, classmate collaboration, or AI help. You can practice with a script, but you can’t bring anything into the pitch. This page only helps you check and time your own work; it won’t write anything for you.</div>
+        <h2 class="section-title">1 · Answer the three questions</h2>
+        ${PITCH_QS.map((p, n) => `<section class="panel stack"><h3 class="step-h"><span class="num">Q${n + 1}</span>${esc(p.q)}</h3>
+          <ul class="testlist">${p.test.map(t => `<li>${esc(t)}</li>`).join("")}</ul>
+          <label class="fl" for="pq-${n}">My notes<textarea id="pq-${n}" data-pq="${n}" rows="4">${esc(P.pitch[n] || "")}</textarea></label></section>`).join("")}
+        <h2 class="section-title">2 · Time it</h2>
+        <section class="panel stack pitch-timer">
+          <div class="row between"><span class="clock num zone-${zc}" id="pclock">${fmt(s)}</span><span class="zone-label zone-${zc}" id="pzone">${zl}</span></div>
+          <div class="zonebar" aria-hidden="true"><span style="left:${Math.min(s, 420) / 420 * 100}%" id="pmark"></span></div>
+          <div class="zonelabels muted" aria-hidden="true">${[[0,"0"],[120,"2:00"],[180,"3:00"],[300,"5:00"],[360,"6:00"],[420,"7:00"]].map(([v, l]) => `<span style="left:${v / 420 * 100}%">${l}</span>`).join("")}</div>
+          <div class="row"><button class="btn primary" type="button" data-act="toggle">${S.running ? "Pause" : s ? "Resume" : "Start"}</button><button class="btn" type="button" data-act="done" ${s || S.running ? "" : "disabled"}>Finish run</button><button class="btn" type="button" data-act="reset" ${s || S.running ? "" : "disabled"}>Reset</button></div>
+          <div class="stack" style="gap:6px"><span class="eyebrow">Filler words (tap each time you hear one, or listen back to a recording)</span>
+            <div class="row">${[["um","Um / uh"],["like","Like"],["yk","You know"]].map(([k, l]) => `<button class="btn counter" type="button" data-act="fill" data-k="${k}">${l} <b class="num">${S.fill[k]}</b></button>`).join("")}</div></div>
+          ${P.pitchLog.length ? `<div class="stack" style="gap:6px"><span class="eyebrow">Recent runs</span><ul class="runs">${P.pitchLog.map(r => `<li><span class="num zone-${zone(r.s)[0]}">${fmt(r.s)}</span><span class="muted">${r.f} filler word${r.f === 1 ? "" : "s"}</span></li>`).join("")}</ul></div>` : ""}
+        </section>
+        <h2 class="section-title">3 · Score yourself with the rubric</h2>
+        <section class="panel stack">${PITCH_RUBRIC.map(([lab, lv], r) => `<div class="rub-row"><b>${esc(lab)}</b>
+            <div class="seg rub" role="group" aria-label="${esc(lab)}">${[3,2,1,0].map(v => `<button type="button" data-act="rub" data-r="${r}" data-v="${v}" aria-pressed="${S.rub[r] === v}"><b>${v}/3</b><span>${esc(lv[v])}</span></button>`).join("")}</div></div>`).join("")}
+          <div class="row between"><span class="muted">Be honest: this is for you.</span><b class="num">${tot} / 15</b></div></section>
+      </div>`;
+  },
+  tick(){ const s = this.secs(), [zc, zl] = zone(s); const c = $("#pclock"), z = $("#pzone"), m = $("#pmark");
+    if (c) { c.textContent = fmt(s); c.className = "clock num zone-" + zc; } if (z) { z.textContent = zl; z.className = "zone-label zone-" + zc; } if (m) m.style.left = Math.min(s, 420) / 420 * 100 + "%"; },
+  click(act, el){
+    if (act === "toggle") { if (S.running) { S.acc += performance.now() - S.t0; S.running = false; this.stop(); } else { S.t0 = performance.now(); S.running = true; this.stop(); S.timer = setInterval(() => { if (V.current !== "pitch") return this.stop(); this.tick(); }, 250); } }
+    if (act === "reset" || act === "done") {
+      if (act === "done") { const s = this.secs(); P.pitchLog = [{ s, f:S.fill.um + S.fill.like + S.fill.yk }, ...(P.pitchLog || [])].slice(0, 6); saveP(); }
+      this.stop(); Object.assign(S, { running:false, acc:0, fill:{um:0,like:0,yk:0} });
+    }
+    if (act === "fill") { S.fill[el.dataset.k]++; el.querySelector("b").textContent = S.fill[el.dataset.k]; return; }
+    if (act === "rub") S.rub[el.dataset.r] = +el.dataset.v;
+    this.render();
+  },
+  input(e){ const n = e.target.dataset.pq; if (n != null) { P.pitch[n] = e.target.value; clearTimeout(this._t); this._t = setTimeout(saveP, 400); } }
+};
+
+V.unit1 = { render(){ P.unit = "u1"; saveP(); V.home.render(); } };
+V.unit2 = { render(){ P.unit = "u2"; saveP(); V.home.render(); } };
+const U2_VIEWS = ["unit2","vlab","defs","traits","spot","toolkit"];
+V.landing = {
+  render(){
+    view.innerHTML = `<section class="landing">
+      <div class="landing-head"><span class="eyebrow">Ethics · La Lumiere</span>
+        <h1>Ethics Study Lab</h1>
+        <p>Choose the unit you’re studying for.</p></div>
+      <div class="unit-cards">
+        <a class="unit-card" href="#unit1">
+          <span class="eyebrow">Unit 1</span><h2>Foundations of Ethics</h2>
+          <p>The language of morality, the moral calculus, natural law, and the “Why Ethics?” elevator pitch.</p>
+          <div class="theories"><span class="chip u1c">Moral language</span><span class="chip u1c">Moral calculus</span><span class="chip u1c">Natural law</span></div>
+          <span class="go">5 stations · Flashcards, calculus, moral code, pitch <span aria-hidden="true">→</span></span></a>
+        <a class="unit-card" href="#unit2">
+          <span class="eyebrow">Unit 2</span><h2>Virtue Ethics</h2>
+          <p>The four cardinal virtues and the four-step case study method.</p>
+          <div class="theories">${VIRTUES.map(v => vchip(v.k)).join("")}</div>
+          <span class="go">5 stations · Case Lab, definitions, characteristics <span aria-hidden="true">→</span></span></a>
+        <a class="unit-card" href="#unit3">
+          <span class="eyebrow">Unit 3</span><h2>Normative Theories</h2>
+          <p>Virtue ethics, social contract theory, deontology, and utilitarianism, built around the unit test.</p>
+          <div class="theories">${["ve","sct","deon","util"].map(k => `<span class="chip t-${k}">${TH[k].name}</span>`).join("")}</div>
+          <span class="go">8 stations · Quiz, flashcards, Case Lab, Jeopardy <span aria-hidden="true">→</span></span></a>
+      </div></section>`;
+  }
+};
+V.unit3 = { render(){ P.unit = "u3"; saveP(); V.home.render(); } };
+
 /* ================= ROUTER ================= */
 function route(){
   const name = location.hash.slice(1);
-  const next = V[name] && name !== "home" ? name : "home";
-  if (V.current === "describe" && next !== "describe") V.describe.stop();
+  const next = V[name] && !["home","landing"].includes(name) ? name : "landing";
+  if (V.current && V[V.current] && V[V.current].stop && next !== V.current) V[V.current].stop();
   V.current = next;
-  $("#homeLink").hidden = next === "home";
+  document.body.dataset.view = next;
+  if (!["landing","unit1","unit2","unit3"].includes(next)) { P.unit = U2_VIEWS.includes(next) ? "u2" : U1_VIEWS.includes(next) ? "u1" : "u3"; saveP(); }
+  const un = (P.unit || "u3").slice(1);
+  $("#homeLink").hidden = ["landing","unit1","unit2","unit3"].includes(next);
+  $("#homeLink").href = "#unit" + un;
+  $("#homeLink").textContent = "All Unit " + un + " stations";
   if (V[next].init) V[next].init();
   V[next].render();
   window.scrollTo(0, 0);
