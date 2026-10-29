@@ -332,6 +332,13 @@ body[data-view="landing"] .bar{display:none}
 .stepper .lbl{min-width:0}
 .step-h{font-size:clamp(22px,3.2vw,28px);font-weight:700;display:flex;gap:10px;align-items:baseline}
 .prompts{margin:0;padding-left:20px;display:grid;gap:4px}
+.evalbox{border-left:4px solid var(--accent)}
+.evrub,.evlist{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.evrub li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-bottom:6px}
+.evlist>li{display:grid;gap:4px}
+.evnotes{margin:0;padding-left:20px;color:var(--ink);display:grid;gap:2px}
+.ev-s{font-weight:700;white-space:nowrap}.ev-3{color:var(--good)}.ev-2{color:var(--util)}.ev-1,.ev-0{color:var(--bad)}
+.evfine{font-size:14px}
 .feedback.hint{border-left-color:var(--accent)}
 .quickref{background:var(--sunk);border-radius:10px;padding:10px 14px}
 .quickref summary{cursor:pointer;font-weight:700}
@@ -1123,20 +1130,20 @@ const VIRTUES = [
 ];
 
 const STEPS = [
-  { n:1, t:"Name the issues", q:["Primary issue (in question form)","Secondary issues","Key stakeholders: who is impacted by, or impacts, the case"], tip:"Bullet points are fine. Write the primary issue as one question about what someone should do." },
-  { n:2, t:"Name the virtues", q:["Name and define each virtue that applies to the case","What key elements of each virtue apply, broadly, to this case?"], tip:"Use the class definitions, then name one or two essential characteristics of each virtue that fit this case." },
-  { n:3, t:"Match virtues to people", q:["What virtues apply to each key stakeholder?","How and why do they apply?"], tip:"Go stakeholder by stakeholder. Use details from the case: names, quotes, and the choices people make." },
-  { n:4, t:"Respond and defend", q:["What is the most virtuous response to the primary issue, and why? Defend it using virtue ethics.","What objection might someone have to your stance, and why are you right?"], tip:"Open with a clear answer. Defend it with the virtues working together, then write: “Some would argue… but…”" }
+  { n:1, t:"Name the issues", q:["What are the moral tensions or dilemmas? Name the primary issue (in question form) and any secondary issues.","Who are the key stakeholders: who is impacted by, or impacts, the case?"], tip:"Bullet points are fine. Write the primary issue as one question about what someone should do." },
+  { n:2, t:"Name the virtues", q:["Which cardinal virtue(s) are most important in this situation, and why?","Define the virtue(s) briefly in your own words.","Which elements or characteristics of these virtues help guide decision-making in this case?"], tip:"Define each virtue briefly in your own words (the class definition is a good anchor), then name the essential characteristics that fit this case." },
+  { n:3, t:"Match virtues to people", q:["How would a person of strong character (a virtuous person) respond to this situation?","What virtues should guide each of the key stakeholders?","What would this look like in action for each stakeholder?"], tip:"Go stakeholder by stakeholder. Use details from the case: names, quotes, and the choices people make." },
+  { n:4, t:"Respond and defend", q:["What is the most virtuous response to the main moral issue, and why? Defend your answer with moral reasoning rooted in virtue ethics.","Acknowledge possible objections or complications and respond to them."], tip:"Open with a clear answer. Defend it with the virtues working together, then write: “Some would argue… but…”" }
 ];
 
 const RUBRIC = [
   [1,"My primary issue is one question about what someone should do."],
   [1,"I named at least two secondary issues."],
   [1,"I listed every key stakeholder, including people affected who are not in the spotlight."],
-  [2,"I named each virtue that applies and gave its class definition."],
+  [2,"I named the virtues most important here and defined each briefly in my own words."],
   [2,"I named key elements of each virtue that fit this case."],
   [3,"I matched virtues to each stakeholder, not just the main character."],
-  [3,"I explained how and why, using specific details from the case."],
+  [3,"I described what virtuous action would look like for each stakeholder, using specific details from the case."],
   [4,"I gave a clear answer to the primary issue."],
   [4,"I defended it with virtue language: the cardinal virtues working together, the mean, or habit."],
   [4,"I stated a fair objection and answered it."]
@@ -1471,6 +1478,7 @@ V.vlab = {
         ${S.step === 2 || S.step === 3 ? quickRef() : ""}
         <label class="fl" for="u2-ans-${s.n}">Your answer<textarea id="u2-ans-${s.n}" data-step="${s.n}" rows="${s.n === 1 ? 6 : 8}">${esc(d[s.n])}</textarea></label>
         ${this.counter(s.n, d[s.n])}
+        ${S.step === 4 ? `<div class="row"><button class="btn" type="button" data-act="evalu2">${S.ev ? "Check again" : "Check my answer"}</button><span class="muted">A quick estimate against the essay rubric. It points out what’s missing, never what to write.</span></div>${S.ev ? evalPanelU2(c, d) : ""}` : ""}
         <div class="row between"><button class="btn" type="button" data-act="go" data-n="${S.step - 1}" ${S.step === 1 ? "disabled" : ""}>← Back</button>
           <button class="btn primary" type="button" data-act="go" data-n="${S.step + 1}">${S.step === 4 ? "Compare with the model →" : "Next step →"}</button></div>
       </section>`;
@@ -1490,6 +1498,7 @@ V.vlab = {
     const d = this.draft(), ck = S.checks[c.id] || {};
     const got = Object.values(ck).filter(Boolean).length;
     return caseCard(c, false) + (S.mode === "steps" ? this.stepper() : "") + `
+      ${evalPanelU2(c, d)}
       <p class="muted">Read the ${c.teacher ? "teacher’s sample" : "model answer"} next to yours, step by step. It shows one strong answer at about blue book length; yours can reach a different conclusion if you defend it well.</p>
       ${STEPS.map(s => `<section class="compare-step"><h2 class="step-h"><span class="num">${s.n}</span>${esc(s.t)}</h2>
         <div class="compare">
@@ -1536,6 +1545,8 @@ V.vlab = {
       const n = Object.values(S.checks[c.id]).filter(Boolean).length; const b = $("#ckcount"); if (b) b.textContent = n + " / " + RUBRIC.length; return; }
     if (act === "restart") { if (el.dataset.armed) { P.u2[c.id][this.key()] = blankDraft(); saveP(); S.step = 1; S.bbDone = false; S.started = false; S.checks[c.id] = {}; } else { el.dataset.armed = 1; el.textContent = "Click again to clear"; return; } }
     if (act === "next") { this.stop(); Object.assign(S, { ci:(S.ci + 1) % VCASES.length, step:1, started:false, bbDone:false }); }
+    if (act === "evalu2") S.ev = true;
+    if (act === "case" || act === "next" || act === "mode") S.ev = false;
     if (act === "mins") S.mins = +el.dataset.v;
     if (act === "start") { S.started = true; S.left = S.mins * 60; this.stop();
       S.timer = setInterval(() => { if (V.current !== "vlab") return this.stop(); S.left = Math.max(0, S.left - 1);
@@ -1551,6 +1562,155 @@ V.vlab = {
     const w = $("#wc-" + n); if (w) { const k = wc(e.target.value), m = GATES.caseMinWords[n]; w.textContent = `${k} / ${m} words${k >= m ? " ✓" : " to open the model answer"}`; w.classList.toggle("ok", k >= m); } }
 };
 const fmt = s => Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+
+/* ================= PRACTICE EVALUATORS =================
+   A quick estimate of how complete an answer is. They check whether each part of the assignment is there;
+   they never suggest content, and they can't judge how good the reasoning is. */
+const EV = (() => {
+  const STOP = new Set("the a an and or of to in on for with by is are was were be been it its this that these those as at from into about their his her our your my they them he she we you i not no but if so than then there what who whom which when where why how each every any some more most other another can could would should may might will just also only very".split(" "));
+  const words = t => (t || "").toLowerCase().match(/[a-z][a-z’'-]*/g) || [];
+  const wcount = t => ((t || "").trim().match(/\S+/g) || []).length;
+  const stem = w => w.replace(/[’']s$/, "").slice(0, 5);
+  const stems = t => new Set(words(t).filter(w => w.length > 2 && !STOP.has(w)).map(stem));
+  const has = (t, re) => re.test((t || "").toLowerCase());
+  const VRE = { pru:/\bpruden(ce|t)\b/, jus:/\bjustice\b/, tem:/\btemperan(ce|t)|\btemperate\b/, for:/\bfortitude\b|\bcourage(ous)?\b|\bbrave(ry)?\b/ };
+  const virtuesIn = t => Object.keys(VRE).filter(k => has(t, VRE[k]));
+  /* a stakeholder counts as mentioned if one of the distinctive words in its label appears */
+  const stakeKeys = label => [...stems(label.replace(/\(.*?\)/g, ""))].filter(s => !["peopl","famil","other","key","publi","wider","whole","membe"].includes(s) || label.split(" ").length < 3);
+  const stakesHit = (c, t) => { const st = stems(t); return c.m.st.filter(l => stakeKeys(l).some(k => st.has(k))).length; };
+  const caseDetail = c => { const set = new Set(); c.s.join(" ").replace(/[“”"]/g, " ").split(/\s+/).forEach(w => { const x = w.replace(/[^A-Za-z0-9$%’'-]/g, ""); if ((/^[A-Z][a-z]/.test(x) || /\d/.test(x)) && x.length > 2 && !STOP.has(x.toLowerCase())) set.add(stem(x.toLowerCase())); }); return set; };
+  const defOk = (k, t) => { const r = RECALL.find(x => x.k === k); if (!r) return true; const low = (t || "").toLowerCase(); const hit = r.need.filter(g => g.some(w => low.includes(w))).length;
+    if (hit >= Math.ceil(r.need.length * 0.66)) return true;
+    const name = { pru:"(prudence)", jus:"(justice)", tem:"(temperance)", for:"(fortitude|courage)" }[k];
+    return new RegExp(name + "[^.?!]{0,12}\\b(is|means|refers to|which is|defined as|=|:|–|—|,)\\s*\\S+(\\s+\\S+){3,}").test(low); };
+  const GENERICS = new Set(["virtu","good","right","actio","thing","perso","peopl","other","makes","great","prope","parts","goals","becom","willi","needs","place"]);
+  const charOk = (k, t) => { const v = VIRTUES.find(x => x.k === k); const st = stems(t); return [...v.ch, ...(v.ch2 || [])].some(ph => { const p = [...stems(ph)].filter(s => !GENERICS.has(s)); const hit = p.filter(s => st.has(s)).length; return p.length && hit >= (p.length <= 2 ? 1 : 2); }); };
+  const score = (t, fails, max = 3) => !(t || "").trim() ? 0 : Math.max(0, max - fails.length);
+
+  function u2(c, d){
+    const out = [];
+    /* Step 1 */
+    { const t = d[1] || "", f = [];
+      if (!t.trim()) f.push("Not answered yet.");
+      else {
+        if (!/\?/.test(t)) f.push("Write your primary issue as a question about what someone should do.");
+        const items = t.split(/\n|;|•/).map(x => x.trim()).filter(Boolean).length;
+        if (items < 4 && !/secondary/i.test(t)) f.push("Name the secondary issues, not just the main one.");
+        const hit = stakesHit(c, t), need = Math.min(3, c.m.st.length);
+        if (hit < need) f.push("Your list of key stakeholders looks short. Who else is affected by this case, or affects it?");
+      }
+      out.push({ n:1, s:score(t, f), f }); }
+    /* Step 2 */
+    { const t = d[2] || "", f = [], vs = virtuesIn(t);
+      if (!t.trim()) f.push("Not answered yet.");
+      else if (!vs.length) f.push("Name the cardinal virtue or virtues most important to this case.", "Define each one briefly in your own words.", "Name the elements or characteristics that guide decision-making here.");
+      else {
+        const noDef = vs.filter(k => !defOk(k, t)).map(vname);
+        if (noDef.length) f.push(`Define ${noDef.join(" and ")} briefly in your own words.`);
+        const noCh = vs.filter(k => !charOk(k, t));
+        if (noCh.length > Math.floor(vs.length / 2)) f.push(`Name the essential characteristics (key elements) that guide decision-making here, especially for ${noCh.map(vname).join(" and ")}.`);
+        if (wcount(t) < 40) f.push("This step needs more development.");
+      }
+      out.push({ n:2, s:Math.min(3, score(t, f)), f }); }
+    /* Step 3 */
+    { const t = d[3] || "", f = [];
+      if (!t.trim()) f.push("Not answered yet.");
+      else {
+        const hit = stakesHit(c, t), need = Math.min(3, c.m.st.length);
+        if (hit < need) f.push(`Go stakeholder by stakeholder: you discussed ${hit} of the people in this case. Strong answers cover at least ${need}.`);
+        if (virtuesIn(t).length < 2) f.push("Name the virtues that should guide each stakeholder, and say how and why they apply.");
+        if (!/\b(should|would|needs?|must|ought to|could|can|will|owes?|is owed|are owed|has to|have to|requires?)\b/.test(t.toLowerCase())) f.push("Describe what acting virtuously would look like in action for each stakeholder.");
+        const det = caseDetail(c), st = stems(t), used = [...det].filter(s => st.has(s)).length;
+        if (used < 2 && !/[“"][^”"]{3,}[”"]/.test(t)) f.push("Use specific details from the case (names, choices, facts) to support your points.");
+        if (wcount(t) < 60) f.push("This step needs more development.");
+      }
+      out.push({ n:3, s:Math.min(3, score(t, f)), f }); }
+    /* Step 4 */
+    { const t = d[4] || "", f = [], low = t.toLowerCase();
+      if (!t.trim()) f.push("Not answered yet.");
+      else {
+        if (!/\b(should|must|ought|needs? to|has to|have to|is (wrong|right|justified|ethical|unethical|not)|was (wrong|right|justified|ethical|unethical)|virtuous (response|choice|action|thing))\b/.test(low)) f.push("State your answer to the primary issue clearly.");
+        const vocab = (low.match(/\b(prudence|prudent|justice|temperance|temperate|fortitude|courage|virtue|virtuous|vice|habit|mean|character|eudaimonia|right relationship|common good)\b/g) || []);
+        if (new Set(vocab).size < 2) f.push("Defend your answer with virtue ethics: show which virtues support it and how.");
+        const obj = /(some (people )?(would|might|may|could) (argue|say|object|think|claim)|others? (would|might|may|could) (argue|say|object)|one (might|could) (object|argue)|someone (might|could|would) (argue|say|object)|critics?|objection|opponents?|on the other hand|it could be argued)/.test(low);
+        if (!obj) f.push("Raise a fair objection to your answer and respond to it.");
+        else if (!/\b(but|however|yet|still|even so|nevertheless|although|though|while)\b/.test(low)) f.push("Answer the objection you raised: explain why your position still holds.");
+        if (wcount(t) < 50) f.push("This step needs more development.");
+        if (wcount(t) < 25) f.push("Your defense needs more than a sentence or two.");
+      }
+      out.push({ n:4, s:Math.min(3, score(t, f)), f }); }
+    return out;
+  }
+
+  /* Unit 1 pitch: class connections come from Unit 1 terms and readings */
+  const GENERIC = new Set(["ethics","morality","truth","love","means","habit","intention","circumstances","rule","human agency","guiding principles","primary good","subjective truth","objective truth"]);
+  let CLASS = null;
+  const classTerms = () => CLASS || (CLASS = [...new Set([
+    ...MTERMS.flatMap(t => t.t.toLowerCase().replace(/\(.*?\)/g, "").split(/\/| and | vs\. /)).map(s => s.trim().replace(/^the /, "")).filter(s => s.length > 3 && !GENERIC.has(s)),
+    "aristotle","plato","socrates","augustine","aquinas","macintyre","after virtue","milgram","stanford prison","zimbardo","enron","gyges","cave","mattison","nicomachean","eudaimonia","flourish","telos","virtue","natural law","human dignity","imago dei","free will","freedom for excellence","common good","synderesis","problem of evil","moral calculus","culpability","double effect","ultimate end","good life","moral code","why ethics matter"])]);
+  const classHit = t => { const low = (t || "").toLowerCase(); return classTerms().some(term => new RegExp("\\b" + term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).test(low)); };
+  const REASON = /\b(because|since|so|therefore|which means|that means|that’s why|that's why|this is why|for this reason|as a result|in order to)\b/;
+  const SPECIFIC = [
+    [/\b(every|everyone|everybody|all (people|humans|of us)|humans?|human beings?|people|person|we|our|society)\b/, "Make sure this answer applies to every human being, not only to you."],
+    [/\b(i|i’m|i'm|my|me)\b[\s\S]*\b(will|want|plan|hope|future|career|goal|college|job|someday|become|become|after)\b|\b(future|career|goal)\b[\s\S]*\b(i|my|me)\b/, "Make it personal: tie it to your own future, goals, or career."],
+    [/\b(different|change|changed|become|grow|growth|better|improve)\b/, "Say how you will be different because of this class."]
+  ];
+  function pitch(notes){
+    const out = PITCH_QS.map((q, n) => {
+      const t = notes[n] || "", f = [];
+      if (!t.trim()) return { n:n + 1, s:0, f:["Not answered yet."] };
+      const w = wcount(t); let ded = 0;
+      if (w < 15) { f.push("Needs more substance: this answer is very thin so far."); ded += 2; }
+      else if (w < 40) { f.push("Needs more substance: develop this answer further."); ded += 1; }
+      if (!classHit(t)) { f.push("Connect this answer to ideas, readings, or examples from class."); ded++; }
+      if (!REASON.test(t.toLowerCase())) { f.push("Give reasons, not just claims: explain why."); ded++; }
+      const [re, msg] = SPECIFIC[n]; if (!re.test(t.toLowerCase())) { f.push(msg); ded++; }
+      if (n === 2 && !/\b(success|successful|succeed)\b/i.test(t)) { f.push("Say what success will look like for you, and why it counts as success."); ded++; }
+      return { n:n + 1, s:Math.max(1, 3 - ded), f };
+    });
+    const total = notes.slice(0, 3).reduce((a, t) => a + wcount(t), 0);
+    return { qs:out, words:total };
+  }
+  return { u2, pitch, wcount };
+})();
+
+const evalLevel = (got, max) => got / max >= .9 ? "Complete" : got / max >= .67 ? "Mostly complete" : got / max >= .4 ? "Partly complete" : "Just started";
+/* Map the step checks onto Mr. Effron's essay rubric (4 of its 5 categories; writing quality isn't checked) */
+function rubricU2(r){
+  const fails = re => r.flatMap(x => x.f).filter(m => re.test(m)).length;
+  const blank = r.filter(x => !x.s).length;
+  const answered = r.filter(x => x.s >= 2).length, full = r.filter(x => x.s === 3).length;
+  const clamp = v => Math.max(1, Math.min(5, v));
+  const allBlank = blank === 4;
+  return [
+    ["Understanding of Virtue Ethics", allBlank ? 1 : clamp(5 - fails(/virtue|Define|characteristic|element/) - (r[1].s ? 0 : 2) - r[1].f.filter(m => /development/.test(m)).length)],
+    ["Ethical Reasoning & Judgment", allBlank ? 1 : clamp(5 - fails(/answer to the primary|Defend your answer|objection/) - (r[3].s ? 0 : 3) - r[3].f.filter(m => /development|more than a sentence/.test(m)).length)],
+    ["Engagement with Case Details", allBlank ? 1 : clamp(5 - fails(/stakeholder|people in this case|details from the case/) - (r[2].s ? 0 : 2))],
+    ["Content Covered", allBlank ? 1 : full === 4 ? 5 : answered === 4 ? 4 : clamp(answered)]
+  ];
+}
+function evalPanelU2(c, d){
+  const r = EV.u2(c, d), rub = rubricU2(r), got = rub.reduce((a, x) => a + x[1], 0);
+  return `<section class="panel stack evalbox" aria-live="polite">
+    <div class="row between"><span class="eyebrow">Quick check · essay rubric estimate</span><b class="num">${got} / 20</b></div>
+    <ul class="evrub">${rub.map(([l, v]) => `<li><span>${esc(l)}</span><span class="num ev-s ev-${Math.round(v * 3 / 5)}">${v} / 5</span></li>`).join("")}
+      <li class="muted"><span>Structure & Clarity of Writing</span><span>not checked</span></li></ul>
+    <span class="eyebrow">What to work on</span>
+    <ul class="evlist">${r.map(x => `<li><b>Question ${x.n} · ${esc(STEPS[x.n - 1].t)}</b>
+      ${x.f.length ? `<ul class="evnotes">${x.f.map(m => `<li>${esc(m)}</li>`).join("")}</ul>` : `<p class="ok">Every part this check looks for is here.</p>`}</li>`).join("")}</ul>
+    <p class="muted evfine">An estimate, not your grade. It checks whether each part of the guiding questions is there; it can’t judge how strong your reasoning or writing is.</p></section>`;
+}
+function evalPanelPitch(notes){
+  const r = EV.pitch(notes), got = r.qs.reduce((a, x) => a + x.s, 0), mins = r.words / 140;
+  const time = r.words < 150 ? "Your notes are short of a full script, so speaking time isn’t estimated."
+    : `Read aloud as a script, this is about ${fmt(Math.round(mins * 60))}${mins < 3 ? ": under the 3-minute minimum." : mins > 5 ? ": over the 5-minute limit." : ", inside 3–5 minutes."}`;
+  return `<section class="panel stack evalbox" aria-live="polite">
+    <div class="row between"><span class="eyebrow">Quick check</span><b class="num">${got} / 9 · ${evalLevel(got, 9)}</b></div>
+    <ul class="evlist">${r.qs.map(x => `<li><div class="row between"><b>Question ${x.n}</b><span class="num ev-s ev-${x.s}">${x.s} / 3</span></div>
+      ${x.f.length ? `<ul class="evnotes">${x.f.map(m => `<li>${esc(m)}</li>`).join("")}</ul>` : `<p class="ok">Every part this check looks for is here.</p>`}</li>`).join("")}</ul>
+    <p class="muted">${esc(time)}</p>
+    <p class="muted evfine">An estimate for the three questions only, not your grade. It checks whether your notes are developed, connected to class, and reasoned; it can’t judge how convincing they are, and it never suggests what to say. Time and speaking quality come from your timed runs.</p></section>`;
+}
 
 /* ================= UNIT 2 DRILLS ================= */
 const VK = ["pru","jus","tem","for"];
@@ -2097,6 +2257,8 @@ V.pitch = {
         ${PITCH_QS.map((p, n) => `<section class="panel stack"><h3 class="step-h"><span class="num">Q${n + 1}</span>${esc(p.q)}</h3>
           <ul class="testlist">${p.test.map(t => `<li>${esc(t)}</li>`).join("")}</ul>
           <label class="fl" for="pq-${n}">My notes<textarea id="pq-${n}" data-pq="${n}" rows="4">${esc(P.pitch[n] || "")}</textarea></label></section>`).join("")}
+        <div class="row"><button class="btn" type="button" data-act="evalpitch">${S.ev ? "Check again" : "Check my notes"}</button><span class="muted">A quick estimate for the three questions. It points out what’s thin or missing, never what to say.</span></div>
+        ${S.ev ? evalPanelPitch([0,1,2].map(n => P.pitch[n] || "")) : ""}
         <h2 class="section-title">2 · Time it</h2>
         <section class="panel stack pitch-timer">
           <div class="row between"><span class="clock num zone-${zc}" id="pclock">${fmt(s)}</span><span class="zone-label zone-${zc}" id="pzone">${zl}</span></div>
@@ -2123,6 +2285,7 @@ V.pitch = {
     }
     if (act === "fill") { S.fill[el.dataset.k]++; el.querySelector("b").textContent = S.fill[el.dataset.k]; return; }
     if (act === "rub") S.rub[el.dataset.r] = +el.dataset.v;
+    if (act === "evalpitch") { saveP(); S.ev = true; }
     this.render();
   },
   input(e){ const n = e.target.dataset.pq; if (n != null) { P.pitch[n] = e.target.value; clearTimeout(this._t); this._t = setTimeout(saveP, 400); } }

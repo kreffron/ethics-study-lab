@@ -18,15 +18,17 @@ Students can use it on their own or in small groups, on a laptop or a phone. The
 | Moral Calculus Lab | Action + Intention + Circumstance = Moral Culpability, on ten cases | Solo or pairs |
 | Moral Language Quiz | Definition matching plus applied questions, 15 per round | Solo |
 | Build Your Moral Code | The six Week 4 questions, answered and saved by the student | Solo |
-| Elevator Pitch Practice | The three questions, a 3–5 minute timer, filler-word counter, and rubric self-score | Solo |
+| Elevator Pitch Practice | The three questions, a quick check on the notes, a 3–5 minute timer, filler-word counter, and rubric self-score | Solo |
 
 The elevator pitch station contains only class material and does not generate or suggest content, in keeping with the assignment's no-AI rule.
+
+**Quick checks.** The Elevator Pitch and Virtue Case Lab stations can estimate a score from what a student wrote. The checks run in the browser with fixed rules (no AI). They note what is thin or missing, such as "Connect this answer to ideas from class" or "Raise a fair objection and respond to it," and never suggest what to write. They can't judge the quality of reasoning, so the estimate is not a grade.
 
 ### Unit 2: Virtue Ethics
 
 | Station | What it practices | Mode |
 | --- | --- | --- |
-| Virtue Case Lab | The four-step case study method on twelve cases, including the four class practice cases, with model answers | Step by step, pairs, or timed blue book |
+| Virtue Case Lab | The four-step case study method on twelve cases, including the four class practice cases, with model answers and a quick check that estimates the essay rubric | Step by step, pairs, or timed blue book |
 | Definition Drill | The four cardinal virtue definitions (and virtue itself), matched and then written from memory | Solo |
 | Characteristics Sort | The elements, vices, and roles of each cardinal virtue | Solo or pairs |
 | Spot the Virtue | Naming the virtue at stake in short real-life moments | Solo or pairs |
