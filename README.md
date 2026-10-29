@@ -18,11 +18,13 @@ Students can use it on their own or in small groups, on a laptop or a phone. The
 | Moral Calculus Lab | Action + Intention + Circumstance = Moral Culpability, on ten cases | Solo or pairs |
 | Moral Language Quiz | Definition matching plus applied questions, 15 per round | Solo |
 | Build Your Moral Code | The six Week 4 questions, answered and saved by the student | Solo |
-| Elevator Pitch Practice | The three questions, a quick check on the notes, a 3–5 minute timer, filler-word counter, and rubric self-score | Solo |
+| Elevator Pitch Practice | Two paths. App feedback: type the pitch or record it, then get a rubric estimate with notes on what's thin or missing. Self-evaluation: record for playback or use the timer, then score yourself with the rubric | Solo |
 
 The elevator pitch station contains only class material and does not generate or suggest content, in keeping with the assignment's no-AI rule.
 
 **Quick checks.** The Elevator Pitch and Virtue Case Lab stations can estimate a score from what a student wrote. The checks run in the browser with fixed rules (no AI). They note what is thin or missing, such as "Connect this answer to ideas from class" or "Raise a fair objection and respond to it," and never suggest what to write. They can't judge the quality of reasoning, so the estimate is not a grade.
+
+**Recorded pitches.** Recordings stay in the student's browser tab and are never uploaded; students can download their own file. On the app-feedback path, the browser's speech service turns the recording into text for the check (Google in Chrome, Apple in Safari). The self-evaluation path records for playback only, with no transcription. Firefox can record but not transcribe.
 
 ### Unit 2: Virtue Ethics
 

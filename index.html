@@ -332,6 +332,17 @@ body[data-view="landing"] .bar{display:none}
 .stepper .lbl{min-width:0}
 .step-h{font-size:clamp(22px,3.2vw,28px);font-weight:700;display:flex;gap:10px;align-items:baseline}
 .prompts{margin:0;padding-left:20px;display:grid;gap:4px}
+.choice-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.choice{display:grid;gap:4px;text-align:left;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:14px 16px;font:inherit;cursor:pointer}
+.choice b{font-size:17px}.choice span{color:var(--muted);font-size:15px}
+.choice:hover{border-color:var(--accent)}
+.choice[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--surface))}
+.recdot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--bad);margin-right:6px;animation:recblink 1s infinite}
+@keyframes recblink{50%{opacity:.3}}
+@media (prefers-reduced-motion:reduce){.recdot{animation:none}}
+.pitch-timer a.btn{text-decoration:none;justify-self:start}
+.live{border:1px dashed var(--line);border-radius:8px;padding:10px 12px}
+.live p{margin:4px 0 0;max-height:7.5em;overflow:auto}
 .evalbox{border-left:4px solid var(--accent)}
 .evrub,.evlist{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .evrub li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-bottom:6px}
@@ -1671,7 +1682,39 @@ const EV = (() => {
     const total = notes.slice(0, 3).reduce((a, t) => a + wcount(t), 0);
     return { qs:out, words:total };
   }
-  return { u2, pitch, wcount };
+  /* A recorded run: transcript + exact time + pauses, scored on all five rubric rows */
+  function pitchSpoken(text, secs, pauses){
+    const low = (text || "").toLowerCase(), w = wcount(text), mins = secs / 60, notes = [];
+    const fillers = (low.match(/\b(um+|uh+|erm|you know|i mean)\b/g) || []).length +
+      (low.match(/\blike\b/g) || []).length - (low.match(/\b(would|i'd|i’d|you'd|we'd|feel|feels|felt|look|looks|looked|seem|seems|things|something|just|be|more|much|really) like\b|\blike (a|an|the|this|that|how|when|what|to)\b/g) || []).length;
+    const fl = Math.max(0, fillers), wpm = mins > 0.2 && w ? Math.round(w / mins) : 0;
+    const rows = []; let shared = 0;
+    if (!w) notes.push("The app didn’t hear any words, so it couldn’t check your answers. Try again closer to the microphone, or choose “Type my pitch.”");
+    else {
+      if (w < 300) { notes.push("Needs more substance overall: develop your answers further."); shared++; }
+      if (!classHit(text)) { notes.push("Connect your answers to ideas, readings, or examples from class."); shared++; }
+      if ((low.match(new RegExp(REASON.source, "g")) || []).length < 3) { notes.push("Give reasons, not just claims: explain why."); shared++; }
+    }
+    const cues = [SPECIFIC[0][0], SPECIFIC[1][0], /\b(success|successful|succeed)\b[\s\S]*|\b(different|change|become|grow)\b/];
+    PITCH_RUBRIC.slice(0, 3).forEach(([label], n) => {
+      if (!w) return rows.push([label, 0]);
+      if (!cues[n].test(low)) { notes.push(`It isn’t clear you answered question ${n + 1}. Make sure each question gets its own clear answer.`); return rows.push([label, 1]); }
+      rows.push([label, Math.max(1, 3 - shared)]);
+    });
+    rows.push([PITCH_RUBRIC[3][0], !secs ? 0 : secs >= 180 && secs <= 300 ? 3 : secs >= 120 && secs <= 360 ? 2 : 1]);
+    if (secs && secs < 180) notes.push("Too short: your pitch needs to fill at least 3 minutes."); if (secs > 300) notes.push("Too long: bring your pitch in under 5 minutes.");
+    let q = secs ? 3 : 0;
+    if (secs) {
+      if (mins > 0 && fl / mins > 4) { notes.push("Cut down on filler words."); q--; }
+      if (wpm > 175) { notes.push("Slow down: you’re speaking quickly."); q--; }
+      else if (wpm && wpm < 90) { notes.push("Pick up the pace: your delivery is slow or has long gaps."); q--; }
+      if (pauses >= 3) { notes.push("Several long pauses: practice until the pitch flows."); q--; }
+      q = Math.max(1, q);
+    }
+    rows.push([PITCH_RUBRIC[4][0], q]);
+    return { rows, notes, wpm, words:w, fillers:fl, pauses, secs };
+  }
+  return { u2, pitch, pitchSpoken, wcount };
 })();
 
 const evalLevel = (got, max) => got / max >= .9 ? "Complete" : got / max >= .67 ? "Mostly complete" : got / max >= .4 ? "Partly complete" : "Just started";
@@ -2067,7 +2110,7 @@ V.home1 = {
       </div>
       <h2 class="section-title" style="margin-top:28px">Unit 1 summative</h2>
       <div class="stations">
-        ${station("pitch","Elevator Pitch Practice","Solo","“Why Ethics?” Check your answers to the three questions against the rubric, then time your pitch against the 3–5 minute window.", P.pitchLog && P.pitchLog.length ? `<span>Last run <b>${fmt(P.pitchLog[0].s)}</b></span>` : `<span>Timer, filler counter, rubric</span>`)}
+        ${station("pitch","Elevator Pitch Practice","Solo","“Why Ethics?” Get app feedback on a typed or recorded pitch, or record and time yourself and score your run with the rubric.", P.pitchLog && P.pitchLog.length ? `<span>Last run <b>${fmt(P.pitchLog[0].s)}</b></span>` : `<span>Timer, filler counter, rubric</span>`)}
       </div>`;
   }
 };
@@ -2242,46 +2285,169 @@ V.mcode = {
 
 /* ---- Elevator Pitch Practice ---- */
 const zone = s => s < 120 ? ["bad","Under 2:00 · 1/3 range"] : s < 180 ? ["warn","2:00–3:00 · 2/3 range"] : s <= 300 ? ["good","3:00–5:00 · on time"] : s <= 360 ? ["warn","5:00–6:00 · 2/3 range"] : ["bad","Over 6:00 · 1/3 range"];
+/* Elevator pitch practice: two paths.
+   App review: type the pitch, or record it with transcription, then get a quick check.
+   Self-evaluation: record for playback on this device, or just use the timer; then score yourself with the rubric.
+   Recordings stay in this browser tab; nothing is uploaded. Transcription (app review only) uses the browser's own speech service. */
+const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+const canRecord = () => !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
+const pickMime = () => ["audio/webm;codecs=opus","audio/webm","audio/mp4","audio/ogg"].find(m => window.MediaRecorder && MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(m)) || "";
 V.pitch = {
-  init(){ S = { running:false, t0:0, acc:0, timer:null, fill:{um:0,like:0,yk:0}, rub:{} }; },
-  stop(){ if (S.timer) { clearInterval(S.timer); S.timer = null; } },
+  init(){
+    S = { running:false, t0:0, acc:0, timer:null, fill:{um:0,like:0,yk:0}, rub:{},
+      path: P.pitchPath || "", how: P.pitchHow || "", ev:false,
+      rec:null, recState:"idle", recUrl:"", recSecs:0, recErr:"", transcript:"", interim:"", pauses:0, review:null };
+  },
+  stop(){
+    if (S.timer) { clearInterval(S.timer); S.timer = null; }
+    this.stopCapture();
+  },
   secs(){ return Math.floor((S.acc + (S.running ? performance.now() - S.t0 : 0)) / 1000); },
+  /* ---------- recording ---------- */
+  async startRec(){
+    S.recErr = ""; S.transcript = ""; S.interim = ""; S.pauses = 0; S.review = null;
+    if (S.recUrl) { URL.revokeObjectURL(S.recUrl); S.recUrl = ""; }
+    let stream;
+    try { stream = await navigator.mediaDevices.getUserMedia({ audio:true }); }
+    catch (e) { S.recErr = "The microphone isn’t available. Check that this site is allowed to use it, or use another option."; return this.render(); }
+    const mime = pickMime(), chunks = [];
+    const mr = new MediaRecorder(stream, mime ? { mimeType:mime } : undefined);
+    mr.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+    mr.onstop = () => { S.recUrl = URL.createObjectURL(new Blob(chunks, { type: mr.mimeType || mime || "audio/webm" })); this.render(); };
+    /* pause detection: 3+ seconds of quiet after speech has started */
+    let ctx, an, buf, quietFor = 0, spoke = false, inPause = false;
+    try { ctx = new (window.AudioContext || window.webkitAudioContext)(); const src = ctx.createMediaStreamSource(stream); an = ctx.createAnalyser(); an.fftSize = 1024; src.connect(an); buf = new Uint8Array(an.fftSize); } catch (e) {}
+    S.rec = { stream, mr, ctx, sr:null, t0:performance.now() };
+    if (S.path === "app" && SpeechRec) {
+      const sr = new SpeechRec(); sr.lang = "en-US"; sr.continuous = true; sr.interimResults = true;
+      sr.onresult = e => { let fin = "", tmp = ""; for (let i = e.resultIndex; i < e.results.length; i++) { const r = e.results[i]; if (r.isFinal) fin += r[0].transcript + " "; else tmp += r[0].transcript; }
+        if (fin) S.transcript += fin; S.interim = tmp; const el = $("#live-tx"); if (el) el.textContent = (S.transcript + S.interim).trim() || "Listening…"; };
+      sr.onerror = e => { if (e.error === "not-allowed" || e.error === "service-not-allowed") S.recErr = "This browser won’t transcribe here. Your recording still works; type your pitch for the content check."; };
+      sr.onend = () => { if (S.recState === "recording" && S.rec && S.rec.sr === sr) { try { sr.start(); } catch (e) {} } };
+      try { sr.start(); S.rec.sr = sr; } catch (e) {}
+    }
+    mr.start(1000); S.recState = "recording"; S.recSecs = 0;
+    S.timer = setInterval(() => {
+      if (V.current !== "pitch") return this.stop();
+      S.recSecs = Math.floor((performance.now() - S.rec.t0) / 1000);
+      if (an) { an.getByteTimeDomainData(buf); let sum = 0; for (const v of buf) sum += (v - 128) * (v - 128); const rms = Math.sqrt(sum / buf.length);
+        if (rms > 6) { spoke = true; quietFor = 0; inPause = false; } else if (spoke) { quietFor += .25; if (quietFor >= 3 && !inPause) { S.pauses++; inPause = true; } } }
+      const c = $("#recclock"); if (c) { c.textContent = fmt(S.recSecs); c.className = "clock num zone-" + zone(S.recSecs)[0]; }
+      const z = $("#reczone"); if (z) { z.textContent = zone(S.recSecs)[1]; z.className = "zone-label zone-" + zone(S.recSecs)[0]; }
+    }, 250);
+    this.render();
+  },
+  stopCapture(){
+    const r = S && S.rec; if (!r) return;
+    S.recState = "done"; S.rec = null;
+    try { if (r.sr) { r.sr.onend = null; r.sr.stop(); } } catch (e) {}
+    try { if (r.mr.state !== "inactive") r.mr.stop(); } catch (e) {}
+    r.stream.getTracks().forEach(t => t.stop());
+    try { r.ctx && r.ctx.close(); } catch (e) {}
+  },
+  finishRec(){
+    if (S.timer) { clearInterval(S.timer); S.timer = null; }
+    S.recSecs = S.rec ? Math.floor((performance.now() - S.rec.t0) / 1000) : S.recSecs;
+    this.stopCapture();
+    S.transcript = (S.transcript + " " + (S.interim || "")).trim(); S.interim = "";
+    if (S.path === "app") S.review = EV.pitchSpoken(S.transcript, S.recSecs, S.pauses);
+    P.pitchLog = [{ s:S.recSecs, f:S.review ? S.review.fillers : S.fill.um + S.fill.like + S.fill.yk }, ...(P.pitchLog || [])].slice(0, 6); saveP();
+  },
+  /* ---------- pieces ---------- */
+  rubric(){
+    const tot = Object.values(S.rub).reduce((a, b) => a + b, 0);
+    return `<h2 class="section-title">Score yourself with the rubric</h2>
+      <section class="panel stack">${PITCH_RUBRIC.map(([lab, lv], r) => `<div class="rub-row"><b>${esc(lab)}</b>
+        <div class="seg rub" role="group" aria-label="${esc(lab)}">${[3,2,1,0].map(v => `<button type="button" data-act="rub" data-r="${r}" data-v="${v}" aria-pressed="${S.rub[r] === v}"><b>${v}/3</b><span>${esc(lv[v])}</span></button>`).join("")}</div></div>`).join("")}
+        <div class="row between"><span class="muted">Be honest: this is for you.</span><b class="num">${tot} / 15</b></div></section>`;
+  },
+  fillers(){ return `<div class="stack" style="gap:6px"><span class="eyebrow">Filler words (tap each time you hear one, live or on playback)</span>
+      <div class="row">${[["um","Um / uh"],["like","Like"],["yk","You know"]].map(([k, l]) => `<button class="btn counter" type="button" data-act="fill" data-k="${k}">${l} <b class="num">${S.fill[k]}</b></button>`).join("")}</div></div>`; },
+  runs(){ return P.pitchLog && P.pitchLog.length ? `<div class="stack" style="gap:6px"><span class="eyebrow">Recent runs</span><ul class="runs">${P.pitchLog.map(r => `<li><span class="num zone-${zone(r.s)[0]}">${fmt(r.s)}</span><span class="muted">${r.f} filler word${r.f === 1 ? "" : "s"}</span></li>`).join("")}</ul></div>` : ""; },
+  timer(){
+    const s = this.secs(), [zc, zl] = zone(s);
+    return `<section class="panel stack pitch-timer">
+      <div class="row between"><span class="clock num zone-${zc}" id="pclock">${fmt(s)}</span><span class="zone-label zone-${zc}" id="pzone">${zl}</span></div>
+      <div class="zonebar" aria-hidden="true"><span style="left:${Math.min(s, 420) / 420 * 100}%" id="pmark"></span></div>
+      <div class="zonelabels muted" aria-hidden="true">${[[0,"0"],[120,"2:00"],[180,"3:00"],[300,"5:00"],[360,"6:00"],[420,"7:00"]].map(([v, l]) => `<span style="left:${v / 420 * 100}%">${l}</span>`).join("")}</div>
+      <div class="row"><button class="btn primary" type="button" data-act="toggle">${S.running ? "Pause" : s ? "Resume" : "Start"}</button><button class="btn" type="button" data-act="done" ${s || S.running ? "" : "disabled"}>Finish run</button><button class="btn" type="button" data-act="reset" ${s || S.running ? "" : "disabled"}>Reset</button></div>
+      ${this.fillers()}${this.runs()}</section>`;
+  },
+  recorder(){
+    const app = S.path === "app";
+    if (!canRecord()) return `<div class="feedback no"><b>Recording isn’t available in this browser.</b>${app ? "Choose “Type my pitch” instead." : "Use the timer instead."}</div>`;
+    const recNote = app ? (SpeechRec ? `<p class="muted evfine">To give feedback, your browser’s speech service turns your words into text (in Chrome that’s Google; in Safari it’s Apple). The recording itself stays on this device unless you download it.</p>`
+        : `<div class="feedback no"><b>This browser can record but can’t transcribe.</b>You’ll get timing and pauses, but not content feedback. For that, use Chrome or Safari, or choose “Type my pitch.”</div>`)
+      : `<p class="muted evfine">Your recording stays on this device. Nothing is uploaded or transcribed.</p>`;
+    const rs = S.recState;
+    return `<section class="panel stack pitch-timer">
+      ${recNote}
+      ${S.recErr ? `<div class="feedback no"><b>Heads up</b>${esc(S.recErr)}</div>` : ""}
+      <div class="row between"><span class="clock num zone-${zone(S.recSecs)[0]}" id="recclock">${fmt(S.recSecs)}</span><span class="zone-label zone-${zone(S.recSecs)[0]}" id="reczone">${rs === "idle" ? "Ready" : zone(S.recSecs)[1]}</span></div>
+      <div class="row">${rs === "recording" ? `<button class="btn primary" type="button" data-act="recstop"><span class="recdot" aria-hidden="true"></span> Stop and ${app ? "get feedback" : "listen back"}</button>`
+        : `<button class="btn primary" type="button" data-act="recstart">${rs === "done" ? "Record another run" : "Start recording"}</button>`}</div>
+      ${rs === "recording" && app && SpeechRec ? `<div class="live"><span class="eyebrow">What the app is hearing</span><p id="live-tx" class="muted">Listening…</p></div>` : ""}
+      ${S.recUrl ? `<div class="stack" style="gap:6px"><span class="eyebrow">Listen back</span><audio controls src="${S.recUrl}" style="width:100%"></audio>
+        <a class="btn sm" href="${S.recUrl}" download="pitch-practice.${(pickMime().match(/audio\/(\w+)/) || [,"webm"])[1]}">Download recording</a></div>` : ""}
+      ${!app ? this.fillers() : ""}${this.runs()}</section>`;
+  },
+  reviewPanel(){
+    const r = S.review; if (!r) return "";
+    const rows = r.words ? r.rows : r.rows.filter((x, i) => i === 3), got = rows.reduce((a, x) => a + x[1], 0);
+    return `<section class="panel stack evalbox" aria-live="polite">
+      <div class="row between"><span class="eyebrow">Quick check · rubric estimate</span><b class="num">${got} / ${rows.length * 3}${r.words ? "" : " (time only)"}</b></div>
+      <ul class="evrub">${rows.map(([l, v]) => `<li><span>${esc(l)}</span><span class="num ev-s ev-${v}">${v} / 3</span></li>`).join("")}</ul>
+      <ul class="evrub"><li><span>Length</span><span class="num">${fmt(r.secs)}</span></li><li><span>Pace</span><span class="num">${r.wpm ? r.wpm + " words/min" : "—"}</span></li>
+        <li><span>Long pauses (3+ sec)</span><span class="num">${r.pauses}</span></li><li><span>Filler words heard</span><span class="num">${r.fillers}</span></li></ul>
+      ${r.notes.length ? `<span class="eyebrow">What to work on</span><ul class="evnotes">${r.notes.map(m => `<li>${esc(m)}</li>`).join("")}</ul>` : `<p class="ok">Every part this check looks for is here.</p>`}
+      ${r.words ? `<details><summary>What the app heard (${r.words} words)</summary><p class="muted">${esc(S.transcript)}</p></details>` : ""}
+      <p class="muted evfine">An estimate, not your grade. Transcription misses some words (especially “um” and “uh”), and the check can’t judge how convincing you are. It never suggests what to say.</p></section>`;
+  },
   render(){
     P.pitch = P.pitch || {}; P.pitchLog = P.pitchLog || [];
-    const s = this.secs(), [zc, zl] = zone(s), tot = Object.values(S.rub).reduce((a, b) => a + b, 0);
+    const choice = (act, cur, opts) => `<div class="choice-grid">${opts.map(([k, t, d]) => `<button type="button" class="choice" data-act="${act}" data-v="${k}" aria-pressed="${cur === k}"><b>${t}</b><span>${d}</span></button>`).join("")}</div>`;
+    let body = "";
+    if (S.path === "app") {
+      body += `<h2 class="section-title">3 · Give your pitch</h2>` + choice("how", S.how, [["type","Type my pitch","Write your answer to each question, then check it."],["record","Record my pitch","Speak it out loud; the app times it and checks what it heard."]]);
+      if (S.how === "type") body += `<section class="stack">${PITCH_QS.map((p, n) => `<label class="fl" for="pq-${n}">Question ${n + 1}: ${esc(p.q)}<textarea id="pq-${n}" data-pq="${n}" rows="5">${esc(P.pitch[n] || "")}</textarea></label>`).join("")}
+          <div class="row"><button class="btn primary" type="button" data-act="evalpitch">${S.ev ? "Check again" : "Check my pitch"}</button></div>
+          ${S.ev ? evalPanelPitch([0,1,2].map(n => P.pitch[n] || "")) : ""}</section>`;
+      if (S.how === "record") body += this.recorder() + this.reviewPanel();
+    }
+    if (S.path === "self") {
+      body += `<h2 class="section-title">3 · Give your pitch</h2>` + choice("how", S.how, [["record","Record for playback","Record on this device and listen back. Nothing is uploaded."],["timer","Timer only","Time your run and count filler words."]]);
+      if (S.how === "record") body += this.recorder();
+      if (S.how === "timer") body += this.timer();
+      if (S.how) body += this.rubric();
+    }
     view.innerHTML = `<div class="view-head"><span class="eyebrow">Unit 1 summative</span><h1>Elevator Pitch Practice</h1>
         <p>“Why Ethics?” You have 3–5 minutes to convince Mr. Effron of your commitment to this course.</p></div>
       <div class="stack">
-        <div class="feedback hint"><b>The rules</b>Prepare outside of class, using only class readings, videos, and notes. Build your own argument: no outside articles, classmate collaboration, or AI help. You can practice with a script, but you can’t bring anything into the pitch. This page only helps you check and time your own work; it won’t write anything for you.</div>
-        <h2 class="section-title">1 · Answer the three questions</h2>
+        <div class="feedback hint"><b>The rules</b>Prepare outside of class, using only class readings, videos, and notes. Build your own argument: no outside articles, classmate collaboration, or AI help. You can practice with a script, but you can’t bring anything into the pitch. This page only helps you check, time, and hear your own pitch. It never writes or suggests content.</div>
+        <h2 class="section-title">1 · The three questions</h2>
         ${PITCH_QS.map((p, n) => `<section class="panel stack"><h3 class="step-h"><span class="num">Q${n + 1}</span>${esc(p.q)}</h3>
-          <ul class="testlist">${p.test.map(t => `<li>${esc(t)}</li>`).join("")}</ul>
-          <label class="fl" for="pq-${n}">My notes<textarea id="pq-${n}" data-pq="${n}" rows="4">${esc(P.pitch[n] || "")}</textarea></label></section>`).join("")}
-        <div class="row"><button class="btn" type="button" data-act="evalpitch">${S.ev ? "Check again" : "Check my notes"}</button><span class="muted">A quick estimate for the three questions. It points out what’s thin or missing, never what to say.</span></div>
-        ${S.ev ? evalPanelPitch([0,1,2].map(n => P.pitch[n] || "")) : ""}
-        <h2 class="section-title">2 · Time it</h2>
-        <section class="panel stack pitch-timer">
-          <div class="row between"><span class="clock num zone-${zc}" id="pclock">${fmt(s)}</span><span class="zone-label zone-${zc}" id="pzone">${zl}</span></div>
-          <div class="zonebar" aria-hidden="true"><span style="left:${Math.min(s, 420) / 420 * 100}%" id="pmark"></span></div>
-          <div class="zonelabels muted" aria-hidden="true">${[[0,"0"],[120,"2:00"],[180,"3:00"],[300,"5:00"],[360,"6:00"],[420,"7:00"]].map(([v, l]) => `<span style="left:${v / 420 * 100}%">${l}</span>`).join("")}</div>
-          <div class="row"><button class="btn primary" type="button" data-act="toggle">${S.running ? "Pause" : s ? "Resume" : "Start"}</button><button class="btn" type="button" data-act="done" ${s || S.running ? "" : "disabled"}>Finish run</button><button class="btn" type="button" data-act="reset" ${s || S.running ? "" : "disabled"}>Reset</button></div>
-          <div class="stack" style="gap:6px"><span class="eyebrow">Filler words (tap each time you hear one, or listen back to a recording)</span>
-            <div class="row">${[["um","Um / uh"],["like","Like"],["yk","You know"]].map(([k, l]) => `<button class="btn counter" type="button" data-act="fill" data-k="${k}">${l} <b class="num">${S.fill[k]}</b></button>`).join("")}</div></div>
-          ${P.pitchLog.length ? `<div class="stack" style="gap:6px"><span class="eyebrow">Recent runs</span><ul class="runs">${P.pitchLog.map(r => `<li><span class="num zone-${zone(r.s)[0]}">${fmt(r.s)}</span><span class="muted">${r.f} filler word${r.f === 1 ? "" : "s"}</span></li>`).join("")}</ul></div>` : ""}
-        </section>
-        <h2 class="section-title">3 · Score yourself with the rubric</h2>
-        <section class="panel stack">${PITCH_RUBRIC.map(([lab, lv], r) => `<div class="rub-row"><b>${esc(lab)}</b>
-            <div class="seg rub" role="group" aria-label="${esc(lab)}">${[3,2,1,0].map(v => `<button type="button" data-act="rub" data-r="${r}" data-v="${v}" aria-pressed="${S.rub[r] === v}"><b>${v}/3</b><span>${esc(lv[v])}</span></button>`).join("")}</div></div>`).join("")}
-          <div class="row between"><span class="muted">Be honest: this is for you.</span><b class="num">${tot} / 15</b></div></section>
+          <ul class="testlist">${p.test.map(t => `<li>${esc(t)}</li>`).join("")}</ul></section>`).join("")}
+        <h2 class="section-title">2 · Choose how to practice</h2>
+        ${choice("path", S.path, [["app","Get app feedback","A quick estimate of your pitch against the rubric, with notes on what’s thin or missing."],["self","Evaluate yourself","Record for playback or use the timer, then score yourself with the rubric."]])}
+        ${body}
       </div>`;
   },
   tick(){ const s = this.secs(), [zc, zl] = zone(s); const c = $("#pclock"), z = $("#pzone"), m = $("#pmark");
     if (c) { c.textContent = fmt(s); c.className = "clock num zone-" + zc; } if (z) { z.textContent = zl; z.className = "zone-label zone-" + zc; } if (m) m.style.left = Math.min(s, 420) / 420 * 100 + "%"; },
   click(act, el){
-    if (act === "toggle") { if (S.running) { S.acc += performance.now() - S.t0; S.running = false; this.stop(); } else { S.t0 = performance.now(); S.running = true; this.stop(); S.timer = setInterval(() => { if (V.current !== "pitch") return this.stop(); this.tick(); }, 250); } }
+    if (act === "path" || act === "how") {
+      if (S.recState === "recording") return;
+      if (act === "path") { if (S.path !== el.dataset.v) { S.how = ""; S.review = null; } S.path = P.pitchPath = el.dataset.v; }
+      else S.how = el.dataset.v;
+      P.pitchHow = S.how; saveP(); S.ev = false;
+      if (S.timer && S.running) { S.acc += performance.now() - S.t0; S.running = false; clearInterval(S.timer); S.timer = null; }
+    }
+    if (act === "recstart") { this.startRec(); return; }
+    if (act === "recstop") this.finishRec();
+    if (act === "toggle") { if (S.running) { S.acc += performance.now() - S.t0; S.running = false; clearInterval(S.timer); S.timer = null; } else { S.t0 = performance.now(); S.running = true; if (S.timer) clearInterval(S.timer); S.timer = setInterval(() => { if (V.current !== "pitch") return this.stop(); this.tick(); }, 250); } }
     if (act === "reset" || act === "done") {
       if (act === "done") { const s = this.secs(); P.pitchLog = [{ s, f:S.fill.um + S.fill.like + S.fill.yk }, ...(P.pitchLog || [])].slice(0, 6); saveP(); }
-      this.stop(); Object.assign(S, { running:false, acc:0, fill:{um:0,like:0,yk:0} });
+      if (S.timer) { clearInterval(S.timer); S.timer = null; } Object.assign(S, { running:false, acc:0, fill:{um:0,like:0,yk:0} });
     }
     if (act === "fill") { S.fill[el.dataset.k]++; el.querySelector("b").textContent = S.fill[el.dataset.k]; return; }
     if (act === "rub") S.rub[el.dataset.r] = +el.dataset.v;
