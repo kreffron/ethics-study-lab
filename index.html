@@ -197,6 +197,33 @@ textarea:focus,input:focus,select:focus{outline:none;border-color:var(--accent)}
 .team-box input{min-width:0;width:100%;border:none;padding:0;background:transparent;font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-radius:0;border-bottom:1px dashed var(--line)}
 
 @media (max-width:480px){.brand small{display:none}}
+/* Trial gates */
+.lockico{vertical-align:-2px;flex:0 0 auto}
+.lockpill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1.5px solid var(--line);border-radius:999px;padding:3px 10px}
+.lockcard{border-style:dashed;border-top-style:solid}
+.lockcard input,.lockcard textarea{background:var(--bg)}
+.miss{color:var(--bad);font-size:15px}
+.vwrap{display:grid;gap:10px;align-content:start;min-width:0}
+.yournotes{background:color-mix(in srgb,var(--c) 8%,var(--surface));border:1px solid var(--line);border-left:4px solid var(--c);border-radius:0 12px 12px 0;padding:12px 14px;display:grid;gap:6px;font-size:15px}
+.wcount{font-size:14px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.wcount.ok{color:var(--good)}
+.wlist{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.wlist li{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--sunk);border-radius:8px}
+.wlist li.ok{color:var(--good)}
+.wlist li span:first-child{font-weight:700;color:var(--ink)}
+.unlocked-tag{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.toggle.sm{font-size:13px}
+.toggle.sm input{width:16px;height:16px}
+.guess textarea{min-height:64px}
+.trial-tag{font-size:13px!important;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)!important}
+.tk-on{font-size:13px;color:var(--muted);margin:18px 0 0}
+.linkbtn{background:none;border:none;padding:0;font:inherit;color:inherit;text-decoration:underline;cursor:pointer}
+.tk-panel{max-width:520px;margin:40px auto}
+.tk-panel a.btn{text-decoration:none}
+.teacher-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;font-size:15px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+.teacher-row summary{cursor:pointer;font-weight:700}
+.teacher-row .row{margin-top:8px;align-items:flex-end}
+.teacher-row input{max-width:220px}
 /* Unit 1 */
 .sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .u1c{--c:var(--accent)}
@@ -279,10 +306,12 @@ body[data-view="landing"] .bar{display:none}
 .vdef{font-family:var(--display);font-size:21px;font-weight:600;margin-top:4px}
 .charlist{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
 .charlist li{border:1.5px solid var(--c);color:var(--c);border-radius:999px;padding:4px 11px;font-weight:700;font-size:14px}
+.charlist.more2 li{border-style:dashed;font-weight:400;color:var(--ink)}
 .meanrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;text-align:center}
 .meanrow div{background:var(--sunk);border-radius:8px;padding:8px 6px;display:grid;gap:2px;min-width:0}
 .meanrow .mid{background:color-mix(in srgb,var(--c) 15%,var(--surface))}
-.meanrow b{font-size:15px;overflow-wrap:anywhere;hyphens:auto}
+.meanrow b{font-size:15px}
+@media (max-width:520px){.meanrow{grid-template-columns:1fr;text-align:left}.meanrow div{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:7px 12px}}
 .meanrow .lab{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .more{margin:0;padding-left:18px;display:grid;gap:6px;font-size:15px}
 .voices{display:grid;gap:6px;font-size:15px}
@@ -360,46 +389,51 @@ const TH = {
 const TERMS = [
   {t:"Anarchy",th:"sct",d:"The absence of any government or political authority. Social contract thinkers see it as close to the state of nature.",x:["government","chaos","rules"]},
   {t:"Cardinal Virtue",th:"ve",d:"One of the four guiding virtues (prudence, justice, fortitude, temperance) that guide all the other moral virtues.",x:["four","guiding","prudence"]},
-  {t:"Deon / Duty",th:"deon",d:"Greek for “duty.” A moral obligation to do or not do something, binding no matter the consequences.",x:["obligation","Kant","must"]},
+  {t:"Deon / Duty",th:"deon",d:"Greek for “duty.” A moral obligation one has to others and society. Duty is not thoughtless obedience: we must rationally assent to it, and it holds us accountable to morality whatever the consequences.",x:["obligation","Kant","must"]},
   {t:"Deficiency",th:"ve",d:"The vice of having too little of a quality. Cowardice is a deficiency of courage.",x:["too little","lack","mean"]},
   {t:"Ends",th:"gen",d:"The goals or purposes an action aims at. Utilitarians judge acts by their ends (outcomes); Kant says persons are ends in themselves.",x:["goal","purpose","result"]},
   {t:"Excess",th:"ve",d:"The vice of having too much of a quality. Rashness is an excess of courage.",x:["too much","overdo","mean"]},
   {t:"Eudaimonia",th:"ve",d:"Fulfillment, flourishing, or happiness through the virtuous life. Aristotle calls it the highest human good.",x:["happiness","flourishing","Aristotle"]},
   {t:"Fortitude",th:"ve",d:"The cardinal virtue of facing challenges and difficulties well.",x:["courage","brave","strength"]},
   {t:"Free Will",th:"gen",d:"The ability to choose the good (Bill Mattison, drawing on freedom for excellence).",x:["choice","choose","freedom"]},
-  {t:"General Will",th:"sct",d:"Rousseau’s term for the collective will of the people as a whole, always aimed at the common good rather than private interest.",x:["Rousseau","people","common"]},
+  {t:"General Will",th:"sct",d:"Rousseau’s term for the will of the people as one body: what they decide together, as a collective, for their society, aimed at the common good. Rousseau never fully clarifies what it looks like.",x:["Rousseau","people","common"]},
   {t:"Good Will",th:"deon",d:"For Kant, a will that acts from duty. It is the only thing good without qualification.",x:["Kant","duty","intention"]},
   {t:"Habit",th:"ve",d:"A stable disposition formed by repeated action. Virtues are good habits; vices are bad ones.",x:["repeat","practice","routine"]},
-  {t:"Happiness (for Utilitarians)",th:"util",d:"Pleasure and the absence of pain. It is the one thing utilitarians say is good in itself.",x:["pleasure","pain","Bentham"]},
+  {t:"Happiness (for Utilitarians)",th:"util",d:"Pleasure and the absence of pain. Utilitarians use happiness and pleasure interchangeably, and it is the one thing they say is good in itself. It is not the same as eudaimonia.",x:["pleasure","pain","Bentham"]},
   {t:"Human Agency",th:"gen",d:"A person’s capacity to act intentionally and make free choices that shape their own life and the world around them.",x:["act","choice","free"]},
   {t:"Human Dignity",th:"gen",d:"The inherent, co-equal value of all people.",x:["worth","value","respect"]},
-  {t:"Human Nature",th:"gen",d:"The basic traits and tendencies all humans share. Every ethical and political theory starts from a view of it (Hobbes: selfish; Aristotle: rational and social).",x:["human","born","Hobbes"]},
+  {t:"Human Nature",th:"gen",d:"The basic traits and tendencies all humans share. Our view of it decides what a social contract needs: Hobbes, purely self-interested and afraid of death; Locke, rational, free, and equal; Rousseau, free, peaceful, and good until society corrupts us.",x:["human","born","Hobbes"]},
   {t:"Inculcation",th:"ve",d:"Instilling virtues or values through repeated teaching, example, and practice.",x:["teach","instill","repeat"]},
-  {t:"Inherent",th:"gen",d:"Belonging to something by its very nature. Inherent value is worth a thing has in itself, not because it is useful.",x:["itself","natural","built-in"]},
+  {t:"Inherent",th:"gen",d:"A permanent, unchanging, natural part of something (attached to its nature). Deontology holds that actions are inherently right or wrong.",x:["itself","natural","built-in"]},
   {t:"Intention",th:"deon",d:"The purpose or motive behind an action. For Kant, intention, not outcome, determines an act’s moral worth.",x:["motive","mean","purpose"]},
-  {t:"Justice",th:"ve",d:"The cardinal virtue of giving each person what is due to them.",x:["fair","due","law"]},
-  {t:"Maxim",th:"deon",d:"The personal rule or principle behind an action (“When I need money, I will make a false promise”). Kant tests maxims with the categorical imperative.",x:["rule","principle","Kant"]},
+  {t:"Justice",th:"ve",d:"The cardinal virtue of giving each person what is due to them: a proportional equality (equity), not strict equality.",x:["fair","due","law"]},
+  {t:"Maxim",th:"deon",d:"A general truth, rule, or fundamental principle: the rule behind an action (“When I need money, I will make a false promise”). Kant tests maxims with the categorical imperative.",x:["rule","principle","Kant"]},
   {t:"Means",th:"gen",d:"The action or tool used to reach an end.",x:["way","tool","how"]},
   {t:"Mere Means",th:"deon",d:"Treating a person only as a tool for your own goals, ignoring their own purposes and consent. Kant forbids it.",x:["use","tool","Kant"]},
   {t:"Pain",th:"util",d:"Things that do not feel good. Utilitarians aim to minimize pain.",x:["hurt","pleasure","suffering"]},
-  {t:"Pleasure",th:"util",d:"Things that feel good. Utilitarians aim to maximize pleasure; Mill ranks higher (intellectual) pleasures above lower (bodily) ones.",x:["enjoy","happy","fun"]},
+  {t:"Pleasure",th:"util",d:"Things that feel good. Utilitarians aim to maximize pleasure and use it interchangeably with happiness; Mill ranks higher (intellectual and moral) pleasures above lower (physical and sensual) ones.",x:["enjoy","happy","fun"]},
   {t:"Prudence",th:"ve",d:"Right deliberation in action: the cardinal virtue of practical wisdom, which guides the other virtues.",x:["wisdom","wise","reason"]},
   {t:"State of Nature / Original Position",th:"sct",d:"The imagined condition of people before government (Hobbes, Locke, Rousseau). Rawls’s original position imagines choosing society’s rules behind a “veil of ignorance.”",x:["government","before","Hobbes"]},
   {t:"Telos / Ultimate End",th:"ve",d:"The final purpose a thing is directed toward. For humans it is eudaimonia (Aristotle) or union with God (Aquinas).",x:["purpose","goal","end"]},
   {t:"Temperance",th:"ve",d:"The cardinal virtue of self-control: moderation of our pleasures, desires, and emotions.",x:["moderation","self-control","pleasure"]},
   {t:"Totalitarianism",th:"sct",d:"A system in which the state holds total authority and controls nearly every part of public and private life.",x:["control","dictator","total"]},
   {t:"Utility (to Utilitarians)",th:"util",d:"An action’s usefulness in producing pleasure or happiness and preventing pain.",x:["useful","happiness","Bentham"]},
-  {t:"Vice",th:"ve",d:"A bad habit: a settled tendency toward the excess or deficiency of a quality.",x:["bad","habit","sin"]},
+  {t:"Vice",th:"ve",d:"A bad habit: too much (excess) or too little (deficiency) of a virtue. Augustine and Aquinas also call vice a privation (absence) of virtue.",x:["bad","habit","sin"]},
   {t:"Virtue",th:"ve",d:"A stable and effective disposition oriented toward right action (the good).",x:["good","habit","excellence"]},
   {t:"Categorical Imperative",th:"deon",d:"The rational tool by which a deontologist can determine what is truly moral. Kant: act only on a maxim you could will to become a universal law, and treat humanity always as an end, never merely as a means.",x:["Kant","universal","rule"]},
-  {t:"Social Contract",th:"sct",d:"An agreement, real or imagined, in which people give up some freedoms to a government in exchange for protection of their rights and order.",x:["agreement","government","Locke"]},
+  {t:"Social Contract",th:"sct",d:"The means by which a government receives its legitimate authority. People give up some freedoms in exchange for security (Hobbes), protected rights (Locke), or the most freedom possible (Rousseau).",x:["agreement","government","Locke"]},
   {t:"Greatest Happiness Principle",th:"util",d:"An action is more (most) moral when it pursues the greatest amount of happiness for the most people for the longest amount of time.",x:["most","people","Mill"]},
   {t:"Doctrine of the Mean",th:"ve",d:"Aristotle’s teaching that each virtue lies between two vices, one of excess and one of deficiency.",x:["middle","Aristotle","balance"]},
   {t:"Double Effect",th:"ve",d:"Aquinas’s principle for judging an action that has both a good effect and a bad effect. The action is allowed only if it meets all four parts.",x:["Aquinas","two","side effect"]},
-  {t:"Double Effect, Part 1: The Act",th:"ve",d:"The action itself must be morally good, or at least neutral.",x:["good","neutral","action"]},
-  {t:"Double Effect, Part 2: Intention",th:"ve",d:"Only the good effect may be intended. The bad effect may be foreseen and tolerated, but never wanted.",x:["intend","want","foresee"]},
-  {t:"Double Effect, Part 3: Means",th:"ve",d:"The bad effect cannot be the means of bringing about the good effect.",x:["means","cause","because"]},
-  {t:"Double Effect, Part 4: Proportionality",th:"ve",d:"The good effect must be serious enough to outweigh, or at least balance, the bad effect.",x:["outweigh","balance","proportion"]}
+  {t:"Double Effect, Part 1: The Act",th:"ve",d:"The action must be morally good, or neutral, as to object, motive, and circumstances.",x:["good","neutral","action"]},
+  {t:"Double Effect, Part 2: Intention",th:"ve",d:"The evil effect must not be directly intended, only tolerated.",x:["intend","want","tolerate"]},
+  {t:"Double Effect, Part 3: Directness",th:"ve",d:"The good effect must be caused at least as directly as the bad effect.",x:["directly","cause","bad"]},
+  {t:"Double Effect, Part 4: Proportionality",th:"ve",d:"The good effect must be proportionate to compensate for the bad effect.",x:["outweigh","balance","proportion"]},
+  {t:"Deontology",th:"deon",d:"Literally “the study of duty.” An ethical system that believes moral and legal law should derive from the duties and obligations one has to others and society.",x:["duty","Kant","obligation"]},
+  {t:"Consequentialism",th:"util",d:"Outcomes-based (consequences-based) morality, built in opposition to Kant and deontology. Its most popular version is utilitarianism.",x:["outcome","result","consequence"]},
+  {t:"Utilitarianism",th:"util",d:"The best outcome for the most people for the longest amount of time. Founded by Bentham and developed by Mill.",x:["most","people","Bentham"]},
+  {t:"Universal Law of Nature",th:"deon",d:"Kant’s chief principle for determining if an act meets the categorical imperative: could everyone act this way without contradiction?",x:["universal","Kant","everyone"]},
+  {t:"Hedonic Calculus",th:"util",d:"Bentham’s way of measuring pleasure with seven elements: intensity, duration, certainty, propinquity (nearness), fecundity (chance of more pleasure), purity (chance of pain), and extent (how many people are affected).",x:["Bentham","measure","intensity"]}
 ];
 
 const QUIZ = [
@@ -415,46 +449,66 @@ const QUIZ = [
   {th:"ve",q:"What is the relationship among the virtues?",o:["They are connected; you cannot fully have one without the others, and prudence unites them","They are completely independent","Only one virtue matters","They often contradict each other"],a:0,e:"This is the “unity of the virtues.” A brave person without prudence is just reckless."},
   {th:"ve",q:"Which is a basic requirement of Just War Theory for going to war?",o:["War must be a last resort","The war must be profitable","The enemy must surrender unconditionally","Civilians may be targeted if it ends the war sooner"],a:0,e:"Classic criteria include legitimate authority, just cause, right intention, and last resort; in war, civilians may never be directly targeted."},
   {th:"ve",q:"What is the basic moral calculus?",o:["Quality of action + intention + circumstances = moral culpability","Intensity + duration + extent = utility","Consent + rights + law = legitimacy","Pleasure − pain = moral worth"],a:0,e:"All three parts decide how morally responsible (culpable) a person is. A good intention cannot make a bad act good."},
-  {th:"ve",q:"Under the principle of double effect, which condition must be met?",o:["The bad effect must not be the means to the good effect","The bad effect must be intended","The action may be wrong in itself if the result is good","The bad effect must outweigh the good"],a:0,e:"The four parts: (1) the act itself is good or neutral; (2) only the good effect is intended; (3) the bad effect is not the means to the good; (4) the good is proportionate to the bad."},
+  {th:"ve",q:"Under the principle of double effect, which condition must be met?",o:["The good effect must be caused at least as directly as the bad","The bad effect must be intended","The action may be wrong in itself if the result is good","The bad effect must outweigh the good"],a:0,e:"The four parts: (1) the action is morally good or neutral as to object, motive, and circumstances; (2) the evil effect is not directly intended, only tolerated; (3) the good effect is caused at least as directly as the bad; (4) the good is proportionate to compensate for the bad."},
   {th:"ve",q:"How would a virtue ethicist approach the trolley problem?",o:["Ask what justice owes the one and the five, and let prudence judge the particulars","Count the lives and choose the larger number","Apply a rule that can never be broken","Ask which choice the majority would consent to"],a:0,e:"Justice comes first: the one is owed not to be harmed, a stronger claim than the five’s claim to be rescued. The driver should steer toward the lesser injury, no one may push the man off the bridge, and the bystander case remains a real dilemma. A virtuous person grieves whatever they choose."},
   {th:"sct",q:"Who is usually credited with founding social contract theory?",o:["Thomas Hobbes","John Stuart Mill","Aristotle","Immanuel Kant"],a:0,e:"Hobbes’s Leviathan (1651). Locke and Rousseau are the other main thinkers."},
-  {th:"sct",q:"What are Locke’s natural rights?",o:["Life, liberty, and property","Life, liberty, and the pursuit of happiness","Speech, religion, and assembly","Liberty, equality, and fraternity"],a:0,e:"Jefferson adapted Locke’s list in the Declaration of Independence."},
+  {th:"sct",q:"What are Locke’s natural rights?",o:["Life, health, liberty, and property","Life, liberty, and the pursuit of happiness","Speech, religion, and assembly","Liberty, equality, and fraternity"],a:0,e:"Locke: “no one ought to harm another in his life, health, liberty or possessions.” Jefferson adapted the list in the Declaration of Independence."},
   {th:"sct",q:"Hobbes believed human nature is…",o:["Selfish and competitive, so life without government is “nasty, brutish, and short”","Naturally good but corrupted by society","Rational and generally peaceful","Directed toward eudaimonia"],a:0,e:"Hobbes’s grim view leads him to want a strong sovereign to keep the peace."},
   {th:"sct",q:"Rousseau believed human nature is…",o:["Naturally good, but corrupted by society and private property","Fundamentally selfish","Ruled entirely by pleasure and pain","Fallen and in need of an absolute ruler"],a:0,e:"For Rousseau the problem is a corrupt society, so the solution is a just community governed by the general will."},
   {th:"sct",q:"According to social contract theory, where does a government get its legitimacy?",o:["The consent of the governed","Divine right of kings","Military strength","Tradition"],a:0,e:"A government is legitimate because the people agree to it."},
   {th:"sct",q:"According to Locke, what may the people do if a government violates their natural rights?",o:["Resist and replace it","Nothing; they must always obey","Return to the state of nature permanently","Only petition the king"],a:0,e:"A government that breaks the contract loses its authority. This idea fueled the American Revolution."},
-  {th:"sct",q:"Which form of government did Hobbes think best?",o:["An absolute sovereign (ideally a monarch)","Direct democracy","Limited, representative government","No government at all"],a:0,e:"Only overwhelming power can keep selfish people from war. Locke preferred limited government; Rousseau, rule by the general will."},
-  {th:"sct",q:"Locke says most people enter the social contract by…",o:["Tacit consent: living in a country and accepting its benefits","Signing a written document at age 18","Being born into a noble family","Fighting in a revolution"],a:0,e:"Express consent is rare; by using a society’s protections and property, you tacitly agree to its laws."},
+  {th:"sct",q:"Which form of government did Hobbes think best?",o:["An absolute sovereign (ideally a monarch)","Direct democracy","Limited, representative government","No government at all"],a:0,e:"Hobbes protects security, so he wants an all-powerful sovereign. Locke protects rights through representative government; Rousseau protects freedom through direct self-rule."},
+  {th:"sct",q:"How does a person enter the social contract?",o:["You’re already in: by participating in society, your entry is presumed","By signing a written document at age 18","By being born into a noble family","By fighting in a revolution"],a:0,e:"Entry is presumed by participating in society, and it is extremely difficult to back out of the commitment."},
   {th:"sct",q:"Which is the clearest connection between the USA and social contract theory?",o:["The Declaration of Independence says governments derive “their just powers from the consent of the governed”","The U.S. has a king","The Constitution establishes a state religion","The U.S. began in a state of nature"],a:0,e:"The Declaration, natural rights, and “We the People” all reflect Locke’s ideas."},
   {th:"sct",q:"What is the purpose of Rawls’s “veil of ignorance”?",o:["To choose fair rules without knowing your own place in society","To hide the government from citizens","To prove that people are naturally selfish","To decide which pleasures are higher"],a:0,e:"If you don’t know whether you’ll be rich or poor, you’ll choose rules that are fair to everyone."},
   {th:"sct",q:"In A Letter Concerning Toleration, Locke argues the government should not force religious belief because…",o:["True belief cannot be coerced; caring for souls is not the state’s job","All religions are false","Religion causes anarchy","The general will decides religion"],a:0,e:"Locke separates the work of the state (protecting rights) from the care of souls."},
-  {th:"sct",q:"To decide what the right social contract is, you first need a view of…",o:["Human nature and the state of nature","The hedonic calculus","The theological virtues","Perfect and imperfect duties"],a:0,e:"What you think people are like without government decides how much power government needs."},
-  {th:"deon",q:"Who founded deontology?",o:["Immanuel Kant","John Locke","Jeremy Bentham","Thomas Aquinas"],a:0,e:"Kant’s Groundwork of the Metaphysics of Morals (1785)."},
+  {th:"sct",q:"To decide what the right social contract is, you first need a view of…",o:["Human nature and the state of nature","The hedonic calculus","The theological virtues","Perfect and imperfect duties"],a:0,e:"First consider human nature: what would people be like if left unhindered? Then consider your ultimate goal: what does society most need to provide (security, rights, freedom)?"},
+  {th:"deon",q:"Who founded deontology?",o:["Immanuel Kant","John Locke","Jeremy Bentham","Thomas Aquinas"],a:0,e:"Kant is the “father of deontology.” Class reading: Fundamental Principles of the Metaphysics of Morals."},
   {th:"deon",q:"What matters most to a deontologist?",o:["Intentions, because they are fully in our control","Consequences, because they affect the most people","Pleasure, because it is the only good","Habits, because they form character"],a:0,e:"Outcomes depend on luck; only the will is truly ours. A good will acting from duty has moral worth."},
   {th:"deon",q:"A murderer asks where your friend is hiding. What does Kant say?",o:["You may not lie, even to protect your friend","Lie, since it saves a life","Lie only if no one will find out","Tell the truth only if the murderer is polite"],a:0,e:"Not lying is a perfect duty. If lying were universal, no one could trust anything said. You may stay silent, but not lie."},
-  {th:"deon",q:"What makes the categorical imperative “categorical”?",o:["It binds unconditionally, no matter what you want","It only applies in certain categories of life","It depends on your goals","It changes with culture"],a:0,e:"A hypothetical imperative says “If you want X, do Y.” A categorical one says simply “Do Y.”"},
+  {th:"deon",q:"What makes the categorical imperative “categorical”?",o:["It binds unconditionally, no matter what you want","It only applies in certain categories of life","It depends on your goals","It changes with culture"],a:0,e:"It is “an objective, rationally necessary and unconditional principle that we must follow despite any natural desires we may have to the contrary.”"},
   {th:"deon",q:"Which is a PERFECT duty in Kant’s system?",o:["Do not make false promises","Develop your talents","Help others in need","Maximize happiness"],a:0,e:"Perfect duties, like never lying or making false promises, allow no exceptions. Imperfect duties, like helping others, leave room for when and how."},
   {th:"deon",q:"For Kant, what does it mean to act from duty?",o:["To do what is right because it is right, out of respect for the moral law","To do whatever produces the best results","To follow your feelings and inclinations","To do whatever makes you happy"],a:0,e:"Duty (deon) is a moral obligation that binds no matter the consequences. Only actions done from duty, not from inclination or for a reward, have moral worth."},
   {th:"deon",q:"What does it mean that a person is an “end in themselves”?",o:["They have inherent dignity and must never be used merely as a tool","They exist to make others happy","Their life has value only if it is useful","They are the end result of evolution"],a:0,e:"This is the humanity formulation of the categorical imperative."},
   {th:"deon",q:"What role does rationality play in deontology?",o:["Reason lets us know the moral law and give it to ourselves; it is the source of our dignity","Rationality is less important than feelings","Reason is used to calculate pleasure","Rationality is a habit formed by practice"],a:0,e:"Because rational beings are autonomous lawgivers, they have dignity rather than a price."},
   {th:"deon",q:"How does deontology relate to legal systems?",o:["Like good laws, moral duties are universal rules that bind everyone equally, whatever the outcome","Laws are only useful if they maximize pleasure","Laws are habits taught by parents","Legal systems are unnecessary for deontologists"],a:0,e:"Kant’s ethics looks like a moral law code: the same rule for all, grounded in reason, respecting persons as ends."},
-  {th:"deon",q:"In the trolley problem, why does a deontologist refuse to push the large man off the bridge?",o:["Pushing him uses him as a mere means","It would produce less pleasure","It is not a habit","He did not consent to the social contract"],a:0,e:"Killing him is a means to stopping the trolley. Even if five are saved, you have used a person as a tool."},
-  {th:"util",q:"Who founded utilitarianism?",o:["Jeremy Bentham","John Locke","Immanuel Kant","Jean-Jacques Rousseau"],a:0,e:"Bentham developed utility as a basis for reforming law. John Stuart Mill refined it."},
+  {th:"deon",q:"In the trolley problem, why does a deontologist refuse to push the large man off the bridge?",o:["Pushing him uses him as a mere means","It would produce less pleasure","It is not a habit","He did not consent to the social contract"],a:0,e:"Killing him is a means to stopping the trolley. Even if five are saved, you have used an innocent person as a tool."},
+  {th:"util",q:"Who founded utilitarianism?",o:["Jeremy Bentham","John Locke","Immanuel Kant","Jean-Jacques Rousseau"],a:0,e:"Bentham built utilitarianism in opposition to Kant and to the governance he lived under, as a basis for reforming law. Mill developed it."},
   {th:"util",q:"Why was utilitarianism founded?",o:["To reform laws and society on a rational, measurable basis: the general welfare","To defend the divine right of kings","To explain the cardinal virtues","To prove humans are naturally good"],a:0,e:"Bentham wanted laws judged by their actual effects on human happiness, not tradition."},
   {th:"util",q:"What matters most to a utilitarian?",o:["Consequences, because results are what actually affect happiness","Intentions, because they show character","Duty, because it is universal","Consent, because it makes government legitimate"],a:0,e:"An act is right if it produces the greatest happiness. The motive doesn’t change the outcome."},
   {th:"util",q:"What does the Greatest Happiness Principle say?",o:["An action is most moral when it pursues the greatest happiness for the most people for the longest time","Always follow your duty","Virtue is the mean between extremes","Government needs the consent of the governed"],a:0,e:"Utilitarians weigh how much happiness an action brings, to how many people, and for how long."},
-  {th:"util",q:"The key difference between Mill and Bentham is that Mill…",o:["Ranked pleasures by quality, not just quantity","Rejected pleasure as the good","Founded deontology","Said intentions matter most"],a:0,e:"“It is better to be Socrates dissatisfied than a fool satisfied.” Bentham: “pushpin is as good as poetry.”"},
+  {th:"util",q:"The key difference between Mill and Bentham is that Mill…",o:["Ranked pleasures by quality, not just quantity","Rejected pleasure as the good","Founded deontology","Said intentions matter most"],a:0,e:"Mill: “It is better to be a human being dissatisfied than a pig satisfied; better to be Socrates dissatisfied than a fool satisfied.” Bentham: “the game of push-pin is of equal value with … poetry.”"},
   {th:"util",q:"In Mill’s hierarchy of pleasures, which ranks highest?",o:["Intellectual and moral pleasures","Bodily pleasures","Pleasures of wealth","Pleasures of revenge"],a:0,e:"Anyone who has experienced both would prefer the higher pleasures."},
-  {th:"util",q:"Which three criteria are central to the utilitarian calculus?",o:["Intensity, duration, and extent (number of people affected)","Quality of action, intention, and circumstances","Life, liberty, and property","Prudence, justice, and temperance"],a:0,e:"Bentham’s full felicific calculus has seven factors; intensity, duration, and extent are the core."},
+  {th:"util",q:"Which three criteria are central to the utilitarian calculus?",o:["Intensity, duration, and extent (number of people affected)","Quality of action, intention, and circumstances","Life, liberty, and property","Prudence, justice, and temperance"],a:0,e:"Bentham’s full hedonic calculus has seven elements: intensity, duration, certainty, propinquity (nearness), fecundity (chance of more pleasure), purity (chance of pain), and extent (how many people are affected)."},
   {th:"util",q:"How does a utilitarian weigh the happiness of one person against a group?",o:["Each person counts as one and no one as more than one, so the larger total wins","The individual always wins","Only the ruler’s happiness counts","Happiness cannot be compared"],a:0,e:"This is why critics worry utilitarianism can sacrifice individuals for the majority."},
   {th:"util",q:"What is a main utilitarian objection to deontology?",o:["Rigid rules can lead to terrible outcomes, like refusing to lie to save a life","It focuses too much on consequences","It ignores rules","It is based on pleasure"],a:0,e:"Utilitarians say a rule that makes the world worse should be broken."},
   {th:"util",q:"A bystander can pull a lever to turn a runaway trolley away from five people and onto one. What does a utilitarian do?",o:["Pull the lever: one death is better than five","Do nothing, because acting is wrong","Refuse, since it uses someone as a means","Ask for the consent of everyone involved"],a:0,e:"Five lives outweigh one. A strict utilitarian would push the large man too."},
   {th:"gen",q:"“Freedom for excellence” means…",o:["Freedom that grows as we practice virtue, like a pianist who can play anything","The ability to choose either option at random","Freedom from all laws","Freedom to maximize pleasure"],a:0,e:"Freedom of indifference is just the power to choose between options; freedom for excellence is the power to act well."},
-  {th:"gen",q:"Equity differs from equality because equity…",o:["Gives each person what they need for a fair outcome","Gives everyone exactly the same thing","Ignores fairness","Applies only to money"],a:0,e:"Equality: same shoes for everyone. Equity: shoes that fit each person."},
+  {th:"gen",q:"Equity differs from equality because equity…",o:["Gives each person what they need for a fair outcome","Gives everyone exactly the same thing","Ignores fairness","Applies only to money"],a:0,e:"Equality: same shoes for everyone. Equity: shoes that fit each person. Aristotle calls justice this kind of proportional equality."},
   {th:"gen",q:"According to Aquinas, a just law must be…",o:["An ordinance of reason for the common good, made by legitimate authority, and in harmony with natural law","Whatever the ruler commands","Whatever produces the most pleasure","Whatever the majority votes for"],a:0,e:"Aquinas calls an unjust law “a perversion of law,” echoing Augustine’s “an unjust law is no law at all.” Martin Luther King Jr. quoted both in his Letter from Birmingham Jail."},
   {th:"gen",q:"“The ends justify the means” best fits which theory?",o:["Utilitarianism","Deontology","Virtue ethics","Social contract theory"],a:0,e:"Utilitarians value outcomes (ends). Deontologists insist the means (the act itself) must be right."},
   {th:"gen",q:"Something with instrumental value is valued because…",o:["It is useful for getting something else","It is good in itself","It is required by duty","It is a virtue"],a:0,e:"Money is instrumental. Kant says human dignity is inherent, never merely instrumental."},
-  {th:"gen",q:"In Philippa Foot’s original 1967 trolley case, why may the driver steer toward the one?",o:["Whichever track he takes, he injures someone, so he should do the least injury he can","The one person consented to the risk","The death of the one is intended as a means","Saving five always outweighs any duty"],a:0,e:"Foot calls this a conflict of negative duties. A bystander at a switch (Thomson’s later version) is different: doing nothing only lets the five die, so turning means harming an innocent to bring aid. That is why the bystander case is much harder."}
+  {th:"gen",q:"In Philippa Foot’s original 1967 trolley case, why may the driver steer toward the one?",o:["Whichever track he takes, he injures someone, so he should do the least injury he can","The one person consented to the risk","The death of the one is intended as a means","Saving five always outweighs any duty"],a:0,e:"Foot calls this a conflict of negative duties. A bystander at a switch (Thomson’s later version) is different: doing nothing only lets the five die, so turning means harming an innocent to bring aid. That is why the bystander case is much harder."},
+  {th:"sct",q:"Each social contract protects something different. Which matching is right?",o:["Hobbes: security; Locke: rights; Rousseau: freedom","Hobbes: freedom; Locke: security; Rousseau: rights","Hobbes: rights; Locke: freedom; Rousseau: security","All three: pleasure"],a:0,e:"Hobbes: forfeit rights to an absolute power for security. Locke: sacrifice limited rights to a representative government. Rousseau: keep maximum freedom through direct, group rule."},
+  {th:"sct",q:"Which kind of government did Rousseau favor?",o:["Direct self-rule by the people (direct democracy)","An absolute monarch","Rule by a wealthy few","A theocracy"],a:0,e:"For Rousseau, the sovereignty of the people is the primary good, so the people should keep as much self-determination as possible."},
+  {th:"deon",q:"Kant’s Universal Law of Nature is…",o:["The chief principle for determining if an act meets the categorical imperative","Aquinas’s list of the natural virtues","The rule that the strongest survive in the state of nature","Bentham’s method for measuring pleasure"],a:0,e:"Four steps: (1) create a rule for your planned action; (2) rewrite it as a universal law for all people; (3) ask whether that law is actually possible; (4) ask whether you are rationally compelled to follow it."},
+  {th:"deon",q:"Which is one of the three questions for checking an action against the categorical imperative?",o:["Are people being treated as ends in themselves, not just means?","Will it produce the most pleasure?","Would the majority vote for it?","Does it fit the mean between two vices?"],a:0,e:"The three checks: Is it rational to expect everyone to be bound by this? Are people treated as ends, not just means? Is it done out of duty, not just desire?"},
+  {th:"deon",q:"Kant separates acting “in conformity with duty” from acting “from duty.” Which has genuine moral worth?",o:["Acting from duty: doing right because it is right","Acting in conformity with duty, if the result is good","Both equally","Neither; only results matter"],a:0,e:"A shopkeeper who gives honest change only to protect his business acts in conformity with duty, but not from duty."},
+  {th:"util",q:"Mill’s No Harm Principle says…",o:["We ought to be free to do anything that does not interfere with the freedom of others","Never cause anyone any pain","Avoid all lower pleasures","Government should stop every harmful choice"],a:0,e:"Mill joined utilitarianism to a strong defense of liberty, and backed reforms like universal education and women’s suffrage."},
+  {th:"util",q:"Why do utilitarians judge by consequences instead of intentions?",o:["Outcomes are observable and can be measured; only the person truly knows their intentions","Consequences are inherently right or wrong","Good intentions always produce good outcomes","Duty requires it"],a:0,e:"They add that we already instinctively judge acts by their results. Nothing is intrinsically right or wrong; things are “instrumentally” right or wrong because of their outcomes."},
+  {th:"util",q:"Bentham’s view that people are motivated by seeking pleasure and avoiding pain is called…",o:["Psychological egoism","Rational autonomy","The general will","Freedom for excellence"],a:0,e:"“Nature has placed mankind under the governance of two sovereign masters, pain and pleasure.”"},
+  {th:"util",q:"According to the Ethics Explainer, who held that we should follow the rules that create the most happiness over time (rule utilitarianism)?",o:["John Stuart Mill","Jeremy Bentham","Immanuel Kant","Thomas Hobbes"],a:0,e:"Bentham is closer to act utilitarianism, judging each action’s outcome. Mill thought society needs rules, like speed limits, that produce the most happiness over time."},
+  {th:"gen",q:"Judith Jarvis Thomson concluded that the trolley cases turn on the difference between…",o:["Deflecting a threat and bringing in a new threat","Higher and lower pleasures","Equality and equity","Express and implied consent"],a:0,e:"Turning the trolley deflects a threat already in motion; pushing the man brings a new threat to him. Thomson was a deontologist; Foot and Anscombe were virtue ethicists."},
+  {th:"gen",q:"What do Philippa Foot and G.E.M. Anscombe have in common?",o:["Both were Oxford-educated virtue ethicists who debated double effect","Both founded utilitarianism","Both were social contract theorists","Both defended the categorical imperative"],a:0,e:"Foot, a secular virtue ethicist, questioned double effect in 1967. Anscombe, a Catholic virtue ethicist, responded."},
+  {th:"gen",q:"A student says, “I was happiest last weekend at the concert.” Which theory would count that feeling as the happiness that matters most?",o:["Utilitarianism: happiness is pleasure, and pleasure can be added up","Virtue ethics: happiness is a single good feeling","Deontology: happiness is the reward for duty","Social contract theory: happiness is what government guarantees"],a:0,e:"For utilitarians, happiness is pleasure and the absence of pain. Eudaimonia is different: the fulfillment of a whole life lived virtuously, not a passing feeling."},
+  {th:"deon",q:"Kant: “Morality is not the doctrine of how we may make ourselves happy, but how we may make ourselves worthy of happiness.” What does this show?",o:["For Kant, morality is about duty, not about pursuing our own fulfillment","Kant thinks happiness is the highest good","Kant measures morality by pleasure","Kant rejects reason as a guide"],a:0,e:"Deontology is not about the personal pursuit of happiness or fulfillment; acting from duty is what makes us worthy of happiness."},
+  {th:"ve",q:"According to the Week 9 slides, what does prudence do for fortitude?",o:["It gives courage an accurate grasp of the danger","It removes all fear","It makes fortitude unnecessary","It tells fortitude to always attack"],a:0,e:"In return, fortitude empowers prudence to recognize truths it does not want to acknowledge. The cardinal virtues work together."},
+  {th:"ve",q:"Aquinas: “The principal act of fortitude is to remain steadfast in the midst of dangers, rather than to attack.” Which part of fortitude is he stressing?",o:["Endurance","Attack","Rashness","Indifference"],a:0,e:"Endurance is the greater part of fortitude. Christian thinkers see martyrdom, love bearing all things even to death, as its ultimate form."},
+  {th:"ve",q:"Aquinas writes that contemplation of God is imperfect now and “will be perfect in the life to come.” What does this add to Aristotle’s view of happiness?",o:["Perfect happiness lies beyond this life, in God","Happiness is just pleasure","Happiness depends only on wealth and honor","Nothing; they say exactly the same"],a:0,e:"Aristotle locates complete happiness in the activity of understanding in this life. Augustine: we live well by following God and happily by reaching him."},
+  {th:"sct",q:"Which thinker has the most hopeful view of human nature and wants the least government?",o:["Rousseau","Hobbes","Locke","Bentham"],a:0,e:"Rousseau sees humanity as free and peaceful until society corrupts it, so he keeps as much freedom as possible. Hobbes is at the other extreme; Locke is close to Rousseau but a little more cautious."},
+  {th:"sct",q:"A critic says, “I never agreed to any contract, and I can’t realistically leave.” Which theory is this aimed at?",o:["Social contract theory","Utilitarianism","Virtue ethics","Deontology"],a:0,e:"Critics also ask whether the contract is real or only a metaphor, and Carole Pateman argues the classic theories ignored the subordination of women."},
+  {th:"deon",q:"A critic says, “Refusing to lie to a murderer, even to save your friend, is following a rule off a cliff.” Which theory is this aimed at?",o:["Deontology","Utilitarianism","Social contract theory","Virtue ethics"],a:0,e:"Deontology can seem inflexible when it ignores consequences. Some answer with threshold deontology: follow the rules except in emergencies."},
+  {th:"util",q:"A critic says, “If five people would be happier, this theory lets them harm one innocent person.” Which theory is this aimed at?",o:["Utilitarianism","Deontology","Virtue ethics","Social contract theory"],a:0,e:"Critics also note that pleasures are hard to measure and compare, and ask where justice and individual rights fit."}
 ];
 
 const SORT = [
@@ -467,13 +521,17 @@ const SORT = [
   ["The veil of ignorance","sct"],["Better to be Socrates dissatisfied than a fool satisfied","util"],["Prudence is right deliberation in action","ve"],
   ["Never lie, even to a murderer at the door","deon"],["Life in the state of nature is “solitary, poor, nasty, brutish, and short”","sct"],
   ["Push the man off the bridge if it saves five","util"],["Faith, hope, and charity","ve"],["Act from duty, not from inclination","deon"],
-  ["Tacit consent","sct"],["The greatest happiness of the greatest number","util"],["Moral character is formed by habit","ve"],
-  ["Morality is grounded in reason, not feelings or results","deon"],["People give up some freedom in exchange for security","sct"]
+  ["By participating in society, you’re already in","sct"],["The greatest happiness of the greatest number","util"],["Moral character is formed by habit","ve"],
+  ["Morality is grounded in reason, not feelings or results","deon"],["People give up some freedom in exchange for security","sct"],
+  ["The No Harm Principle","util"],["The Universal Law of Nature","deon"],["Hobbes protects security, Locke rights, Rousseau freedom","sct"],
+  ["Actions are inherently right or wrong","deon"],["Nothing is intrinsically right or wrong; outcomes decide","util"],["Psychological egoism","util"]
 ];
 
 const MEAN = [
   {s:"Facing fear and danger",v:"Courage",d:"Cowardice",x:"Rashness"},
-  {s:"Bodily pleasures (food, drink)",v:"Temperance",d:"Insensibility",x:"Self-indulgence"},
+  {s:"Deliberating before acting",v:"Prudence",d:"Thoughtlessness",x:"Irresoluteness (overthinking)"},
+  {s:"Giving others what is due",v:"Justice",d:"Leniency",x:"Harshness"},
+  {s:"Pleasures, desires, and emotions",v:"Temperance",d:"No self-control",x:"Prudishness"},
   {s:"Giving money",v:"Generosity",d:"Stinginess",x:"Wastefulness"},
   {s:"Spending on large projects",v:"Magnificence",d:"Cheapness",x:"Vulgar showiness"},
   {s:"Honor and self-worth",v:"Proper pride",d:"Undue humility",x:"Vanity"},
@@ -486,25 +544,25 @@ const MEAN = [
 ];
 
 const IDEAS = [
-  {k:"Categorical Imperative",th:"deon",d:"The rational tool by which a deontologist can determine what is truly moral.",e:"First formulation: act only on a maxim you could will to become a universal law. Second: treat humanity always as an end, never merely as a means. It is “categorical” because it binds everyone regardless of what they want.",x:"A false promise to borrow money fails: if everyone did it, no one would believe promises, so the maxim contradicts itself."},
-  {k:"Double Effect Theory",th:"ve",d:"Aquinas’s principle for judging an action that has both a good effect and a bad effect.",e:"Allowed only if all four parts are met: (1) the act itself is good or neutral; (2) only the good effect is intended, while the bad is foreseen and tolerated; (3) the bad effect is not the means to the good; (4) the good is proportionate to the bad.",x:"Killing an attacker in self-defense: the intention is to save your life; the attacker’s death is a side effect."},
-  {k:"Equality vs. Equity",th:"gen",d:"Equality treats everyone the same; equity gives each person what they need for a fair outcome.",e:"Equality is identical treatment. Equity accounts for different starting points so everyone can reach the same goal. Both connect to justice as giving each their due.",x:"Equality: every student gets the same size shoes. Equity: every student gets shoes that fit."},
+  {k:"Categorical Imperative",th:"deon",d:"The rational tool by which a deontologist can determine what is truly moral.",e:"It is “an objective, rationally necessary and unconditional principle that we must follow despite any natural desires we may have to the contrary.” Kant: “Act only in accordance with that maxim through which you can at the same time will that it become a universal law,” and treat humanity always as an end, never merely as a means. Check an action with three questions: Is it rational to expect everyone to be bound by it? Are people treated as ends, not just means? Is it done out of duty, not just desire?",x:"A false promise to borrow money fails: if everyone did it, no one would believe promises, so the maxim contradicts itself."},
+  {k:"Double Effect Theory",th:"ve",d:"Aquinas’s principle for judging an action that has both a good effect and a bad effect.",e:"Allowed only if all four parts are met: (1) the action is morally good or neutral as to object, motive, and circumstances; (2) the evil effect is not directly intended, only tolerated; (3) the good effect is caused at least as directly as the bad; (4) the good is proportionate to compensate for the bad.",x:"Killing an attacker in self-defense: the intention is to save your life; the attacker’s death is a side effect."},
+  {k:"Equality vs. Equity",th:"gen",d:"Equality treats everyone the same; equity gives each person what they need for a fair outcome.",e:"Equality is identical treatment. Equity accounts for different starting points so everyone can reach the same goal. Both connect to justice as giving each their due, and Aristotle describes justice as proportional equality (equity) rather than strict equality.",x:"Equality: every student gets the same size shoes. Equity: every student gets shoes that fit."},
   {k:"Freedom for Excellence vs. Freedom of Indifference",th:"gen",d:"Two ways of understanding freedom.",e:"Freedom of indifference is the bare ability to choose between options, with no built-in direction. Freedom for excellence grows as we develop virtue: we become more able to do what is good.",x:"A beginner who can only bang piano keys has freedom of indifference. A trained pianist who can play anything has freedom for excellence."},
-  {k:"Inherent vs. Instrumental Morality",th:"gen",d:"Whether something is good in itself or good because of what it produces.",e:"Deontology treats acts like lying as inherently wrong. Utilitarianism is instrumental: acts are right or wrong based on what they produce.",x:"Telling the truth: Kant says it is right in itself; a utilitarian says it is right when it produces more happiness."},
-  {k:"Perfect vs. Imperfect Duties",th:"deon",d:"Kant’s two kinds of duties.",e:"Duty is a moral obligation that binds no matter the consequences. Perfect duties must always be kept, with no exceptions (never lie). Imperfect duties must be pursued, but we have room to choose when and how (help others).",x:"You may never lie to get a loan (perfect), but you can choose which charity to support (imperfect)."},
-  {k:"Religious Toleration",th:"sct",d:"The principle that government should not force religious belief.",e:"In A Letter Concerning Toleration, Locke argues that true belief cannot be coerced and that the state’s job is protecting life, liberty, and property, not saving souls.",x:"The First Amendment’s ban on an established religion reflects this idea."},
-  {k:"Social Contract",th:"sct",d:"An agreement in which people give up some natural freedom to a government in exchange for security and protected rights.",e:"Hobbes, Locke, and Rousseau begin from the state of nature, ask what people would agree to, and ground government’s legitimacy in consent.",x:"The Declaration of Independence: governments derive “their just powers from the consent of the governed.”"},
-  {k:"State of Nature",th:"sct",d:"The imagined condition of humans before government.",e:"Hobbes: a war of all against all. Locke: free and equal, under natural law, but insecure. Rousseau: peaceful and good until society corrupts people. Each view decides what kind of government is needed.",x:"Hobbes says life there would be “solitary, poor, nasty, brutish, and short,” so he wants a strong sovereign."},
+  {k:"Inherent vs. Instrumental Morality",th:"gen",d:"Whether an act is good or evil by its nature, or only by its outcome.",e:"Inherent morality (deontology, virtue ethics): an act’s rightness or wrongness belongs to the act itself, a permanent part of its nature. Instrumental morality (utilitarianism): nothing is intrinsically right or wrong; things are “instrumentally” right or wrong because of their outcomes.",x:"Telling the truth: Kant says it is right in itself; a utilitarian says it is right when it produces more happiness."},
+  {k:"Perfect vs. Imperfect Duties",th:"deon",d:"Kant’s two kinds of duties.",e:"Duty is a moral obligation that binds no matter the consequences. Perfect duties must always be kept, with no exceptions (never lie). Imperfect duties must be pursued, but we have room to choose when and how (help others).",x:"Telling the truth and never keeping slaves are perfect duties; giving to people in need is an imperfect duty."},
+  {k:"Religious Toleration",th:"sct",d:"The principle that government should not force religious belief.",e:"Locke (A Letter Concerning Toleration): state-sponsored religion is wrong, our natural state is toleration, and government shouldn’t interfere with matters of conscience, because true belief can’t be coerced. Rousseau also saw society as needing pluralism, above all in religion.",x:"The First Amendment’s ban on an established religion reflects this idea."},
+  {k:"Social Contract",th:"sct",d:"The means by which a government receives its legitimate authority.",e:"Each thinker asks how much people should give up, and for what. Hobbes: forfeit rights to an absolute power for security. Locke: sacrifice limited rights to a representative government that protects natural rights. Rousseau: keep maximum freedom through direct, group rule. By participating in society, you’re already in.",x:"The Declaration of Independence: governments derive “their just powers from the consent of the governed.”"},
+  {k:"State of Nature",th:"sct",d:"The imagined condition of humans before government.",e:"Hobbes: purely self-interested and afraid of death, a war of all against all. Locke: rational, free, and equal, but capable of doing wrong. Rousseau: free and peaceful, until society corrupts us by creating inequality. Each view decides what kind of government is needed.",x:"Hobbes says life there would be “solitary, poor, nasty, brutish, and short,” so he wants a strong sovereign."},
   {k:"The Doctrine of the Mean",th:"ve",d:"Aristotle’s teaching that every moral virtue is a mean between a vice of deficiency and a vice of excess.",e:"The mean is not a mathematical midpoint. Prudence finds the right amount, at the right time, toward the right person, for the right reason.",x:"Courage is the mean between cowardice (deficiency) and rashness (excess)."},
   {k:"The Greatest Happiness Principle",th:"util",d:"An action is more (most) moral when it pursues the greatest amount of happiness for the most people for the longest amount of time.",e:"Happiness means pleasure and the absence of pain. Utilitarians weigh how much happiness an action brings, to how many people, and for how long, counting everyone equally.",x:"A city builds a park instead of a private golf course because more people will benefit."},
-  {k:"Human Dignity, Natural Law, and the Categorical Imperative",th:"deon",d:"All three hold that persons have inherent worth that cannot be traded for outcomes.",e:"Natural law (Aquinas) says reason can discover a moral order rooted in human nature. Kant says reason gives us the categorical imperative. Both conclude that rational persons have dignity and must be treated as ends, never merely as means.",x:"Neither allows harvesting one healthy patient’s organs to save five others."},
-  {k:"Universal Law of Nature / Natural Law",th:"deon",d:"Moral law that holds for everyone, discoverable by reason.",e:"Kant’s universal law formula asks whether your maxim could become a law of nature for all. Aquinas’s natural law is our rational share in God’s eternal law, directing us toward our natural goods.",x:"Stealing fails the test: if everyone stole, the idea of property would collapse."},
-  {k:"Views on Best Governments",th:"sct",d:"Each thinker’s ideal government follows from their view of human nature.",e:"Hobbes: absolute sovereign. Locke: limited, representative government that protects rights, with a right to revolt. Rousseau: a republic ruled by the general will. Aristotle: a mixed constitution (polity) aimed at the common good.",x:"The U.S. Constitution’s limited government and separation of powers are closest to Locke."},
-  {k:"Views on Human Nature",th:"gen",d:"What people are like at bottom, which shapes every ethical and political theory.",e:"Hobbes: selfish and fearful. Locke: rational and mostly reasonable. Rousseau: naturally good. Aristotle: a rational, political animal with a telos. Kant: rational and free. Bentham: governed by pleasure and pain.",x:"Because Hobbes thinks people are dangerous, he gives the sovereign almost unlimited power."},
+  {k:"Human Dignity, Natural Law, and the Categorical Imperative",th:"deon",d:"Human dignity grounds the universal moral law, and reason works that law out: through natural law (Aquinas) or the categorical imperative (Kant).",e:"Every person has inherent, co-equal value. Because of that dignity there is a universal moral law that holds for everyone, and reason discovers it: Aquinas through natural law, Kant through the categorical imperative. So rational persons must be treated as ends, never merely as means.",x:"Neither allows harvesting one healthy patient’s organs to save five others."},
+  {k:"Universal Law of Nature / Natural Law",th:"deon",d:"Moral law that holds for everyone, discoverable by reason.",e:"Kant’s Universal Law of Nature is the chief principle for determining if an act meets the categorical imperative: (1) create a rule for your planned action; (2) rewrite it as a universal law for all people; (3) ask whether that law is actually possible; (4) ask whether you would be rationally compelled to follow it. Aquinas’s natural law is our rational share in God’s eternal law, directing us toward our natural goods.",x:"Stealing fails the test: if everyone stole, the idea of property would collapse."},
+  {k:"Views on Best Governments",th:"sct",d:"Each thinker’s ideal government follows from their view of human nature.",e:"Hobbes (protecting security): monarchy, dictatorship, or oligarchy, ideally an absolute sovereign. Locke (protecting rights): a republic or representative democracy, with the right to replace a government that violates rights. Rousseau (protecting freedom): direct democracy and direct self-rule, keeping as much freedom as possible. Aristotle: a mixed constitution (polity) aimed at the common good.",x:"On the class chart: Hobbes is at totalitarian government with humanity at its worst; Rousseau is near anarchy with humanity excellent; Locke is a little less optimistic than Rousseau and a little closer to the center on government, though still nearer anarchy. The United States chose Locke."},
+  {k:"Views on Human Nature",th:"gen",d:"What people are like at bottom, which shapes every ethical and political theory.",e:"Hobbes: purely self-interested and scared of death and pain. Locke: rational, free, and equal, but capable of doing wrong. Rousseau: good by nature, but corrupted by society. Aristotle: a rational, political animal with a telos. Kant: rational and free. Bentham and Mill: we seek pleasure and avoid pain, with equal dignity and liberty.",x:"Because Hobbes thinks people are dangerous, he gives the sovereign almost unlimited power."},
   {k:"What Makes a Law Just?",th:"gen",d:"The standard a law must meet to bind us morally.",e:"Aquinas: a law must be an ordinance of reason, for the common good, made by legitimate authority, and promulgated; it must agree with natural law. Social contract: it must protect rights and rest on consent. Kant: it must be universalizable and respect persons.",x:"Martin Luther King Jr. called segregation laws unjust because they degraded human dignity."},
   {k:"Why Value Means or Ends",th:"gen",d:"Whether the morality of an act lies in how it is done or in what it achieves.",e:"Utilitarians value ends: outcomes decide right and wrong. Deontologists value means: some acts are forbidden even for good results. Virtue ethics focuses on the telos and the character the act forms.",x:"Lying to win an election: a utilitarian looks at the results; a Kantian says lying is wrong whatever the result."},
-  {k:"Mill vs. Bentham",th:"util",d:"The two main utilitarians and how they differ.",e:"Bentham measured pleasures only by quantity, using a calculus (intensity, duration, extent, and more). Mill added quality: intellectual and moral pleasures are higher than bodily ones.",x:"Bentham: “pushpin is as good as poetry.” Mill: “better Socrates dissatisfied than a fool satisfied.”"},
-  {k:"The Trolley Problem",th:"gen",d:"A thought experiment, first posed by Philippa Foot (1967), testing whether outcomes, means, or what we owe each person matters most.",e:"A runaway trolley will kill five unless it is turned onto a track where it will kill one. Who acts matters: Foot’s agent is the driver; Thomson’s is a bystander at a switch. A utilitarian turns it either way and would also push a man off a bridge to stop it. A deontologist refuses to push, since that uses him as a mere means. A virtue ethicist asks what justice owes the one and the five and lets prudence judge the particulars: the driver should steer toward the lesser injury, no one may push the man, and the bystander case is a genuine dilemma; a virtuous person grieves whatever they choose.",x:"Double effect struggles here. In Thomson’s Loop case the one man’s body is what stops the trolley, so his death looks like a means, yet many still think turning is allowed."}
+  {k:"Mill vs. Bentham",th:"util",d:"The two main utilitarians and how they differ.",e:"Bentham: pleasure is the primary good and any pleasure equals any other, measured by the hedonic calculus (intensity, duration, certainty, propinquity, fecundity, purity, extent). Mill: higher pleasures (intellectual and moral) outrank lower ones (physical and sensual), and we should be free to do anything that doesn’t interfere with others’ freedom (the No Harm Principle).",x:"Bentham: “the game of push-pin is of equal value with … poetry.” Mill: “better to be Socrates dissatisfied than a fool satisfied.”"},
+  {k:"The Trolley Problem",th:"gen",d:"A thought experiment, first posed by Philippa Foot (1967), testing whether outcomes, means, or what we owe each person matters most.",e:"A runaway trolley will kill five unless it is turned onto a track where it will kill one. Who acts matters: Foot’s agent is the driver; Thomson’s is a bystander at a switch, and she concluded that deflecting a threat differs from bringing in a new threat. A utilitarian turns it either way and would also push a man off a bridge to stop it. A deontologist refuses to push, since that uses him as a mere means. A virtue ethicist asks what justice owes the one and the five and lets prudence judge the particulars: the driver should steer toward the lesser injury, no one may push the man, and the bystander case is a genuine dilemma; a virtuous person grieves whatever they choose.",x:"Double effect struggles here. In Thomson’s Loop case the one man’s body is what stops the trolley, so his death looks like a means, yet many still think turning is allowed."}
 ];
 
 const CASES = [
@@ -601,10 +659,10 @@ V.home = {
 
       <h2 class="section-title">Study stations</h2>
       <div class="stations">
-        ${station("flashcards","Flashcards","Solo","All 32 key terms plus the big ideas. Flip, then sort into “know it” and “still learning.”", `<span><b>${known}</b> / ${TERMS.length} known</span>`)}
+        ${station("flashcards","Flashcards","Solo",`All ${TERMS.length} key terms plus the big ideas. Flip, then sort into “know it” and “still learning.”`, `<span><b>${known}</b> / ${TERMS.length} known</span>`)}
         ${station("quiz","Practice Quiz","Solo","Multiple-choice questions on every theory, with an explanation after each answer.", P.quizBest ? `<span>Best <b>${P.quizBest}</b></span>` : `<span>${QUIZ.length} questions</span>`)}
         ${station("sort","Theory Sort","Solo or pairs","Quick-fire: which theory does this phrase, quote, or idea belong to?", P.sortBest != null ? `<span>Best <b>${P.sortBest}</b> / 20</span>` : `<span>${SORT.length} items</span>`)}
-        ${station("mean","Mean Builder","Solo","Find the deficiency, the virtue, and the excess for each of Aristotle’s virtues.", P.meanBest != null ? `<span>Best <b>${P.meanBest}</b> / ${MEAN.length}</span>` : `<span>${MEAN.length} virtues</span>`)}
+        ${station("mean","Mean Builder","Solo","Find the deficiency, the virtue, and the excess for the cardinal virtues and Aristotle’s other virtues.", P.meanBest != null ? `<span>Best <b>${P.meanBest}</b> / ${MEAN.length}</span>` : `<span>${MEAN.length} virtues</span>`)}
         ${station("ideas","Key Ideas","Solo","Write a 3-point answer, then check it against a model: definition, explanation, example.", `<span><b>${ideasDone}</b> / ${IDEAS.length} practiced</span>`)}
         ${station("cases","Case Lab","Solo or group","Get a scenario and a random stance. Name the moral issue and respond, just like the test.", `<span><b>${P.cases}</b> cases worked</span>`)}
         ${station("describe","Describe It","Group","Taboo-style vocabulary game. Get your team to say the term without the forbidden words.", `<span>2+ teams · 60s rounds</span>`)}
@@ -633,9 +691,10 @@ V.flashcards = {
     else {
       const t = TERMS[S.deck[S.pos]];
       card = `<div class="card3d"><button type="button" class="flash${S.flipped ? " flipped" : ""}" data-act="flip" aria-label="${S.flipped ? "Show term" : "Show definition"}">
-        <div class="face t-${t.th}">${chip(t.th)}<div class="term">${esc(t.t)}</div>${P.known[t.t] ? `<span class="known-mark">✓ Known</span>` : ""}<span class="tap">Tap or press Space to flip</span></div>
+        <div class="face t-${t.th}">${chip(t.th)}<div class="term">${esc(t.t)}</div>${P.known[t.t] ? `<span class="known-mark">✓ Known</span>` : ""}${gated() && GATES.flashGuess && cardOpen3(t) ? '<span class="unlocked-tag">Unlocked · flip anytime</span>' : ""}<span class="tap">Tap or press Space to flip</span></div>
         <div class="face back t-${t.th}"><span class="eyebrow">${esc(t.t)}</span><p class="def">${esc(t.d)}</p></div>
-      </button></div>`;
+      </button></div>` + (gated() && GATES.flashGuess && !S.flipped && !cardOpen3(t) ? `<label class="fl guess" for="guess3">Write the definition from memory before you flip<textarea id="guess3" data-guess3="1" rows="2" placeholder="In your own words">${esc(S.guess || "")}</textarea></label>${S.flipMsg ? `<p class="miss" role="status">${esc(S.flipMsg)}</p>` : ""}`
+        : S.flipped && S.wrote ? `<div class="feedback hint"><b>You wrote</b>${esc(S.wrote)}</div>` : "");
     }
     view.innerHTML = `
       <div class="view-head"><span class="eyebrow">Word Definitions · 12 pts</span><h1>Flashcards</h1>
@@ -653,13 +712,20 @@ V.flashcards = {
         <button class="btn sm" type="button" data-act="resetknown" style="justify-self:start">Clear my “known” cards</button>
       </div>`;
   },
-  next(){ if (S.deck.length) { S.pos = (S.pos + 1) % S.deck.length; S.flipped = false; } },
+  next(){ if (S.deck.length) { S.pos = (S.pos + 1) % S.deck.length; S.flipped = false; S.guess = ""; S.wrote = ""; S.flipMsg = false; } },
+  input(e){ if (e.target.dataset.guess3) { S.guess = e.target.value; if (S.flipMsg) { S.flipMsg = false; const m = view.querySelector(".guess + .miss"); if (m) m.remove(); } } },
   click(act, el){
+    if (act === "flip" && !S.flipped) { const t = TERMS[S.deck[S.pos]];
+      if (t && !cardOpen3(t)) {
+        if (wc(S.guess) < GATES.flashMinWords) S.flipMsg = `Write at least ${GATES.flashMinWords} words first, then flip.`;
+        else if (!relates3(t, S.guess)) S.flipMsg = `That doesn’t seem to connect to “${t.t}” yet. Write what you remember about it from class, then try again.`;
+        else { P.flashOpen3 = P.flashOpen3 || {}; P.flashOpen3[t.t] = 1; saveP(); S.flipMsg = false; S.wrote = S.guess; S.flipped = true; this.render(); return; }
+        this.render(); setTimeout(() => $("#guess3") && $("#guess3").focus(), 0); return; } }
     if (act === "filter") { S.filter = el.dataset.v; S.pos = 0; this.build(); }
     if (act === "mode") { S.mode = el.dataset.v; S.pos = 0; this.build(); }
     if (act === "flip") { S.flipped = !S.flipped; const f = view.querySelector(".flash"); f.classList.toggle("flipped", S.flipped); return; }
-    if (act === "prev") { S.pos = (S.pos - 1 + S.deck.length) % S.deck.length; S.flipped = false; }
-    if (act === "shuffle") { S.deck = shuffle(S.deck); S.pos = 0; S.flipped = false; }
+    if (act === "prev") { S.pos = (S.pos - 1 + S.deck.length) % S.deck.length; S.flipped = false; S.guess = ""; S.wrote = ""; S.flipMsg = false; }
+    if (act === "shuffle") { S.deck = shuffle(S.deck); S.pos = 0; S.flipped = false; S.guess = ""; S.wrote = ""; }
     if (act === "know") { const t = TERMS[S.deck[S.pos]]; P.known[t.t] = 1; saveP();
       if (S.mode === "learning") { S.deck.splice(S.pos, 1); if (S.pos >= S.deck.length) S.pos = 0; S.flipped = false; } else this.next(); }
     if (act === "learning") { const t = TERMS[S.deck[S.pos]]; delete P.known[t.t]; saveP(); this.next(); }
@@ -850,15 +916,17 @@ V.ideas = {
               ${["I gave an accurate definition","I explained it and named the right thinker or theory","I gave a fitting example"].map((l, n) => `<label><input type="checkbox" id="chk-${n}" data-act="check" data-n="${n}" ${S.checks[n] ? "checked" : ""}>${l}</label>`).join("")}
               <div class="row between"><b>${pts} / 3 points</b><button class="btn primary" type="button" data-act="save">Save score &amp; next →</button></div>
             </div></div>`
-          : `<div class="row end"><button class="btn primary" type="button" data-act="reveal">Show model answer</button></div>`}
+          : `<div class="row between">${gated() ? wcGate(wc(S.drafts[S.i]), GATES.ideasMinWords, "idea-wc") : "<span></span>"}<button class="btn primary" type="button" data-act="reveal" ${this.canShow() ? "" : "disabled"}>Show model answer</button></div>`}
         </div>
       </div>`;
   },
   go(n){ S.i = (n + IDEAS.length) % IDEAS.length; S.shown = false; S.checks = [false,false,false]; },
+  canShow(){ return !gated() || wc(S.drafts[S.i]) >= GATES.ideasMinWords; },
+  input(e){ if (e.target.id === "idea-draft") { S.drafts[S.i] = e.target.value; const w = $("#idea-wc"); if (w) w.outerHTML = wcGate(wc(S.drafts[S.i]), GATES.ideasMinWords, "idea-wc"); const b = view.querySelector('[data-act="reveal"]'); if (b) b.disabled = !this.canShow(); } },
   click(act, el){
     const ta = $("#idea-draft"); if (ta) S.drafts[S.i] = ta.value;
     if (act === "go") this.go(+el.dataset.i);
-    if (act === "reveal") S.shown = true;
+    if (act === "reveal") { if (!this.canShow()) return; S.shown = true; }
     if (act === "check") { S.checks[+el.dataset.n] = el.checked; }
     if (act === "save") { P.ideas[IDEAS[S.i].k] = S.checks.filter(Boolean).length; saveP(); this.go(S.i + 1); }
     if (act === "check") { const b = view.querySelector(".checks b"); if (b) b.textContent = S.checks.filter(Boolean).length + " / 3 points"; return; }
@@ -891,7 +959,7 @@ V.cases = {
           ${S.group ? `<div class="group-list">${S.group.map(g => `<div class="group-row t-${g.k}"><b>${esc(g.n)}</b><span class="chip t-${g.k}">${TH[g.k].name}</span></div>`).join("")}</div>
             <p class="muted">Give everyone 3 minutes to write the moral issue and their response. Then each person argues their stance, and the next person must respond to the one before.</p>` : ""}
         </div>
-        ${S.group ? `<div class="panel stack"><div class="row between"><span class="eyebrow">Model answers</span><button class="btn sm" type="button" data-act="reveal">${S.shown ? "Hide" : "Show"}</button></div>${S.shown ? lenses(null) : ""}</div>` : ""}
+        ${S.group ? `<div class="panel stack"><div class="row between"><span class="eyebrow">Model answers</span><span class="row">${gated() && !S.shown ? `<label class="toggle sm"><input type="checkbox" id="gw" data-act="gw" ${S.gw ? "checked" : ""}> Everyone has written and argued their stance</label>` : ""}<button class="btn sm" type="button" data-act="reveal" ${gated() && !S.shown && !S.gw ? "disabled" : ""}>${S.shown ? "Hide" : "Show"}</button></span></div>${S.shown ? lenses(null) : ""}</div>` : ""}
       </div>`;
       return;
     }
@@ -902,7 +970,7 @@ V.cases = {
           <button class="btn${S.stance ? "" : " primary"}" type="button" data-act="spin" ${S.spinning ? "disabled" : ""}>${S.stance ? "Re-roll stance" : "Roll my stance"}</button></div>
         ${S.stance ? `<label class="fl" for="case-issue">1. What is the key moral issue?<textarea id="case-issue" style="min-height:80px">${esc(S.issue)}</textarea></label>
         <label class="fl" for="case-resp">2. Respond as a ${TH[S.stance].name === "Utilitarianism" ? "utilitarian" : TH[S.stance].name === "Deontology" ? "deontologist" : "virtue ethicist"}. What should be done, and why?<textarea id="case-resp">${esc(S.resp)}</textarea></label>
-        <div class="row end"><button class="btn primary" type="button" data-act="reveal">${S.shown ? "Hide model answers" : "Compare with model answers"}</button></div>` : ""}
+        <div class="row between"><span class="row">${gated() && !S.shown ? `<span id="cwc">${this.counters()}</span>` : ""}</span><button class="btn primary" type="button" data-act="reveal" ${S.shown || this.canCompare() ? "" : "disabled"}>${S.shown ? "Hide model answers" : "Compare with model answers"}</button></div>` : ""}
       </div>
       ${S.shown && S.stance ? `<div class="panel stack"><span class="eyebrow">Model answers</span>${lenses(S.stance)}
         <div class="checks"><span class="eyebrow">Did your answer…</span>
@@ -911,11 +979,15 @@ V.cases = {
     </div>`;
   },
   keep(){ const a = $("#case-issue"), b = $("#case-resp"), g = $("#group-names"); if (a) S.issue = a.value; if (b) S.resp = b.value; if (g) S.names = g.value; },
+  counters(){ return `Issue ${wcGate(wc(S.issue), GATES.u3Case.issue)} · Response ${wcGate(wc(S.resp), GATES.u3Case.resp)}`; },
+  canCompare(){ return !gated() || (wc(S.issue) >= GATES.u3Case.issue && wc(S.resp) >= GATES.u3Case.resp); },
+  input(e){ if (e.target.id === "case-issue" || e.target.id === "case-resp") { this.keep(); const c = $("#cwc"); if (c) c.innerHTML = this.counters(); const b = view.querySelector('[data-act="reveal"]'); if (b && !S.shown) b.disabled = !this.canCompare(); } },
   click(act, el){
     this.keep();
     if (act === "mode") { S.mode = el.dataset.v; S.shown = false; }
-    if (act === "nextcase") { if (S.shown || S.group) { P.cases++; saveP(); } S.i = (S.i + 1) % CASES.length; Object.assign(S, { stance:null, shown:false, issue:"", resp:"", group:null }); window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" }); }
-    if (act === "reveal") S.shown = !S.shown;
+    if (act === "nextcase") { if (S.shown || S.group) { P.cases++; saveP(); } S.i = (S.i + 1) % CASES.length; Object.assign(S, { stance:null, shown:false, issue:"", resp:"", group:null, gw:false }); window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" }); }
+    if (act === "gw") S.gw = el.checked;
+    if (act === "reveal") { if (!S.shown && ((S.mode === "solo" && !this.canCompare()) || (S.mode === "group" && gated() && !S.gw))) return; S.shown = !S.shown; }
     if (act === "assign") {
       const names = S.names.split(",").map(s => s.trim()).filter(Boolean);
       if (!names.length) { $("#group-names").focus(); return; }
@@ -994,7 +1066,7 @@ V.describe = {
 /* ================= UNIT 2 CONTENT ================= */
 const VIRTUE_BASICS = [
   ["Virtue", "A stable and effective disposition oriented towards right action. Stable means habitual; effective means impactful."],
-  ["Vice", "Too much or too little of a quality: excess or deficiency (Aristotle). Augustine and Aquinas describe vice as a privation, or absence, of virtue."],
+  ["Vice", "A bad habit: too much (excess) or too little (deficiency) of a virtue. Augustine and Aquinas describe vice as a privation, or absence, of virtue."],
   ["The mean", "The proper amount in a situation, relative to the self and the situation. It is not a mathematical midpoint."],
   ["Habit", "Formed over time with intention, and always changeable. Habits shape both who we are and the world around us."]
 ];
@@ -1002,7 +1074,8 @@ const VIRTUE_BASICS = [
 const VIRTUES = [
   { k:"pru", n:"Prudence", d:"Right deliberation in action",
     ch:["Seeing truthfully","The role of conscience","Discerning how we achieve good desires"],
-    lo:"Irresoluteness", hi:"Thoughtlessness",
+    ch2:["Practical, not mechanistic: context is essential","The charioteer: guides the other virtues","Choosing the best means to the end","Requires choosing (negligence avoids choice)"],
+    lo:"Thoughtlessness", hi:"Irresoluteness (overthinking)",
     more:[
       "Not mechanistic rules: the context of the specific situation is essential.",
       "The charioteer: prudence helps decide what the virtuous act is, balances our many commitments, and sets a specific path for putting virtuous desire into action.",
@@ -1012,10 +1085,11 @@ const VIRTUES = [
     voices:[["Augustine","“Prudence is love distinguishing with sagacity between what hinders it and what helps it.” (Of the Morals 15)"],["Mattison","“We cannot act rightly if we do not see rightly.” (96)"]],
     role:"Prudence determines the proper, virtuous method to approach any particular situation: which virtues to use, and how, in different ethical dilemmas." },
   { k:"jus", n:"Justice", d:"Giving what is due",
-    ch:["Harmony of the soul","Right relationship","Dynamic and organic","Personal vs. relational vs. societal"],
+    ch:["Harmony of the soul","Right relationship","Proportional equality (equity)","Dynamic and organic","Personal vs. relational vs. societal"],
+    ch2:["A complete virtue, oriented toward others","Reciprocity","Lawful and fair","Rightly ordered love (ordo amoris)","Mercy and redemption"],
     lo:"Leniency", hi:"Harshness",
     more:[
-      "Key parts to weigh: proportionality, right relationship, the common good, and mercy and redemption.",
+      "Key parts to weigh: proportional equality (equity), right relationship, the common good, and mercy and redemption. Aristotle calls justice a proportional equality rather than strict equality.",
       "Ius: “right” or the proper order of things; peace, harmony, and right relationship.",
       "Dynamic and organic: some things are situational (who does which chores), while some are universal (abuse is never acceptable).",
       "A just law is a dictate of reason, made by proper authority, properly promulgated, and serves the common good."
@@ -1024,6 +1098,7 @@ const VIRTUES = [
     role:"Justice sustains our focus on the morally right action and helps us to be outwardly focused in our virtuous efforts." },
   { k:"tem", n:"Temperance", d:"Self-control/moderation of desires, pleasures, and emotions",
     ch:["Harmony of the soul","Relationship of rationality to desires and emotions","Focused primarily on physical sensations"],
+    ch2:["Moderation, not prohibition: desire is good","Right prioritization","Universal need, flexible details","Formed in stages"],
     lo:"No self-control", hi:"Prudishness",
     more:[
       "Desire is good. It is just as intemperate to refuse needed food as to overeat.",
@@ -1035,6 +1110,7 @@ const VIRTUES = [
     role:"Temperance enables us to find the golden mean of virtue and to maintain necessary detachment from emotions and desires." },
   { k:"for", n:"Fortitude", d:"Facing difficulties/challenges well",
     ch:["Correct belief","Relationship to fear and hardship","Endurance and attack"],
+    ch2:["Endurance is the greater part","Vulnerability: something real is at risk","Serves a just end","Love bearing all things"],
     lo:"Cowardice", hi:"Rashness",
     more:[
       "Correct belief: knowing what should and should not be feared (Plato). Brave people still feel fear; failing to fear a real threat is a failure of prudence.",
@@ -1084,6 +1160,69 @@ const VCASES = [
            "The freshman has shown fortitude by approaching Maya with the truth and prudence by seeking counsel from someone more experienced. She probably needs a little more fortitude to tell the coach, even though she risks her social standing and reputation. As captain, Maya owes her a good example."],
         r:"Although not easy, Maya needs to tell her coach the truth as a matter of justice. It will take great courage, knowing that victory might be sacrificed by losing two key players; however, prudence dictates that we must take the right action. As the rules of the school are not unjust, the right relationship to the institution requires this honesty of Maya. Although some would argue that nobody experienced hurt from this situation, by enabling her friends Maya will be supporting the building up of vicious habits that might lead to more detrimental actions and consequences further down the road." } },
 
+  { id:"cs1", t:"Practice Case #1: Voluntourism", tag:"Class practice case", cls:true,
+    s:["“Barbie Savior” is a popular Instagram account that features satirical, photoshopped images of a Barbie doll traveling the world and taking selfies with the disadvantaged—those in poverty, those affected by disaster, orphans, etc. With over 160,000 followers on Instagram, “Barbie Savior” is a satirical representation of growing concern over the multibillion dollar so-called “voluntourism” industry. The captions from Barbie Savior are often comically self-directed and seek to highlight how volunteer work abroad, if not engaged in carefully, can be superficial, empty, and even harmful.",
+       "Every year, over 1.6 million people volunteer abroad, usually with good intentions of helping out in underserved communities. However, critics of voluntourism point out that the damage done to communities can quickly outweigh the benefits. Volunteers who are untrained or unspecialized in building, for instance, may produce unsafe, shoddy work that will have to be taken down and rebuilt by locals. Additionally, if there is no shortage of locals who are able and willing to work, bringing in foreign volunteers can displace local jobs. To make things worse, not all volunteer aid organizations do have the best intentions, and may exploit rather than help local communities. One orphanage in Cambodia, for example, forced children to toil in rice paddies and beat and starved them, all while pocketing charitable donations. While many aid organizations are not comparably fraudulent or corrupt, critics contend that voluntourism can support an unsustainable and repressive dependence on Western nations which enforces racialized hierarchies and stereotypes without providing longer-term solutions that empower the communities being served.",
+       "Despite some possible pitfalls, volunteering abroad does have the potential to provide needed, powerful, and lasting benefits to both the community and the volunteer. Proponents insist that, if operated as a mutual exchange of knowledge, skills, and resources, development projects can make lasting and meaningful change in communities where it is needed. For example, non-profits that place locals in charge of projects and partner with existing community organizations emphasize a “bottom-up” approach that focuses on empowerment and building self-sustaining, resilient programs, rather than merely providing short-term resource handouts. Respecting local culture and customs and recognizing that local people understand their own needs, barriers, and capabilities best are key to performing work ethically, aid organizations argue. In this way, travelers can avoid having the “savior” mentality satirized above—where they assume that they know more or have more skills just by virtue of coming from a more developed country. Instead, volunteers can use this opportunity to listen and learn, to form deep connections with the local people, and to grow their senses of empathy and compassion that will hopefully lead to more selfless acts in the future.",
+       "Others worry, however, that discouraging or regulating voluntourism may end up doing more harm than good because volunteers, at the very least, bring money and attention to notable causes. For instance, FORGE, a charity for refugees, shifted away from volunteers towards a model designed to help people more effectively. However, their income fell drastically because volunteers were their primary fundraisers. Despite critiques that voluntourism focuses too much on the volunteers’ experience rather than the impact and effectiveness of their programs, it may be the reality that volunteers, even “bad” ones, are vital for some organizations to do their work in the first place."],
+    h1:"There is no single main character here. Who is affected when a volunteer goes abroad: the volunteer, the community, local workers, the organization, and charities like FORGE?",
+    h3:"Whose good is the trip really for? Look at the selfies Barbie Savior mocks and the volunteers who “listen and learn.” What separates them?",
+    m:{ p:"Should someone who wants to help people in need volunteer abroad through a voluntourism program?",
+        sec:["Untrained volunteers doing unsafe or shoddy work","Volunteers taking jobs from local workers","Fraudulent organizations that exploit communities (the Cambodian orphanage)","The “savior” mentality and dependence on wealthier nations","Charities like FORGE that rely on volunteers for funding"],
+        st:["The volunteers","The local communities being served","Local workers","Aid organizations, honest and fraudulent","Charities that depend on volunteer fundraising"],
+        v:"Justice, giving what is due, is the central virtue in this case. Its key elements of right relationship, the common good, and proportional equality (equity) ask what each community is actually owed, including the dignity of leading its own projects. Prudence, right deliberation in action, is needed to see the situation truthfully and to choose the best means to a good desire; it reminds us that context is essential and that good intentions are not enough. Temperance, self-control and moderation of desires, pleasures, and emotions, applies because the trip can become about the volunteer’s experience, photos, and good feelings. Fortitude, facing challenges and difficulties well, is needed for the harder, longer work of real service and for the humility of learning rather than leading.",
+        a:["The volunteer needs prudence first. The desire to help is good, but prudence sees truthfully that untrained building can be unsafe and that some organizations, like the Cambodian orphanage, exploit the very children they claim to serve. Prudence chooses the best means: researching organizations, choosing ones that put locals in charge, and offering skills that are actually needed. Justice asks what the community is due: work that helps rather than harms, jobs that stay with local workers, and respect for people who understand their own needs best. Temperance checks the desire for selfies and the pleasure of feeling like a “savior,” the vice Barbie Savior mocks. Fortitude means committing to the slower work of listening, learning, and lasting partnership.",
+           "The local communities are owed justice: dignity, right relationship, and a real say in their own futures. They are not props in someone else’s story. Local workers are owed the jobs that volunteers can displace, so a just program never replaces paid local labor with free foreign labor.",
+           "Aid organizations need justice and prudence most. Fraudulent groups commit grave injustice by profiting from suffering. Honest groups like FORGE face a real prudential problem: the model that helps people most effectively cost them their funding. They need fortitude to keep doing what works while finding honest ways to raise support."],
+        r:"Someone who wants to help may volunteer abroad, but only if prudence and justice shape the trip. The most virtuous response is to choose an organization that places locals in charge, to offer only skills that are actually needed, and to go as a learner and partner rather than a savior; if no such program fits, the person should give money or serve closer to home instead. The good of the community, not the volunteer’s experience, is the true end of the act. Some would argue, as the FORGE example suggests, that even “bad” volunteers bring money and attention that charities need. But justice does not let us treat a community’s needs as a backdrop for our own good feelings, and prudence shows that the answer is not to stop volunteering but to volunteer well, turning volunteers into informed supporters and fundraisers for programs that truly help." } },
+
+  { id:"cs2", t:"Practice Case #2: Snow White and Representation", tag:"Class practice case", cls:true,
+    s:["In recent years, Disney live-action remakes have been the topic of news headlines and 1-star Letterboxd reviews alike. In 2023, however, one particular live-action remake would spark a heated debate over more than others. The live-action remake of Snow White and The Seven Dwarves would be incomplete without the titular dwarves. The company initially considered hiring actors with dwarfism, aligning with the original and subsequent animated portrayals of the characters in the animated film. The portrayal of disabilities has been the center of debate for multiple franchises, including critiques for the 2020 adaptation of Roald Dahl’s novel The Witches. This film depicted a villain with limb differences, drawing critique for encouraging children to see those with missing fingers as witches.",
+       "Actors with disabilities have progressed in how they are represented in the film industry. Troy Kotsur, born deaf, recently won an Oscar for his performance in CODA, making him the first male deaf actor, and second deaf actor in general (after Marlee Matlin) to win an acting Oscar. The Marvel Cinematic Universe recently introduced its first deaf superhero, played by deaf American actor Lauren Ridloff. While these films were praised for representing not only deaf characters but also for providing opportunities for deaf actors, the community of actors with dwarfism was divided on Snow White and The Seven Dwarves. Peter Dinklage, best known for his role on Game of Thrones, is a person with dwarfism. He publicly criticized Disney for perpetuating stereotypes by using actors with dwarfism for the Snow White remake. In response, Disney opted to use CGI to represent the dwarves, staying true to their representation in the original animated film. This choice, however, was still met with critique. While Peter Dinklage enjoys popular fame and is a recognized thespian based on his many award nominations and wins, other lesser-known actors with dwarfism argued that roles remain few and far between. These actors argue that by using CGI for the seven dwarves, actors were deprived of a rare employment opportunity.",
+       "This controversy has sparked legal debate, with some arguing that the decision to omit actors with dwarfism might violate the Americans with Disabilities Act (ADA), which mandates equal employment opportunities for people with disabilities. While 30% of the U.S. population identify as having a disability, they remain underrepresented in the acting industry. Studies have found that only 21% of characters with disabilities on network television are portrayed by individuals who themselves have a disability. This points to a broader systemic issue: disabled actors face barriers to inclusion even in roles they identify with. This leads not only to fewer employment opportunities for individuals with disabilities, but also inauthentic portrayals of their lived experiences. Some critics also argue that casting non-disabled actors to portray disability turns disability into a costume, reinforcing harmful stereotypes and reducing lived experience to spectacle. Acting traditionally involves stepping into experiences beyond one’s own experiences, leading some to ask whether actors should be limited to roles that match their exact identity.",
+       "Debates around representation in media continue beyond the screen. In France, an adaptation of Beauty and the Beast for a children’s book recently lost government funding. This particular adaptation featured Black protagonists, rejecting the original representation of the story and the cultural makeup of France. The fairy tale was initially published in 1740, but now France has the largest black population in Europe, with more than half of Black Europeans living in France. In 2023, a live adaptation of The Little Mermaid was launched with a similar twist: Ariel was played by a Black woman. This led to similar backlash from U.S. audiences and abroad. Likewise, the casting of a Latina actress as Snow White drew controversy from those who felt the casting veered too far from the “traditional” image of the character—despite the story’s fictional roots and evolving cultural meaning.",
+       "These are beloved stories which have maintained through generations, leading some to argue that their authenticity should be maintained by preserving the physical and cultural traits the authors originally intended. Others argue that contemporary values should be applied to these stories, allowing them to grow as societies do. Perhaps we are existing within Plato’s cave— trapped in our own limited experiences with ideas of what diversity and representation “should” look like, just as the authors of these stories were trapped within their own experiences when writing."],
+    h1:"Actors with dwarfism don’t all agree here. Separate Peter Dinklage from the lesser-known actors, then add Disney, audiences, and children with disabilities who watch the film.",
+    h3:"Is the stereotype in who plays the dwarfs, or in how the dwarfs are written? Prudence looks for a means that gives each group what it is due.",
+    m:{ p:"Was Disney right to use CGI for the seven dwarfs instead of hiring actors with dwarfism?",
+        sec:["Whether casting actors with dwarfism as the dwarfs perpetuates stereotypes","Equal employment for actors with disabilities (the ADA)","Portrayals of disability as villainy or spectacle (The Witches)","Whether classic stories should keep their original portrayals or be recast (The Little Mermaid, Snow White, Beauty and the Beast)"],
+        st:["Disney and the filmmakers","Peter Dinklage","Lesser-known actors with dwarfism","Audiences, especially children with disabilities","The wider disability community"],
+        v:"Justice, giving what is due, is at the heart of this case. Its key elements of right relationship, proportional equality (equity), and the common good ask what actors with dwarfism are owed, both fair access to work and portrayals that respect their dignity. Prudence, right deliberation in action, is needed to see the situation truthfully and to find the best means to a good end; it is practical and depends on context, not a single rule. Fortitude, facing challenges and difficulties well, applies because every choice here draws public criticism. Temperance, moderation of desires, pleasures, and emotions, is needed in the outrage and backlash on all sides, and in a studio’s desire for profit and safety.",
+        a:["Disney needed prudence and justice most. Its good desire was to avoid stereotyping, but prudence would have seen truthfully that the problem lay in how the dwarfs were written, not in who played them. Justice gives what is due: under-represented actors are owed fair access to rare roles, and an audience that includes people with dwarfism is owed portrayals with dignity. Proportional equality (equity) matters because these actors start with far fewer opportunities. Choosing CGI looks like a failure of fortitude: Disney avoided the criticism instead of doing the harder work of re-imagining the characters with actors who have dwarfism.",
+           "Peter Dinklage showed fortitude by using his fame to speak against stereotypes. Justice, though, asks him to remember that lesser-known actors depend on the very roles he criticized; prudence would aim his criticism at how the characters are written rather than at the casting itself.",
+           "Lesser-known actors with dwarfism are owed justice in the form of fair opportunity, and they show fortitude by speaking up despite having less power and fame. Audiences need temperance in their reactions to recasting, whether of the dwarfs, Ariel, or Snow White, so that anger does not replace honest thought about what these stories are for."],
+        r:"Disney was wrong to replace the dwarfs with CGI. The most virtuous response would have been to cast actors with dwarfism and work with them to rewrite the characters with dignity, so the film offered both fair employment and a portrayal free of mockery. This gives each group what it is due, which is what justice requires, and prudence shows that both goods could be achieved at once. Some would argue, with Peter Dinklage, that any casting of “seven dwarfs” repeats a stereotype, so removing the actors was the respectful choice. But the stereotype comes from the story’s writing, not from the actors’ bodies, and erasing them from the screen did not end the stereotype; it only took away rare work from people who already have the fewest roles." } },
+
+  { id:"cs3", t:"Practice Case #3: Juan and Julia", tag:"Class practice case", cls:true,
+    s:["Juan and his girlfriend Julia have just graduated from college and have been in a committed relationship for about two years. Their relationship is happy and healthy, characterized by mutual respect and excitement about their future together. One weekend, Juan goes on a trip by himself to the wedding of an old friend from high school. The party afterwards is a fun and raucous celebration. Towards the end of the evening, Juan finds himself dancing with Marcela, an old friend that he has not seen in a very long time. At first the dancing is silly, but soon they are dancing suggestively and flirting with each other. When the party is over, Marcela invites Juan back to her hotel room and he accepts.",
+       "When Juan and Marcela arrive at the hotel, they are surprised to find that a handful of their old friends have gathered in the common area, continuing to catch up together. They welcome Juan and Marcela, who end up sitting with different clusters of friends scattered around the room, and they all continue talking and laughing until the morning.",
+       "The next day, after everyone has parted ways, Juan feels glad the interaction with Marcela went no further than it did, but he also feels guilty about nearly cheating on Julia. He is not sure about what would have happened had his friends not been present. He is also not sure whether or not to tell Julia what happened. Juan thinks Julia deserves to know how close he came to cheating on her and that it would be disrespectful to her and to their relationship to keep it a secret. Yet he also wonders if telling Julia is necessary since in the end all he and Marcela did was dance."],
+    h1:"Juan and Julia are obvious. Who else made choices that night, and who unknowingly changed how it ended?",
+    h3:"Juan says “all we did was dance,” but he also accepted the invitation to the hotel room. What does his guilt tell you about his conscience, and what does it show about temperance?",
+    m:{ p:"Should Juan tell Julia that he nearly cheated on her?",
+        sec:["Juan’s flirting and accepting Marcela’s invitation","Marcela pursuing someone she may know is in a relationship","Honesty and trust in a committed relationship","Juan’s uncertainty about what he would have done"],
+        st:["Juan","Julia","Marcela","Their friends at the hotel"],
+        v:"Justice, giving what is due, is central because Juan and Julia are in a committed relationship, and right relationship creates duties: fidelity and honesty are owed to a partner. Temperance, self-control and moderation of desires, pleasures, and emotions, applies to what happened at the party, where desire overruled reason step by step; its stages (intemperance, incontinence, continence, temperance) help describe where Juan is. Prudence, right deliberation in action, is needed to see the night truthfully, including the role of conscience, and to decide how and when to tell Julia. Fortitude, facing challenges and difficulties well, is needed because telling the truth risks the relationship he values.",
+        a:["Juan needs every virtue here. Temperance failed him at the party: the dancing moved from silly to suggestive, and accepting Marcela’s invitation was a real choice, not an accident. His guilt the next morning is his conscience working, a sign he is not at the stage of intemperance but closer to incontinence: he knows it was wrong and still acted. Justice asks what Julia is due, and Juan himself admits she deserves to know. Prudence helps him see truthfully: he does not know what would have happened, and “all we did was dance” is a story that protects him rather than the truth. Fortitude gives him the courage to have a hard conversation with someone he loves.",
+           "Julia has done nothing wrong, and justice says she is owed honesty from the person she is building a future with. She will need prudence and temperance when she hears the truth, so that her response is proportionate, neither dismissing what happened nor treating it as if Juan had cheated.",
+           "Marcela also lacked temperance, and she failed in justice if she knew Juan was in a relationship. The friends at the hotel acted without knowing it, but their presence shows how much our circumstances shape our choices, which is why prudence avoids the near occasion of a bad act instead of trusting willpower in the moment."],
+        r:"Juan should tell Julia what happened, honestly and without excuses. Justice settles it: a committed relationship is built on right relationship and trust, and Julia is owed the truth so she can respond as a full partner rather than live inside a story Juan has edited for her. Telling her also builds a habit of honesty, while hiding it would build a habit of concealment that makes the next secret easier. Some would argue that nothing happened, so telling her would only cause pain. But Juan chose to go to the hotel room, he does not know what he would have done, and his own conscience says she deserves to know; silence would protect Juan’s comfort, not Julia’s good. Prudence can shape how he tells her, in person and soon, along with what he will change so it does not happen again." } },
+
+  { id:"cs4", t:"Practice Case #4: The Golden State Killer", tag:"Class practice case", cls:true,
+    s:["In 2018, authorities discovered the identity of the Golden State Killer—a man responsible for over 50 rapes, 13 murders, and countless home invasions that occurred in California during the 1970s and 1980s. Now 72 years old, Joseph DeAngelo had evaded police for over forty years until detectives ran crime scene DNA evidence against an online genealogy database that is ordinarily used to connect people to long-lost relatives. Using the Golden State Killer’s DNA profile, investigators found that an individual who had uploaded their DNA to the database was probably related to the killer. Then, after investigating that individual’s relatives who fit the description and age of the Golden State Killer, the detectives settled on DeAngelo as their prime suspect. The investigators then obtained a DNA sample from DeAngelo and constructed a genetic profile which turned out to be identical to that of the perpetrator. Although he is still awaiting trial, there is very little doubt that DeAngelo is in fact the Golden State Killer.",
+       "Few people find the fact that DeAngelo has been arrested on the basis of DNA evidence to be problematic—if the district attorney’s office and its investigators made no errors in their procedures, then DeAngelo’s capture appears to be a clear victory for justice. What some find problematic, however, is the method that the police used to uncover the killer’s identity. Critics consider these methods to be a major breach of privacy. According to this criticism, someone’s DNA is the most private information about them. Police cannot just demand someone’s DNA without probable cause for thinking that they have committed a crime, and no one’s genetic information should be turned over to police without a warrant or without the owner’s explicit consent. People who upload their DNA to genealogy websites such as the one in question have consented to have their genetic information used for a very specific purpose—to find relatives. They have not given consent for this information to be used by the police. Therefore, using such a website to access someone’s private genetic information seems to be an illegitimate way for police to get access to information to which they do not have any right. This case could set a problematic precedent, encouraging further violations of civil rights by law enforcement officials.",
+       "In defense of the investigators’ actions, some people deny that this was a major breach of privacy: voluntarily uploading your genetic information to a publicly-accessible database means that you give up any reasonable expectation of privacy related to it. Others argue that even if there was a breach in privacy in this case, it is one in which the benefits clearly outweigh the costs. After all, this particular case had been cold for forty years and probably wouldn’t have been solved if the detectives had not pursued this strategy. Locating criminals through genealogy websites could open the door to resolving countless previously unsolved cases. Still, opponents respond, the same argument could be made for violating any privacy rights; the ends do not justify the means."],
+    h1:"Count the people whose DNA was involved, not just DeAngelo. Then add the victims and their families, the investigators, the website, and everyone who might upload DNA in the future.",
+    h3:"Virtue ethics doesn’t stop at “the ends justify the means.” What is each person due here, and what would a prudent, just investigator do?",
+    m:{ p:"Was it ethical for investigators to use a genealogy database, without its users’ consent, to identify the Golden State Killer?",
+        sec:["Privacy and consent for genetic information","Justice for the victims and their families after forty years","The precedent for future police investigations and civil rights","Whether the ends justify the means"],
+        st:["The investigators","The victims and their families","Joseph DeAngelo","The relative who uploaded their DNA, and the database’s other users","The genealogy company and the public"],
+        v:"Justice, giving what is due, is the main virtue in this case, and here it pulls in more than one direction. Its key elements of right relationship, the common good, and what makes a law just (a dictate of reason, made by proper authority, properly promulgated, and serving the common good) ask what the victims are owed, what the database’s users are owed, and what even the accused is owed. Prudence, right deliberation in action, is needed to choose a means that fits the good end; it is not mechanistic and depends on context. Fortitude, facing challenges and difficulties well, shows in forty years of endurance by investigators and victims’ families. Temperance, moderation of desires, pleasures, and emotions, is needed so the desire for justice does not grow into a willingness to do anything to win it.",
+        a:["The investigators need justice and prudence most. The victims and their families are owed justice, and the investigators showed fortitude by not giving up for forty years. But justice is also owed to the people whose DNA they searched: users who consented to find relatives, not to help the police. Prudence asks whether the means fit the end. Here the database was used only to generate a lead, and the decisive evidence came from DeAngelo’s own DNA, obtained afterward. Temperance keeps the strong desire to solve a terrible case from becoming a habit of ignoring others’ rights.",
+           "The victims and their families showed great fortitude in enduring decades without answers, and they are owed justice: the truth and a fair trial. DeAngelo, though almost certainly guilty, is still owed a just process, because justice is not only for the innocent.",
+           "The relative who uploaded their DNA and the other users are owed respect for what they agreed to. The genealogy company owes its users prudence and honesty: clear terms about whether police may search their data, so that their consent is real."],
+        r:"In this case, the investigators acted justly enough to be defended, but the practice needs limits. The most virtuous response is to allow genealogy searches only for the gravest crimes, only to produce a lead that must then be confirmed through a lawfully obtained sample, and only under clear public rules that users are told about when they upload their DNA. This gives the victims the justice they are owed while respecting what users are owed: honest terms and real consent. Some would argue, with the critics, that the ends do not justify the means and that this sets a dangerous precedent. Virtue ethics agrees that the goodness of the end alone does not decide the question, which is why prudence demands narrow limits and justice demands transparency. But using information that people placed in a publicly searchable database, to find someone who raped and murdered for years, is not the same as seizing private data at will; a just and prudent society can allow it with clear rules rather than forbid it entirely." } },
+
   { id:"lights", t:"Lights Out", tag:"Dorm life",
     s:["Theo is a junior whose phone screen time averages over seven hours a day, most of it after lights-out. He runs a gaming commentary channel with 40,000 followers, and a sponsor pays him $300 a month as long as he streams four nights a week.",
        "His grades have dropped from A’s to C’s this semester, and he has fallen asleep twice in morning chapel. Last week he deleted the apps for two days and said he felt “lighter,” then reinstalled them when followers started asking where he went.",
@@ -1108,7 +1247,7 @@ const VCASES = [
     m:{ p:"Should Dana use her own money to cover the customer’s shortfall when store policy forbids it?",
         sec:["The mother’s dignity in front of the line","The man’s comment about people on welfare","Dana’s write-up last month","Whether the policy itself is just"],
         st:["Dana","The mother and her children","Dana’s manager and the store","The man in line and the other customers"],
-        v:"Justice, giving what is due, is the main virtue here. Its key elements are right relationship and the common good, and in a case like this proportionality and mercy matter too. Prudence, right deliberation in action, helps Dana see the whole situation truthfully and find the best means to a good desire. Temperance, moderation of desires, pleasures, and emotions, applies to the anger and embarrassment of the moment. Fortitude, facing challenges well, is needed to speak up in front of an impatient line.",
+        v:"Justice, giving what is due, is the main virtue here. Its key elements are right relationship and the common good, and in a case like this proportional equality (equity) and mercy matter too. Prudence, right deliberation in action, helps Dana see the whole situation truthfully and find the best means to a good desire. Temperance, moderation of desires, pleasures, and emotions, applies to the anger and embarrassment of the moment. Fortitude, facing challenges well, is needed to speak up in front of an impatient line.",
         a:["Dana owes justice in several directions: mercy and dignity to a mother trying to feed her kids, honesty to an employer whose rule exists to prevent fraud, and care for her own job after last month’s write-up. Prudence helps her see that the choice is not only “break the rule or send the kids home without cereal”; she can call the manager over and ask, openly, to cover it. Fortitude lets her do that, and respond to the man’s comment, with the whole line watching. Temperance keeps her irritation at him from turning into harshness.",
            "The mother shows fortitude by putting items back with her kids beside her instead of leaving. She is owed the dignity of not being shamed for using a program meant for exactly this.",
            "The man in line fails in justice: his comment withholds the respect every person is due, and his impatience shows a lack of temperance. The manager, if called, needs prudence to see that a rule meant to stop fraud is not threatened by an open, approved act of kindness."],
@@ -1149,11 +1288,11 @@ const VCASES = [
        "This is Marcus’s second honor offense; as a freshman he plagiarized an essay. The handbook says a second major offense “may result in dismissal.” Marcus is on full financial aid, so dismissal would also cost him his housing.",
        "The parents who ran the fundraiser are angry and want Marcus expelled. Elijah plays lacrosse with Marcus and likes him. The council votes tomorrow, and Elijah’s vote may decide the outcome."],
     h1:"Elijah’s friendship with Marcus is an issue in its own right. What else is at stake for the school community, not just Marcus?",
-    h3:"Use the Week 8 key parts of justice: proportionality, right relationship, the common good, and mercy and redemption. Which apply to Marcus, and which to the parents?",
+    h3:"Use the Week 8 key parts of justice: proportional equality (equity), right relationship, the common good, and mercy and redemption. Which apply to Marcus, and which to the parents?",
     m:{ p:"Should Elijah vote to recommend that Marcus be dismissed?",
         sec:["Elijah’s friendship with Marcus and his impartiality","The parents’ demand for expulsion","Marcus’s family situation and his sister’s prescription","Marcus’s first offense and what a proportional consequence looks like"],
         st:["Elijah","Marcus","Marcus’s sister and family","The lacrosse team and its parents","The honor council and the school community"],
-        v:"Justice, giving what is due, is at the heart of this case. Its key elements are proportionality, right relationship, the common good, and mercy and redemption, with leniency and harshness as its vices. Prudence, right deliberation in action, helps Elijah see the whole situation truthfully. Fortitude, facing challenges well, is needed to vote for what is just under pressure. Temperance, moderation of desires, pleasures, and emotions, keeps both his affection for Marcus and the parents’ anger from deciding the case.",
+        v:"Justice, giving what is due, is at the heart of this case. Its key elements are proportional equality (equity), right relationship, the common good, and mercy and redemption, with leniency and harshness as its vices. Prudence, right deliberation in action, helps Elijah see the whole situation truthfully. Fortitude, facing challenges well, is needed to vote for what is just under pressure. Temperance, moderation of desires, pleasures, and emotions, keeps both his affection for Marcus and the parents’ anger from deciding the case.",
         a:["Elijah’s main virtue is justice. The consequence should be proportional: Marcus stole $300, has repaid $100, and this is his second offense. Doing nothing would be leniency; dismissal, which also costs a student on aid his housing, may be harshness. Prudence means seeing both the theft and the reason for it, and disclosing his friendship to the council so his vote can be trusted. Temperance keeps his friendship and the parents’ anger from steering him. Fortitude lets him vote for what he believes is just even if teammates or parents are upset.",
            "Marcus failed in justice by taking what was not his and in prudence by not asking the school for help. But confessing, repaying $100, and offering to work off the rest are the beginning of redemption and of restoring right relationship.",
            "The parents are owed repayment and a real response, and their anger is understandable. Justice asks for proportion, not revenge, and temperance asks them to moderate their emotions. The school community’s common good needs both trust in its fundraisers and a council that can restore someone who has done wrong."],
@@ -1199,6 +1338,8 @@ function virtueCard(v){
     <div class="vcard-head"><h2>${esc(v.n)}</h2><p class="vdef">${esc(v.d)}</p></div>
     <div class="stack" style="gap:6px"><span class="eyebrow">Essential characteristics</span>
       <ul class="charlist">${v.ch.map(c => `<li>${esc(c)}</li>`).join("")}</ul></div>
+    ${v.ch2 ? `<div class="stack" style="gap:6px"><span class="eyebrow">More elements</span>
+      <ul class="charlist more2">${v.ch2.map(c => `<li>${esc(c)}</li>`).join("")}</ul></div>` : ""}
     <div class="meanrow" aria-label="The mean">
       <div><span class="lab">Deficiency</span><b>${esc(v.lo)}</b></div>
       <div class="mid"><span class="lab">Virtue</span><b>${esc(v.n)}</b></div>
@@ -1210,7 +1351,7 @@ function virtueCard(v){
 }
 function quickRef(){
   return `<details class="quickref"><summary>Quick reference: the four cardinal virtues</summary>
-    <div class="qr-grid">${VIRTUES.map(v => `<div class="qr v-${v.k}"><b>${esc(v.n)}</b><span>${esc(v.d)}</span><small>${v.ch.map(esc).join(" · ")}</small><small class="muted">${esc(v.lo)} ← → ${esc(v.hi)}</small></div>`).join("")}</div>
+    <div class="qr-grid">${VIRTUES.map(v => virtueOpen(v.k) ? `<div class="qr v-${v.k}"><b>${esc(v.n)}</b><span>${esc(v.d)}</span><small>${v.ch.map(esc).join(" · ")}</small>${v.ch2 ? `<small class="muted">Also: ${v.ch2.map(esc).join(" · ")}</small>` : ""}<small class="muted">${esc(v.lo)} ← → ${esc(v.hi)}</small></div>` : `<div class="qr v-${v.k}"><b>${esc(v.n)}</b><span class="muted">${LOCK} Locked. Open it in the <a href="#toolkit">Virtue Toolkit</a> by writing your own notes.</span></div>`).join("")}</div>
     <p class="muted" style="margin-top:8px">Full notes are in the <a href="#toolkit">Virtue Toolkit</a>.</p></details>`;
 }
 function modelStep(c, n){
@@ -1254,12 +1395,42 @@ V.home2 = {
 
 /* ---- Toolkit ---- */
 V.toolkit = {
+  init(){ S = { msg:{}, vd:{}, vc:{}, edit:{} }; },
   render(){
+    P.vnotes = P.vnotes || {};
+    const opened = VIRTUES.filter(v => virtueOpen(v.k)).length, gate = gated() && GATES.toolkitNotes;
     view.innerHTML = `<div class="view-head"><span class="eyebrow">Unit 2 · Reference</span><h1>Virtue Toolkit</h1>
         <p>Everything you need for Step 2 of a case study: the class definition of each cardinal virtue, its essential characteristics, its vices, and how it works with the others.</p></div>
+      ${gate ? `<div class="feedback hint notes-first"><b>Notes first</b>Each virtue opens after you write its definition and at least two of its characteristics from your own notes. Then compare what you wrote with the class version. <span class="num">${opened} of 4 open.</span></div>` : ""}
       <dl class="basics">${VIRTUE_BASICS.map(([t, d]) => `<div><dt>${esc(t)}</dt><dd>${esc(d)}</dd></div>`).join("")}</dl>
-      <div class="vgrid">${VIRTUES.map(virtueCard).join("")}</div>`;
-  }
+      <div class="vgrid">${VIRTUES.map(v => virtueOpen(v.k) && !S.edit[v.k] ? this.openCard(v) : this.lockCard(v)).join("")}</div>`;
+  },
+  openCard(v){
+    const n = P.vnotes[v.k];
+    return `<div class="vwrap">${n && n.def ? `<div class="yournotes v-${v.k}"><div class="row between"><span class="eyebrow">Your notes</span><button class="btn sm" type="button" data-act="vedit" data-k="${v.k}">Edit my notes</button></div>
+      <p><b>Definition:</b> ${esc(n.def)}</p><p class="pre"><b>Characteristics:</b> ${esc(n.chars)}</p></div>` : ""}${virtueCard(v)}</div>`;
+  },
+  lockCard(v){
+    const n = P.vnotes[v.k] || {}, d = S.vd[v.k] ?? n.def ?? "", c = S.vc[v.k] ?? n.chars ?? "", m = S.msg[v.k];
+    return `<article class="vcard v-${v.k} lockcard"><div class="row between"><h2>${esc(v.n)}</h2>${S.edit[v.k] ? "" : `<span class="lockpill">${LOCK} Locked</span>`}</div>
+      <p class="muted">${S.edit[v.k] ? "Update your notes, then save." : "Before you look, write it from your own notes."}</p>
+      <label class="fl" for="vn-def-${v.k}">Definition<input type="text" id="vn-def-${v.k}" data-vd="${v.k}" value="${esc(d)}" autocomplete="off" spellcheck="false"></label>
+      <label class="fl" for="vn-ch-${v.k}">At least two characteristics or elements<textarea id="vn-ch-${v.k}" data-vc="${v.k}" rows="3" placeholder="One per line">${esc(c)}</textarea></label>
+      ${m ? `<p class="miss" role="status">${m}</p>` : ""}
+      <div class="row end"><button class="btn primary" type="button" data-act="vcheck" data-k="${v.k}">${S.edit[v.k] ? "Save my notes" : "Check and open"}</button></div></article>`;
+  },
+  click(act, el){
+    const k = el.dataset.k;
+    if (act === "vedit") { S.edit[k] = true; }
+    if (act === "vcheck") {
+      const d = (S.vd[k] ?? $("#vn-def-" + k).value), c = (S.vc[k] ?? $("#vn-ch-" + k).value);
+      const r = checkVirtueNotes(k, d, c);
+      if (!gated() || (r.defOk && r.chars >= 2)) { P.vnotes[k] = { def:d.trim(), chars:c.trim(), open:1 }; saveP(); delete S.msg[k]; delete S.edit[k]; delete S.vd[k]; delete S.vc[k]; }
+      else S.msg[k] = `Definition: ${r.defHave} of ${r.defNeed} key words from the class definition${r.defOk ? " ✓" : ""}. Characteristics: ${r.chars >= 2 ? "✓" : `add at least two from class (I recognized ${r.chars})`}. Check your notes and try again.`;
+    }
+    this.render();
+  },
+  input(e){ const t = e.target; if (t.dataset.vd) S.vd[t.dataset.vd] = t.value; if (t.dataset.vc) S.vc[t.dataset.vc] = t.value; }
 };
 
 /* ---- Virtue Case Lab ---- */
@@ -1284,7 +1455,7 @@ V.vlab = {
   },
   stepper(){
     return `<ol class="stepper">${STEPS.map(s => `<li><button type="button" data-act="go" data-n="${s.n}" aria-current="${S.step === s.n ? "step" : "false"}"><span class="num">${s.n}</span><span class="lbl">${esc(s.t)}</span></button></li>`).join("")}
-      <li><button type="button" data-act="go" data-n="5" aria-current="${S.step === 5 ? "step" : "false"}"><span class="num">✓</span><span class="lbl">Compare</span></button></li></ol>`;
+      <li><button type="button" data-act="go" data-n="5" aria-current="${S.step === 5 ? "step" : "false"}"><span class="num">${this.ready() ? "✓" : LOCK}</span><span class="lbl">Compare</span></button></li></ol>`;
   },
   prompts(s){ return `<ul class="prompts">${s.q.map(q => `<li>${esc(q)}</li>`).join("")}</ul>`; },
   steps(c){
@@ -1299,11 +1470,23 @@ V.vlab = {
         ${hint && S.hints[hk] ? `<div class="feedback hint"><b>Hint</b>${esc(hint)}</div>` : ""}
         ${S.step === 2 || S.step === 3 ? quickRef() : ""}
         <label class="fl" for="u2-ans-${s.n}">Your answer<textarea id="u2-ans-${s.n}" data-step="${s.n}" rows="${s.n === 1 ? 6 : 8}">${esc(d[s.n])}</textarea></label>
+        ${this.counter(s.n, d[s.n])}
         <div class="row between"><button class="btn" type="button" data-act="go" data-n="${S.step - 1}" ${S.step === 1 ? "disabled" : ""}>← Back</button>
           <button class="btn primary" type="button" data-act="go" data-n="${S.step + 1}">${S.step === 4 ? "Compare with the model →" : "Next step →"}</button></div>
       </section>`;
   },
+  counter(n, t){ if (!gated()) return ""; const w = wc(t), m = GATES.caseMinWords[n]; return `<span class="wcount${w >= m ? " ok" : ""}" id="wc-${n}">${w} / ${m} words${w >= m ? " ✓" : " to open the model answer"}</span>`; },
+  ready(){ const d = this.draft(); return !gated() || STEPS.every(s => wc(d[s.n]) >= GATES.caseMinWords[s.n]); },
+  lockPanel(c){
+    const d = this.draft();
+    return caseCard(c, false) + (S.mode === "steps" ? this.stepper() : "") + `<section class="panel stack lockpanel">
+      <span class="lockpill">${LOCK} Model answer locked</span><h2 class="step-h">Write your own answer first</h2>
+      <p class="muted">The model answer opens once every step has enough of your own writing. These are minimums, not targets; a strong blue book answer is fuller.</p>
+      <ul class="wlist">${STEPS.map(s => { const n = wc(d[s.n]), m = GATES.caseMinWords[s.n]; return `<li class="${n >= m ? "ok" : ""}"><span>Step ${s.n} · ${esc(s.t)}</span><span class="num">${n} / ${m} words${n >= m ? " ✓" : ""}</span>${n < m && S.mode === "steps" ? `<button class="btn sm" type="button" data-act="go" data-n="${s.n}">Write it</button>` : ""}</li>`; }).join("")}</ul>
+      ${S.mode === "bluebook" ? `<div class="row"><button class="btn" type="button" data-act="unfinish">Back to writing</button></div>` : ""}</section>`;
+  },
   compare(c){
+    if (!this.ready()) return this.lockPanel(c);
     const d = this.draft(), ck = S.checks[c.id] || {};
     const got = Object.values(ck).filter(Boolean).length;
     return caseCard(c, false) + (S.mode === "steps" ? this.stepper() : "") + `
@@ -1323,7 +1506,7 @@ V.vlab = {
       caseCard(c) + quickRef() +
       STEPS.map(s => { const k = c.id + s.n; return `<section class="panel stack">
         <div class="row between"><span class="eyebrow">Step ${s.n} · ${s.n <= 2 ? "Whiteboard" : "Discuss"}</span>
-          <button class="btn sm" type="button" data-act="reveal" data-k="${k}">${S.revealed[k] ? "Hide model" : "Reveal model for this step"}</button></div>
+          <span class="row">${gated() && !S.revealed[k] ? `<label class="toggle sm"><input type="checkbox" id="pw-${k}" data-act="pw" data-k="${k}" ${S.pw && S.pw[k] ? "checked" : ""}> We’ve written ours</label>` : ""}<button class="btn sm" type="button" data-act="reveal" data-k="${k}" ${gated() && !S.revealed[k] && !(S.pw && S.pw[k]) ? "disabled" : ""}>${S.revealed[k] ? "Hide model" : "Reveal model"}</button></span></div>
         <h2 class="step-h">${esc(s.t)}</h2>${this.prompts(s)}
         ${S.revealed[k] ? `<div class="model"><span class="eyebrow">${modelLabel(c)}</span>${modelStep(c, s.n)}</div>` : ""}
       </section>`; }).join("");
@@ -1338,10 +1521,10 @@ V.vlab = {
     const d = this.draft();
     return `<div class="bb-bar"><span class="eyebrow">Blue book · ${esc(c.t)}</span><span class="timer${S.left <= 60 ? " low" : ""}" id="bbtimer" aria-live="off">${fmt(S.left)}</span></div>` +
       caseCard(c) + STEPS.map(s => `<section class="panel stack"><h2 class="step-h"><span class="num">${s.n}</span>${esc(s.t)}</h2>${this.prompts(s)}
-        <label class="fl" for="u2-bb-${s.n}">Step ${s.n}<textarea id="u2-bb-${s.n}" data-step="${s.n}" rows="${s.n === 1 ? 5 : 7}">${esc(d[s.n])}</textarea></label></section>`).join("") +
+        <label class="fl" for="u2-bb-${s.n}">Step ${s.n}<textarea id="u2-bb-${s.n}" data-step="${s.n}" rows="${s.n === 1 ? 5 : 7}">${esc(d[s.n])}</textarea></label>${this.counter(s.n, d[s.n])}</section>`).join("") +
       `<div class="row end"><button class="btn primary" type="button" data-act="finish">Finish and compare</button></div>`;
   },
-  markDone(){ const c = this.c(); const d = this.draft(); if (Object.values(d).some(x => x.trim())) { P.u2done = P.u2done || {}; P.u2done[c.id] = 1; } saveP(); },
+  markDone(){ const c = this.c(); const d = this.draft(); if (this.ready() && Object.values(d).some(x => x.trim())) { P.u2done = P.u2done || {}; P.u2done[c.id] = 1; } saveP(); },
   click(act, el){
     const c = this.c();
     if (act === "case") { this.stop(); Object.assign(S, { ci:+el.dataset.i, step:1, started:false, bbDone:false }); }
@@ -1359,10 +1542,13 @@ V.vlab = {
         const t = $("#bbtimer"); if (t) { t.textContent = S.left ? fmt(S.left) : "Time"; t.classList.toggle("low", S.left <= 60); }
         if (!S.left) this.stop(); }, 1000); }
     if (act === "finish") { this.stop(); S.bbDone = true; this.markDone(); }
+    if (act === "unfinish") { S.bbDone = false; }
+    if (act === "pw") { S.pw = S.pw || {}; S.pw[el.dataset.k] = el.checked; }
     this.render();
     if (["go","next","case","finish","start"].includes(act)) window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
   },
-  input(e){ const n = e.target.dataset.step; if (!n) return; this.draft()[n] = e.target.value; clearTimeout(this._t); this._t = setTimeout(saveP, 400); }
+  input(e){ const n = e.target.dataset.step; if (!n) return; this.draft()[n] = e.target.value; clearTimeout(this._t); this._t = setTimeout(saveP, 400);
+    const w = $("#wc-" + n); if (w) { const k = wc(e.target.value), m = GATES.caseMinWords[n]; w.textContent = `${k} / ${m} words${k >= m ? " ✓" : " to open the model answer"}`; w.classList.toggle("ok", k >= m); } }
 };
 const fmt = s => Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
 
@@ -1373,7 +1559,7 @@ const vname = k => VIRTUES.find(v => v.k === k).n;
 /* Definition recall: key words that must appear */
 const RECALL = [
   { k:"pru", n:"Prudence", ans:"Right deliberation in action", need:[["right"],["deliberation","deliberate"],["action","act"]] },
-  { k:"tem", n:"Temperance", ans:"Self-control/moderation of desires, pleasures, and emotions", need:[["self-control","self control","selfcontrol"],["moderation","moderate","moderating"],["desires","desire"],["pleasures","pleasure"],["emotions","emotion"]] },
+  { k:"tem", n:"Temperance", ans:"Self-control/moderation of desires, pleasures, and emotions", need:[["self-control","self control","selfcontrol","moderation","moderate","moderating"],["desires","desire"],["pleasures","pleasure"],["emotions","emotion"]] },
   { k:"for", n:"Fortitude", ans:"Facing difficulties/challenges well", need:[["facing","face"],["difficulties","difficulty","challenges","challenge"],["well"]] },
   { k:"jus", n:"Justice", ans:"Giving what is due", need:[["giving","give","gives"],["due"]] },
   { k:"vir", n:"Virtue", ans:"A stable and effective disposition oriented towards right action", need:[["stable"],["effective"],["disposition"],["oriented","orientation"],["right action","right actions"]] }
@@ -1383,17 +1569,17 @@ const RECALL = [
 const TRAITS = [
   ["Seeing truthfully",["pru"]],["The role of conscience",["pru"]],["Discerning how we achieve good desires",["pru"]],
   ["Not mechanistic rules: context is essential",["pru"]],["The charioteer that guides the other virtues",["pru"]],
-  ["Grows first through experience",["pru"]],["Vices: irresoluteness and thoughtlessness",["pru"]],
+  ["Grows first through experience",["pru"]],["Vices: thoughtlessness and irresoluteness (overthinking)",["pru"]],
   ["Determines the proper method to approach any particular situation",["pru"]],
   ["Augustine: love distinguishing what hinders it from what helps it",["pru"]],
-  ["Ignatian discernment: weighing reasons for and against before deciding",["pru"]],
+  ["Ignatian discernment: weighing reasons for and against before deciding",["pru"]],["Choosing the best means to the end",["pru"]],["Requires choosing: negligence avoids choice",["pru"]],
   ["Right relationship",["jus"]],["Dynamic and organic",["jus"]],["Personal vs. relational vs. societal",["jus"]],
-  ["Proportionality",["jus"]],["The common good",["jus"]],["Mercy and redemption",["jus"]],
+  ["Proportional equality (equity)",["jus"]],["The common good",["jus"]],["Mercy and redemption",["jus"]],
   ["Vices: leniency and harshness",["jus"]],["A just law is reasonable, properly authorized, promulgated, and serves the common good",["jus"]],
   ["Sustains our focus on the right action and keeps us outwardly focused",["jus"]],
-  ["Augustine: rightly ordered love (ordo amoris)",["jus"]],
+  ["Augustine: rightly ordered love (ordo amoris)",["jus"]],["A complete virtue, oriented toward others",["jus"]],["Reciprocity: giving and receiving in fair measure",["jus"]],["Lawful and fair",["jus"]],
   ["Relationship of rationality to desires and emotions",["tem"]],["Focused primarily on physical sensations",["tem"]],
-  ["Desire is good; it must not displace more important goals",["tem"]],["Four stages: intemperance, incontinence, continence, virtue",["tem"]],
+  ["Moderation, not prohibition: desire is good",["tem"]],["Right prioritization: desires must not displace more important goals",["tem"]],["Universal need, flexible details: what is moderate depends on the person",["tem"]],["Four stages: intemperance, incontinence, continence, temperance",["tem"]],
   ["Vices: no self-control and prudishness",["tem"]],["Enables us to find the golden mean and stay detached from desires",["tem"]],
   ["Abstaining for health or a role (like an athlete) can be virtuous",["tem"]],
   ["Augustine: love giving itself entirely to that which is loved",["tem"]],
@@ -1409,9 +1595,9 @@ const SPOTS = [
   { s:"Before replying to a friend’s angry text, Nia waits until morning, rereads it, and asks herself what is really going on.", k:"pru", el:"Seeing truthfully and right deliberation: she makes sure she sees the situation accurately before she acts." },
   { s:"Facing a college decision, Ana lists the reasons for and against each school, talks to people she trusts, and notices which choice brings her peace.", k:"pru", el:"Discernment: she deliberates carefully about how to reach a good desire." },
   { s:"Sam never decided not to study for the exam. He just kept putting off the choice until it was too late.", k:"pru", el:"Negligence, a failure of prudence: prudence requires making a choice, and negligence avoids it." },
-  { s:"Lena refuses to commit to any summer plan because every option might turn out to be the wrong one.", k:"pru", el:"Irresoluteness, the deficiency of prudence: she never moves from deliberation to action." },
+  { s:"Lena refuses to commit to any summer plan because every option might turn out to be the wrong one.", k:"pru", el:"Irresoluteness, the excess of prudence: she overthinks and never moves from deliberation to action." },
   { s:"After months of calling her friend’s constant lateness “no big deal,” Maya finally admits to herself that it really bothers her.", k:"pru", el:"Seeing truthfully: an accurate grasp of reality has to come before right action." },
-  { s:"A judge sentences a first-time shoplifter to community service and restitution instead of jail.", k:"jus", el:"Proportionality, mercy, and redemption: the consequence fits the wrong and leaves room to restore the person." },
+  { s:"A judge sentences a first-time shoplifter to community service and restitution instead of jail.", k:"jus", el:"Proportional equality (equity), mercy, and redemption: the consequence fits the wrong and leaves room to restore the person." },
   { s:"Before the new dress code takes effect, the student council makes sure it is posted and explained to every student.", k:"jus", el:"A just law must be properly promulgated: everyone affected has to actually know about it." },
   { s:"A cashier calls a customer back to correct a mistake that undercharged her, even though no one would ever notice.", k:"jus", el:"Giving what is due: honest exchange keeps right relationship." },
   { s:"A coach benches the star player for missing practice, the same consequence any other player would get.", k:"jus", el:"Giving what is due and right relationship: she avoids leniency toward the star." },
@@ -1473,7 +1659,7 @@ V.defs = {
       ${RECALL.map(r => { const v = S.recall[r.k] || ""; const miss = S.checked ? this.grade(r, v) : null;
         return `<div class="recall ${r.k === "vir" ? "" : "v-" + r.k}">
           <label class="fl" for="rc-${r.k}">${esc(r.n)}<input type="text" id="rc-${r.k}" data-rk="${r.k}" value="${esc(v)}" autocomplete="off" spellcheck="false"></label>
-          ${S.checked ? (miss.length === 0 ? `<p class="ok">✓ All the key words are there.</p>` : `<p class="miss">Missing: ${miss.map(m => esc(m[0])).join(", ")}. Class definition: <b>${esc(r.ans)}</b></p>`) : ""}
+          ${S.checked ? (gated() && GATES.recallNeedsAttempt && wc(v) < 2 ? `<p class="miss">Write your answer first; the class definition shows after you try.</p>` : miss.length === 0 ? `<p class="ok">✓ All the key words are there.</p>` : `<p class="miss">Missing: ${miss.map(m => esc(m[0])).join(", ")}. Class definition: <b>${esc(r.ans)}</b></p>`) : ""}
         </div>`; }).join("")}
       <div class="row between"><button class="btn" type="button" data-act="clear">Clear and try again</button><button class="btn primary" type="button" data-act="check">Check my definitions</button></div></div>`;
   },
@@ -1739,7 +1925,9 @@ V.mlang = {
       <div class="tabs" role="group" aria-label="View"><button type="button" data-act="view" data-v="cards" aria-pressed="${S.view === "cards"}">Cards</button><button type="button" data-act="view" data-v="list" aria-pressed="${S.view === "list"}">Glossary</button></div></div>`;
     let body;
     if (S.view === "list") {
-      body = `<dl class="glossary">${pool.map(i => { const t = MTERMS[i]; return `<div><dt>${esc(t.t)}${t.core ? ' <span class="core-tag">Core</span>' : ""}</dt><dd>${esc(t.d)}${t.r ? `<span class="returns">Returns in: ${esc(t.r)}</span>` : ""}</dd></div>`; }).join("")}</dl>`;
+      const gl = gated() && GATES.glossaryLock, openN = pool.filter(i => cardOpen(MTERMS[i])).length;
+      body = (gl ? `<div class="feedback hint"><b>Your glossary</b>A definition appears here once you unlock its flashcard by writing what you remember. <span class="num">${openN} of ${pool.length} unlocked.</span></div>` : "") +
+        `<dl class="glossary">${pool.map(i => { const t = MTERMS[i], open = !gl || cardOpen(t); return `<div><dt>${esc(t.t)}${t.core ? ' <span class="core-tag">Core</span>' : ""}</dt><dd>${open ? esc(t.d) + (t.r ? `<span class="returns">Returns in: ${esc(t.r)}</span>` : "") : `<span class="muted">${LOCK} Locked. Unlock it on its flashcard.</span>`}</dd></div>`; }).join("")}</dl>`;
     } else if (!n) {
       body = `<div class="prompt-card"><div class="big">No cards in this set.</div></div>`;
     } else {
@@ -1747,9 +1935,11 @@ V.mlang = {
       body = `<div class="stats"><span>Card <b>${S.pos + 1}</b> of <b>${n}</b></span><span>Known <b>${knownIn}</b> / ${pool.length}</span></div>
         <div class="progress" aria-hidden="true"><span style="width:${pool.length ? knownIn / pool.length * 100 : 0}%"></span></div>
         <div class="card3d"><button type="button" class="flash${S.flipped ? " flipped" : ""}" data-act="flip" aria-label="${S.flipped ? "Show term" : "Show definition"}">
-          <div class="face u1face">${catChip(t.c)}<div class="term">${esc(t.t)}</div>${t.core ? '<span class="core-tag">Core moral language</span>' : ""}${P.u1known[t.t] ? '<span class="known-mark">✓ Known</span>' : ""}<span class="tap">Tap or press Space to flip</span></div>
+          <div class="face u1face">${catChip(t.c)}<div class="term">${esc(t.t)}</div>${gated() && GATES.flashGuess && cardOpen(t) ? '<span class="unlocked-tag">Unlocked · flip anytime</span>' : ""}${t.core ? '<span class="core-tag">Core moral language</span>' : ""}${P.u1known[t.t] ? '<span class="known-mark">✓ Known</span>' : ""}<span class="tap">Tap or press Space to flip</span></div>
           <div class="face back u1face"><span class="eyebrow">${esc(t.t)}</span><p class="def">${esc(t.d)}</p>${t.r ? `<span class="returns">Returns in: ${esc(t.r)}</span>` : ""}</div>
         </button></div>
+        ${this.guessGate() ? `<label class="fl guess" for="guess">Write the definition from memory before you flip<textarea id="guess" data-guess="1" rows="2" placeholder="In your own words">${esc(S.guess || "")}</textarea></label>${S.flipMsg ? `<p class="miss" role="status">${esc(S.flipMsg)}</p>` : ""}`
+          : S.flipped && S.wrote ? `<div class="feedback hint"><b>You wrote</b>${esc(S.wrote)}</div>` : ""}
         <div class="row between">
           <div class="row"><button class="btn" type="button" data-act="prev">← Prev</button><button class="btn" type="button" data-act="shuffle" ${n > 1 ? "" : "disabled"}>Shuffle</button></div>
           <div class="row"><button class="btn" type="button" data-act="learning">Still learning</button><button class="btn primary" type="button" data-act="know">Know it →</button></div>
@@ -1759,18 +1949,27 @@ V.mlang = {
         <p>Say the definition out loud before you flip. “Core” terms are the ones you’ll keep using in Units 2 and 3 and on the semester final.</p></div>
       <div class="stack">${filters}${toggles}${body}</div>`;
   },
-  next(){ if (S.deck.length) { S.pos = (S.pos + 1) % S.deck.length; S.flipped = false; } },
+  next(){ if (S.deck.length) { S.pos = (S.pos + 1) % S.deck.length; S.flipped = false; S.guess = ""; S.wrote = ""; S.flipMsg = false; } },
+  guessGate(){ const t = MTERMS[S.deck[S.pos]]; return !!t && !S.flipped && !cardOpen(t); },
   click(act, el){
+    if (act === "flip" && !S.flipped) { const t = MTERMS[S.deck[S.pos]];
+      if (t && !cardOpen(t)) {
+        if (wc(S.guess) < GATES.flashMinWords) S.flipMsg = `Write at least ${GATES.flashMinWords} words first, then flip.`;
+        else if (!relates(t, S.guess)) S.flipMsg = `That doesn’t seem to connect to “${t.t}” yet. Write what you remember about it from class, then try again.`;
+        else { P.flashOpen = P.flashOpen || {}; P.flashOpen[t.t] = 1; saveP(); S.flipMsg = false; S.wrote = S.guess; S.flipped = true; this.render(); return; }
+        this.render(); setTimeout(() => $("#guess") && $("#guess").focus(), 0); return; } }
+    if (act === "flip") { S.flipMsg = false; S.flipped = !S.flipped; this.render(); return; }
     if (act === "cat") { S.cat = el.dataset.v; this.build(); }
     if (act === "core") { S.core = el.checked; this.build(); }
     if (act === "view") S.view = el.dataset.v;
     if (act === "flip") { S.flipped = !S.flipped; view.querySelector(".flash").classList.toggle("flipped", S.flipped); return; }
-    if (act === "prev") { S.pos = (S.pos - 1 + S.deck.length) % S.deck.length; S.flipped = false; }
-    if (act === "shuffle") { S.deck = shuffle(S.deck); S.pos = 0; S.flipped = false; }
+    if (act === "prev") { S.pos = (S.pos - 1 + S.deck.length) % S.deck.length; S.flipped = false; S.guess = ""; S.wrote = ""; S.flipMsg = false; }
+    if (act === "shuffle") { S.deck = shuffle(S.deck); S.pos = 0; S.flipped = false; S.guess = ""; S.wrote = ""; S.flipMsg = false; }
     if (act === "know") { P.u1known[MTERMS[S.deck[S.pos]].t] = 1; saveP(); this.next(); }
     if (act === "learning") { delete P.u1known[MTERMS[S.deck[S.pos]].t]; saveP(); this.next(); }
     this.render();
   },
+  input(e){ if (e.target.dataset.guess) { S.guess = e.target.value; if (S.flipMsg) { S.flipMsg = false; const m = view.querySelector(".guess + .miss"); if (m) m.remove(); } } },
   key(e){
     if (S.view !== "cards") return;
     if (e.key === " " || e.key === "Enter") { if (e.target.closest("button") && !e.target.closest(".flash")) return; e.preventDefault(); this.click("flip"); }
@@ -1837,10 +2036,10 @@ V.mcalc = {
         ${CALC_ROWS.map(([k, lab, q, opts]) => `<section class="calc-row${k === "k" ? " total" : ""}"><div><b>${lab}</b><span class="muted">${esc(q)}</span></div>
           <div class="seg" role="group" aria-label="${esc(lab)}">${opts.map((o, n) => { let cls = ""; if (S.checked) { if (n === c.m[k]) cls = "right"; else if (S.pick[k] === n) cls = "wrong"; }
             return `<button type="button" class="${cls}" data-act="pick" data-k="${k}" data-n="${n}" aria-pressed="${S.pick[k] === n}" ${S.checked ? "disabled" : ""}>${esc(o)}</button>`; }).join("")}</div></section>`).join("")}
-        <label class="fl" for="calc-why">Your reasoning (optional)<textarea id="calc-why" rows="3" data-why="1" placeholder="Why did you judge it this way?">${esc(S.why)}</textarea></label>
+        <label class="fl" for="calc-why">Your reasoning${gated() ? "" : " (optional)"}<textarea id="calc-why" rows="3" data-why="1" placeholder="Why did you judge it this way? Use the action, the intention, and the circumstances." ${S.checked ? "readonly" : ""}>${esc(S.why)}</textarea></label>${gated() && !S.checked ? wcGate(wc(S.why), GATES.calcMinWords, "calc-wc") : ""}
         ${S.checked ? `<div class="feedback${right === 4 ? "" : " no"}" role="status"><b>${right} of 4 match the model.</b>${esc(c.m.e)}</div>
           <div class="row end"><button class="btn primary" type="button" data-act="next">Next case →</button></div>`
-        : `<div class="row end"><button class="btn primary" type="button" data-act="check" ${Object.keys(S.pick).length === 4 ? "" : "disabled"}>Compare with the model</button></div>`}
+        : `<div class="row end"><button class="btn primary" type="button" data-act="check" ${this.canCheck() ? "" : "disabled"}>Compare with the model</button></div>`}
       </div>`;
   },
   click(act, el){
@@ -1850,7 +2049,8 @@ V.mcalc = {
     if (act === "next") { S = { ci:(S.ci + 1) % MCALC.length, pick:{}, checked:false, why:"" }; window.scrollTo({ top:0, behavior: reduceMotion ? "auto" : "smooth" }); }
     this.render();
   },
-  input(e){ if (e.target.dataset.why) S.why = e.target.value; }
+  canCheck(){ return Object.keys(S.pick).length === 4 && (!gated() || wc(S.why) >= GATES.calcMinWords); },
+  input(e){ if (e.target.dataset.why) { S.why = e.target.value; const w = $("#calc-wc"); if (w) w.outerHTML = wcGate(wc(S.why), GATES.calcMinWords, "calc-wc"); const b = view.querySelector('[data-act="check"]'); if (b) b.disabled = !this.canCheck(); } }
 };
 
 /* ---- Build Your Moral Code ---- */
@@ -1871,7 +2071,7 @@ V.mcode = {
   click(act, el){
     if (act === "copy") {
       const t = this.text(), msg = $("#copy-msg");
-      const fallback = () => { const a = $("#mc-all"); a.value = t; a.classList.remove("sr"); a.select(); msg.textContent = "Press Ctrl+C or ⌘C to copy."; };
+      const fallback = () => { const a = $("#mc-all"); a.value = t; a.classList.remove("sr"); a.removeAttribute("aria-hidden"); a.removeAttribute("tabindex"); a.setAttribute("aria-label", "Your moral code, ready to copy"); a.focus(); a.select(); msg.textContent = "Press Ctrl+C or ⌘C to copy."; };
       try { navigator.clipboard.writeText(t).then(() => { msg.textContent = "Copied."; }, fallback); } catch (e) { fallback(); }
       return;
     }
@@ -1953,10 +2153,143 @@ V.landing = {
           <p>Virtue ethics, social contract theory, deontology, and utilitarianism, built around the unit test.</p>
           <div class="theories">${["ve","sct","deon","util"].map(k => `<span class="chip t-${k}">${TH[k].name}</span>`).join("")}</div>
           <span class="go">8 stations · Quiz, flashcards, Case Lab, Jeopardy <span aria-hidden="true">→</span></span></a>
-      </div></section>`;
+      </div>
+      ${P.teacher ? `<p class="tk-on">Teacher key on: every lock is open on this device. <button type="button" class="linkbtn" data-act="tp-off">Turn off</button></p>` : ""}
+      </section>`;
+  },
+  click(act){
+    if (act === "tp-off") { delete P.teacher; saveP(); this.render(); }
+  }
+};
+/* Teacher key: open the site with #teacher at the end of the address. Nothing on the student pages links here. */
+V.teacher = {
+  render(){
+    view.innerHTML = `<section class="panel stack tk-panel">
+      <span class="eyebrow">Teacher key</span>
+      ${P.teacher ? `<p><b>Every lock is open on this device.</b> It stays open until you turn it off here or clear this browser’s data.</p>
+        <div class="row"><button class="btn" type="button" data-act="tp-off">Turn off</button><a class="btn primary" href="#">Go to the Study Lab</a></div>`
+      : `<p>Enter the teacher code to open every lock on this device.</p>
+        <div class="row"><label class="fl" for="tp-code">Code<input type="password" id="tp-code" autocomplete="off"></label><button class="btn primary" type="button" data-act="tp-on">Unlock</button></div>
+        <p class="miss" id="tp-msg" role="status"></p>`}
+    </section>`;
+    const c = $("#tp-code"); if (c) { c.focus(); c.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); this.unlock(); } }); }
+  },
+  unlock(){ if (hashCode($("#tp-code").value) === GATES.teacherHash) { P.teacher = 1; saveP(); this.render(); } else { $("#tp-msg").textContent = "That code didn’t match."; $("#tp-code").select(); } },
+  click(act){
+    if (act === "tp-on") this.unlock();
+    if (act === "tp-off") { delete P.teacher; saveP(); this.render(); }
   }
 };
 V.unit3 = { render(){ P.unit = "u3"; saveP(); V.home.render(); } };
+
+/* ================= TRIAL: NOTES-FIRST GATES =================
+   Change these settings to adjust the locks. The teacher code is checked by hash, so the code itself is not in the page. */
+const GATES = {
+  on: true,
+  toolkitNotes: true,                        // Virtue Toolkit: write the definition + 2 characteristics before a virtue opens
+  caseMinWords: { 1:15, 2:40, 3:60, 4:40 },  // Virtue Case Lab: words needed in each step before the model answer opens
+  flashGuess: true,                          // Unit 1 and Unit 3 flashcards: write a related guess before a card's first flip
+  flashMinWords: 3,
+  glossaryLock: true,                        // Unit 1 glossary: a definition shows only after its flashcard is unlocked
+  calcMinWords: 10,                          // Moral Calculus Lab: words of reasoning before comparing with the model
+  recallNeedsAttempt: true,                  // Definition Drill: a blank answer does not reveal the class definition
+  ideasMinWords: 30,                         // Unit 3 Key Ideas: words written before the model answer opens
+  u3Case: { issue: 8, resp: 30 },            // Unit 3 Case Lab: words for the moral issue and the response
+  teacherHash: 3623450676
+};
+const LOCK = `<svg class="lockico" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M4 7V5a4 4 0 1 1 8 0v2h.5A1.5 1.5 0 0 1 14 8.5v5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5v-5A1.5 1.5 0 0 1 3.5 7H4Zm2 0h4V5a2 2 0 1 0-4 0v2Z"/></svg>`;
+const wc = s => ((s || "").trim().match(/\S+/g) || []).length;
+const hashCode = s => { let h = 5381; for (const ch of s.trim().toLowerCase()) h = ((h << 5) + h + ch.charCodeAt(0)) >>> 0; return h; };
+const gated = () => GATES.on && !P.teacher;
+const VKEYS = {
+  pru:["best","practical","mechanis","guide","truth","see","conscience","discern","deliberat","experience","context","charioteer","practical","wisdom","judg","means","good desire","negligen","irresolut","thoughtless","choice","choos"],
+  jus:["complete","others","reciproc","lawful","ordo","ordered","redemp","relationship","equit","equal","harmony","dynamic","organic","personal","relational","societ","proportion","common good","mercy","redemption","due","lenien","harsh","law","ius","order","rights","fair","love"],
+  tem:["prohibit","priorit","flexib","universal","needs","harmony","rational","reason","desire","emotion","physical","sensation","pleasure","moderat","self-control","self control","incontinen","continen","prudish","detach","mean","balance","appetite","stages"],
+  for:["greater","vulnerab","just end","sacrific","bear","belief","fear","hardship","endur","attack","courage","risk","coward","rash","resolve","martyr","danger","steadfast","persever","brave","just object"]
+};
+const STOPW = new Set("that this with from what when where which while their there these those them they have been being into than then also only just very more most much many such each every some your about after before because between does doing done make makes made over under upon would could should will shall must might other others itself something someone thing things like".split(" "));
+const stemsOf = s => (s || "").toLowerCase().replace(/[^a-z\s-]/g, " ").split(/[\s-]+/).filter(w => w.length >= 4 && !STOPW.has(w)).map(w => w.slice(0, 5));
+const COMMONS = new Map();
+function keysFor(list, t){
+  if (!COMMONS.has(list)) { const df = {}; list.forEach(x => new Set(stemsOf(x.d)).forEach(w => { df[w] = (df[w] || 0) + 1; })); COMMONS.set(list, new Set(Object.keys(df).filter(w => df[w] > 6))); }
+  const common = COMMONS.get(list), own = new Set(stemsOf(t.t));
+  return [...new Set(stemsOf(t.d))].filter(w => !own.has(w) && !common.has(w));
+}
+function relGeneric(list, t, g, extra){
+  const gs = new Set(stemsOf(g)), low = " " + (g || "").toLowerCase() + " ";
+  return keysFor(list, t).some(k => gs.has(k)) || (extra || []).some(w => low.includes(w.length <= 4 ? " " + w : w));
+}
+/* Extra words students might use for each Unit 1 term (substring match, lowercase) */
+const RELWORDS = {
+  "Ethics":["moral philosophy","fulfil","character","right and wrong","good life","study of"],
+  "Morality":["way to live","way of living","choices","choose","rules","conscience","personal","code"],
+  "Rule (Precept)":["principle","guide","rule"],
+  "Morality of Obligation":["duty","obliga","have to","rules","forced","don't want","dont want"],
+  "Morality of Happiness":["happy","happiness","want","fulfil","desire"],
+  "Primary Good":["most important","foundation","core","main good","highest","center","basis"],
+  "Guiding Principles":["secondary","principle","flow from","support","values"],
+  "Human Nature":["who we are","essence","core","good or evil","basic","naturally","identity"],
+  "MacIntyre’s Disquieting Suggestion":["language","disorder","fragment","lost","meaning","science"],
+  "Objective Truth":["doesn't change","does not change","always true","universal","fact","regardless","opinion"],
+  "Subjective Truth":["opinion","my truth","personal","individual","relative","depends"],
+  "Truth":["reality","correspond","match","what is real","fact"],
+  "Objective Moral Truth":["always wrong","always right","universal","regardless","disagree","slavery","genocide"],
+  "Natural Law":["universal","everywhere","everyone","written","heart","reason","same for all","aquinas"],
+  "Primary (Synderesis) Principle":["pursue good","do good","avoid evil","good","evil"],
+  "Primary Precepts":["preserve life","life","society","children","truth of god","reproduc","educat"],
+  "Universal Principles":["everywhere","all places","always","broad","general","everyone"],
+  "Particular Conclusions":["specific","situation","case","instance","depends","reason"],
+  "Speculative Reason":["truth","thinking","theory","reflect","without apply","abstract"],
+  "Practical Reason":["apply","applying","situation","real life","action","practice"],
+  "Human Dignity":["value","worth","equal","inherent","everyone","image of god","respect"],
+  "Common Good":["everyone","all people","community","society","vulnerable","whole","together"],
+  "Imago Dei":["image of god","god","made in","likeness"],
+  "Human Agency":["free will","choice","choose","act","freedom","ability"],
+  "Free Will":["choose","choice","freedom","free","decide","good"],
+  "Freedom of Indifference":["whatever","anything","want","any choice","choose what"],
+  "Freedom for Excellence":["choose the good","good","excellen","virtue","flourish","grow"],
+  "Intention":["purpose","goal","aim","why","motive","mean to","plan","will"],
+  "Transitive and Intransitive Effects":["world","others","ourselves","myself","shape","affect","effect"],
+  "Habit":["repeat","over and over","again","practice","routine","disposition","consistent","regular"],
+  "Moral Quality of Actions":["good","neutral","evil","itself","nature of"],
+  "Morally Neutral Act":["neither","not good or bad","no moral","neutral","depends"],
+  "Means":["method","action","how","way","tool","process","steps"],
+  "Ends (Outcomes)":["outcome","result","consequence","effect","impact","what happens"],
+  "Circumstances":["context","situation","surround","condition","background","mitigat","intensif"],
+  "Basic Moral Calculus":["action","intention","circumstance","culpab","formula","equation"],
+  "Moral Culpability":["blame","responsib","fault","guilt","accountab"],
+  "Principle of Double Effect":["two effects","side effect","good and bad","intend","proportion","tolerat"],
+  "Ends (Purposes)":["purpose","goal","aim","destination","for"],
+  "Intrinsic Ends":["for its own sake","own sake","itself","in itself"],
+  "Instrumental Ends":["stepping","something else","means to","tool","get something"],
+  "Ultimate End":["final","highest","last","everything else","god","eudaimonia"],
+  "Eudaimonia":["flourish","happiness","happy","fulfil","good life","best life","thriv","well-being","wellbeing"],
+  "Telos":["purpose","goal","end","final cause","reason for","why it exists"],
+  "The Four Causes":["material","formal","efficient","final","aristotle","cause"],
+  "Love":["good of","good for","wanting","willing","caritas","care","beloved","others"],
+  "Socratic Method":["question","asking","dialogue","examin","socrates"],
+  "Theory of Forms":["perfect","ideal","form","true version","plato","copy","reflection"],
+  "Allegory of the Cave":["shadow","cave","prisoner","reality","truth","plato","light"],
+  "Ring of Gyges":["invisible","ring","caught","get away","just","plato"],
+  "Deductive Logic":["general to specific","universal","premise","conclusion","therefore"],
+  "Inductive Logic":["specific to general","observ","generaliz","pattern","examples"],
+  "Three Kinds of Friendship":["utility","pleasure","virtue","useful","fun","good"],
+  "Evil as Privation":["absence","lack","missing","privation","not a thing","no substance"],
+  "Concupiscence":["desire","temptation","sin","incline","drawn","tendency"],
+  "The Problem of Evil":["why does god","god allow","suffering","bad things","good god","free will"],
+  "Rationalism vs. Fideism":["reason","faith","both","only reason","only faith","balance"]
+};
+const relates = (t, g) => relGeneric(MTERMS, t, g, RELWORDS[t.t]);
+const relates3 = (t, g) => relGeneric(TERMS, t, g, t.x);
+const cardOpen3 = t => !gated() || !GATES.flashGuess || !!(P.flashOpen3 && P.flashOpen3[t.t]);
+const wcGate = (n, min, id) => `<span class="wcount${n >= min ? " ok" : ""}"${id ? ` id="${id}"` : ""}>${n} / ${min} words${n >= min ? " ✓" : ""}</span>`;
+const cardOpen = t => !gated() || !GATES.flashGuess || !!(P.flashOpen && P.flashOpen[t.t]);
+const virtueOpen = k => !gated() || !GATES.toolkitNotes || !!(P.vnotes && P.vnotes[k] && P.vnotes[k].open);
+function checkVirtueNotes(k, def, chars){
+  const r = RECALL.find(x => x.k === k), miss = V.defs.grade(r, def || "");
+  const t = (chars || "").toLowerCase(), found = VKEYS[k].filter(w => t.includes(w));
+  return { defOk: miss.length === 0, defHave: r.need.length - miss.length, defNeed: r.need.length, chars: found.length };
+}
 
 /* ================= ROUTER ================= */
 function route(){
@@ -1965,9 +2298,9 @@ function route(){
   if (V.current && V[V.current] && V[V.current].stop && next !== V.current) V[V.current].stop();
   V.current = next;
   document.body.dataset.view = next;
-  if (!["landing","unit1","unit2","unit3"].includes(next)) { P.unit = U2_VIEWS.includes(next) ? "u2" : U1_VIEWS.includes(next) ? "u1" : "u3"; saveP(); }
+  if (!["landing","unit1","unit2","unit3","teacher"].includes(next)) { P.unit = U2_VIEWS.includes(next) ? "u2" : U1_VIEWS.includes(next) ? "u1" : "u3"; saveP(); }
   const un = (P.unit || "u3").slice(1);
-  $("#homeLink").hidden = ["landing","unit1","unit2","unit3"].includes(next);
+  $("#homeLink").hidden = ["landing","unit1","unit2","unit3","teacher"].includes(next);
   $("#homeLink").href = "#unit" + un;
   $("#homeLink").textContent = "All Unit " + un + " stations";
   if (V[next].init) V[next].init();

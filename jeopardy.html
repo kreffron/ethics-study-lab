@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Class Jeopardy for the Ethics unit test: six categories, Daily Doubles, Final Jeopardy, and team scoring.">
+<meta name="description" content="Class Jeopardy for the Ethics unit test: three games plus Shuffle, six categories, Daily Doubles, and Final Jeopardy.">
 <title>Ethics Review Jeopardy</title>
 <style>
 *,*::before,*::after{box-sizing:border-box}
@@ -58,6 +58,12 @@ h1{font-family:var(--display);font-weight:800;text-transform:uppercase;letter-sp
 .btn.primary:hover:not(:disabled){background:var(--chalk);border-color:var(--chalk);color:var(--brass-ink)}
 .btn:disabled{opacity:.4}
 .btn.armed{border-color:var(--wrong);color:var(--wrong)}
+.games{display:inline-flex;flex-wrap:wrap;border:1.5px solid var(--line);border-radius:4px;overflow:hidden}
+.games button{background:transparent;border:none;border-right:1px solid var(--line);color:var(--chalk-dim);font:700 14px var(--ui);letter-spacing:.08em;text-transform:uppercase;padding:8px 12px}
+.games button:last-child{border-right:none}
+.games button:hover{color:var(--brass)}
+.games button[aria-pressed="true"]{background:var(--brass);color:var(--brass-ink)}
+.games button.armed{color:var(--wrong)}
 a.btn{display:inline-block;text-decoration:none}
 
 /* Board */
@@ -153,10 +159,11 @@ a.btn{display:inline-block;text-decoration:none}
 <div class="wrap">
   <header class="top">
     <div>
-      <div class="eyebrow">Ethics · Unit Test Review</div>
+      <div class="eyebrow">Ethics · Unit 3 Review · <span id="gameName">Game 1</span></div>
       <h1>Virtue, Duty &amp; Utility</h1>
     </div>
     <div class="tools">
+      <div class="games" id="games" role="group" aria-label="Choose a game"></div>
       <span class="left" id="left"></span>
       <button class="btn primary" id="finalBtn" type="button">Final Jeopardy</button>
       <button class="btn" id="resetBtn" type="button">New game</button>
@@ -167,7 +174,7 @@ a.btn{display:inline-block;text-decoration:none}
   <div class="board-wrap"><div class="board" id="board" role="grid" aria-label="Jeopardy board"></div></div>
 
   <section class="teams" id="teams" aria-label="Scoreboard"></section>
-  <p class="hint">Click a value to open its clue. Press <kbd>Space</kbd> to show the answer and <kbd>Esc</kbd> to step back without using the clue. Click a team name to rename it. Scores save in this browser.</p>
+  <p class="hint">Pick Game 1, 2, or 3, or Shuffle for a board mixed from all three; Daily Doubles move every game. Click a value to open its clue. Press <kbd>Space</kbd> to show the answer and <kbd>Esc</kbd> to step back without using the clue. Click a team name to rename it. Scores save in this browser.</p>
 </div>
 
 <div class="overlay" id="overlay" hidden role="dialog" aria-modal="true" aria-label="Clue"></div>
@@ -184,13 +191,13 @@ const DATA = {
     ]},
     { name: "Social Contract", clues: [
       { v:100, q:"Author of Leviathan (1651), this English philosopher is credited with founding social contract theory.", a:"Who is Thomas Hobbes?", n:"The other main figures are John Locke and Jean-Jacques Rousseau." },
-      { v:200, q:"John Locke's three natural rights.", a:"What are life, liberty, and property?", n:"Jefferson echoes these in the Declaration of Independence as life, liberty, and the pursuit of happiness." },
+      { v:200, q:"John Locke's natural rights: no one ought to harm another in these.", a:"What are life, health, liberty, and property (possessions)?", n:"Accept life, liberty, and property. Jefferson echoes the list in the Declaration of Independence as life, liberty, and the pursuit of happiness." },
       { v:300, q:"Hobbes said that in this condition, before government, life would be \"solitary, poor, nasty, brutish, and short.\"", a:"What is the state of nature?", n:"Hobbes's grim view of human nature leads him to favor a strong, absolute sovereign." },
-      { v:400, q:"Rousseau's term for the collective will of the whole people, always aimed at the common good.", a:"What is the general will?", n:"It differs from the \"will of all,\" which is just the sum of private interests." },
+      { v:400, q:"Rousseau's term for the collective will of the whole people, always aimed at the common good.", a:"What is the general will?", n:"It is what the people decide together, as a collective, for their society. Rousseau never fully clarifies what it looks like." },
       { v:500, q:"According to Locke, a government gets its legitimacy from this, and if it violates natural rights the people may do this.", a:"What is the consent of the governed, and rebel (dissolve or replace the government)?", n:"Accept either half for partial credit if you like. This is the logic of the American Revolution." }
     ]},
     { name: "Deontology", clues: [
-      { v:100, q:"This 18th-century German philosopher founded deontology.", a:"Who is Immanuel Kant?", n:"Key text: Groundwork of the Metaphysics of Morals (1785)." },
+      { v:100, q:"This 18th-century German philosopher founded deontology.", a:"Who is Immanuel Kant?", n:"The \"father of deontology.\" Class reading: Fundamental Principles of the Metaphysics of Morals." },
       { v:200, q:"The Greek word deon, the root of \"deontology,\" means this.", a:"What is duty?", n:"Deontology is the ethics of duty: some acts are required or forbidden regardless of results." },
       { v:300, q:"Between intentions and consequences, a deontologist says this one matters most, because it is the only thing fully in our control.", a:"What are intentions (the good will)?", n:"For Kant, the only thing good without qualification is a good will acting from duty." },
       { v:400, q:"Kant's name for the personal rule or principle behind an action, which must pass the universalizability test.", a:"What is a maxim?", n:"Ask: could everyone act on this rule without contradiction? If not, the maxim fails." },
@@ -200,12 +207,12 @@ const DATA = {
       { v:100, q:"This English philosopher and legal reformer founded utilitarianism and said nature placed us under two masters, pain and pleasure.", a:"Who is Jeremy Bentham?", n:"Bentham wanted a scientific way to reform laws and institutions." },
       { v:200, q:"The principle that an action is most moral when it pursues the greatest happiness for the most people for the longest time.", a:"What is the Greatest Happiness Principle?", n:"Also called the principle of utility." },
       { v:300, q:"To a utilitarian, \"happiness\" means this, along with the absence of pain.", a:"What is pleasure?", n:"Utility is an action's usefulness in producing pleasure and preventing pain." },
-      { v:400, q:"Unlike Bentham, who measured pleasures only by quantity, this philosopher ranked intellectual pleasures above bodily ones.", a:"Who is John Stuart Mill?", n:"Mill: better to be Socrates dissatisfied than a fool satisfied. Higher pleasures outrank lower ones in quality." },
+      { v:400, q:"Unlike Bentham, who measured pleasures only by quantity, this philosopher ranked intellectual pleasures above bodily ones.", a:"Who is John Stuart Mill?", n:"Mill: \"better to be Socrates dissatisfied than a fool satisfied.\" Higher (intellectual and moral) pleasures outrank lower (physical and sensual) ones." },
       { v:500, q:"A utilitarian would push the large man off the bridge to stop the trolley. A Kantian objects that doing so treats him this way.", a:"What is as a mere means?", n:"Utilitarians count the outcome: five lives over one. Deontologists object to using a person as a tool." }
     ]},
     { name: "Define It", clues: [
       { v:100, q:"In Aristotle's ethics, rashness is this relative to the virtue of courage.", a:"What is an excess?", n:"Cowardice is the deficiency. Courage is the mean between them." },
-      { v:200, q:"The cardinal virtue of self-control: moderating our pleasures, desires, and emotions.", a:"What is temperance?", n:"Deficiency: insensibility. Excess: self-indulgence." },
+      { v:200, q:"The cardinal virtue of self-control: moderating our pleasures, desires, and emotions.", a:"What is temperance?", n:"Deficiency: no self-control. Excess: prudishness." },
       { v:300, q:"Called \"right deliberation in action,\" this cardinal virtue guides all the others.", a:"What is prudence?", n:"Prudence is practical wisdom: seeing what the right act is here and now." },
       { v:400, q:"Value something has in itself, rather than as a tool for getting something else.", a:"What is inherent (intrinsic) value?", n:"Contrast with instrumental value. Kant says human dignity is inherent." },
       { v:500, q:"Opposite extremes of government: one with no authority at all, and one where the state controls every part of life.", a:"What are anarchy and totalitarianism?", n:"Social contract thinkers look for the legitimate middle ground between these two." }
@@ -213,7 +220,7 @@ const DATA = {
     { name: "Big Ideas", clues: [
       { v:100, q:"The rational tool a deontologist uses to determine what is truly moral: act only on a maxim you could will to become a universal law.", a:"What is the categorical imperative?", n:"\"Categorical\" means it binds unconditionally, not \"if you want X.\"" },
       { v:200, q:"Aristotle's principle that every virtue lies between a vice of deficiency and a vice of excess.", a:"What is the Doctrine of the Mean?", n:"Example: generosity sits between stinginess and wastefulness." },
-      { v:300, q:"Giving every student the same pair of shoes versus giving every student shoes that fit.", a:"What is equality versus equity?", n:"Equality treats everyone the same. Equity gives each what they need for a fair outcome." },
+      { v:300, q:"Giving every student the same pair of shoes versus giving every student shoes that fit.", a:"What is equality versus equity?", n:"Equality treats everyone the same. Equity gives each what they need for a fair outcome; Aristotle calls justice this kind of proportional equality." },
       { v:400, q:"Kant's two kinds of duty: one that must always be kept with no exceptions, and one that leaves room for choosing when and how.", a:"What are perfect and imperfect duties?", n:"Example: never lying is a perfect duty; helping others is an imperfect duty." },
       { v:500, q:"Unlike freedom of indifference, which is just the ability to pick either option, this kind of freedom grows as we practice virtue, like a pianist who can play anything.", a:"What is freedom for excellence?", n:"The more virtuous we become, the freer we are to act well." }
     ]}
@@ -225,13 +232,125 @@ const DATA = {
     n: "This is the humanity formulation of the categorical imperative. Like natural law, it treats dignity as inherent, not earned or useful."
   }
 };
-// Daily Doubles: "category index-row index" (Social Contract 400, Big Ideas 500)
-const DAILY = new Set(["1-3", "5-4"]);
+const GAME2 = {
+  categories: [
+    { name: "Virtue Ethics", clues: [
+      { v:100, q:"In Aristotle's doctrine of the mean, this virtue lies between cowardice and rashness.", a:"What is courage (fortitude)?", n:"Cowardice is the deficiency; rashness is the excess." },
+      { v:200, q:"The Greek word for an entity's final cause, the purpose for its existence.", a:"What is telos?", n:"We find a thing's telos by identifying its most unique capacity." },
+      { v:300, q:"Faith, hope, and charity are called these virtues, which Christian thinkers add to the four cardinal virtues.", a:"What are the theological virtues?", n:"They come by grace and direct us toward God." },
+      { v:400, q:"Aquinas's principle that an action with a good and a bad effect may be allowed if it meets four conditions.", a:"What is the principle of double effect?", n:"The good effect must be caused at least as directly as the bad, and the bad must not be directly intended." },
+      { v:500, q:"Just War Theory says war must be this: every reasonable peaceful alternative has been truly attempted.", a:"What is last resort?", n:"Other criteria include just cause, legitimate authority, right intention, probability of success, and proportionality." }
+    ]},
+    { name: "Social Contract", clues: [
+      { v:100, q:"This Geneva-born philosopher wrote The Social Contract and is known for the idea of the general will.", a:"Who is Jean-Jacques Rousseau?", n:"Rousseau believed humans are naturally good until society corrupts them." },
+      { v:200, q:"Hobbes's social contract protects security and Locke's protects rights; Rousseau's protects this.", a:"What is freedom?", n:"Rousseau keeps maximum freedom through direct, group rule." },
+      { v:300, q:"Hobbes's name for the all-powerful sovereign state, and the title of his 1651 book.", a:"What is Leviathan?", n:"Only overwhelming power, Hobbes says, can keep selfish people from a war of all against all." },
+      { v:400, q:"Rawls imagines choosing society's rules from behind this, not knowing whether you will be rich or poor.", a:"What is the veil of ignorance?", n:"It is part of his \"original position.\"" },
+      { v:500, q:"Locke's A Letter Concerning ___ argues that the state should not force religious belief.", a:"What is Toleration?", n:"True belief can't be coerced, and caring for souls is not the government's job." }
+    ]},
+    { name: "Deontology", clues: [
+      { v:100, q:"For Kant, the only thing that is good without qualification.", a:"What is a good will?", n:"A good will acts from duty." },
+      { v:200, q:"Kant grounds morality, and human dignity, in this human capacity.", a:"What is reason (rationality)?", n:"Rational beings can know the moral law and give it to themselves." },
+      { v:300, q:"Kant's chief principle for testing the categorical imperative: rewrite your rule as a law for all people, then ask if it's possible and if you'd be rationally compelled to follow it.", a:"What is the Universal Law of Nature?", n:"Step one is to create a rule that captures your planned action." },
+      { v:400, q:"This Jewish deontologist added the bystander to the trolley problem and concluded that deflecting a threat differs from bringing in a new one.", a:"Who is Judith Jarvis Thomson?", n:"Her article: Killing, Letting Die, and the Trolley Problem (1976)." },
+      { v:500, q:"Kant: \"Morality is not the doctrine of how we may make ourselves happy, but how we may make ourselves\" this.", a:"What is worthy of happiness?", n:"For Kant, morality is about duty and a good will, not the pursuit of happiness." }
+    ]},
+    { name: "Utilitarianism", clues: [
+      { v:100, q:"Bentham named these two \"sovereign masters\" of humanity.", a:"What are pain and pleasure?", n:"Utilitarians aim to maximize pleasure and minimize pain." },
+      { v:200, q:"In the trolley problem, a utilitarian bystander does this with the lever.", a:"What is pull it (turn the trolley)?", n:"One death is better than five; a strict utilitarian would push the man off the bridge too." },
+      { v:300, q:"Bentham's calculus weighs a pleasure's intensity, its duration, and this: how many people it reaches.", a:"What is extent?", n:"Bentham's full hedonic calculus has seven elements." },
+      { v:400, q:"Mill ranked intellectual and moral pleasures as these, above bodily ones.", a:"What are higher pleasures?", n:"Mill: \"It is better to be a human being dissatisfied than a pig satisfied; better to be Socrates dissatisfied than a fool satisfied.\"" },
+      { v:500, q:"Mill's principle that we ought to be free to do anything that does not interfere with the freedom of others.", a:"What is the No Harm Principle?", n:"Mill also pushed for universal education and was the first to propose legislation for women's suffrage." }
+    ]},
+    { name: "Define It", clues: [
+      { v:100, q:"The cardinal virtue of \"giving what is due.\"", a:"What is justice?", n:"Justice is a proportional equality (equity), not strict equality." },
+      { v:200, q:"The cardinal virtue of facing difficulties or challenges well.", a:"What is fortitude?", n:"Its two parts are attack and endurance; endurance is the greater." },
+      { v:300, q:"A stable and effective disposition oriented toward right action.", a:"What is a virtue?", n:"Stable means habitual; effective means impactful." },
+      { v:400, q:"The inherent, co-equal value of all people.", a:"What is human dignity?", n:"Rooted in the Imago Dei and a foundation of natural law." },
+      { v:500, q:"Instilling virtues through repeated teaching, example, and practice.", a:"What is inculcation?", n:"Plato thought music and physical training could inculcate courage." }
+    ]},
+    { name: "Big Ideas", clues: [
+      { v:100, q:"\"The ends justify the means\" best describes this normative theory.", a:"What is utilitarianism?", n:"Deontologists insist the means must be right whatever the ends." },
+      { v:200, q:"Action + Intention + Circumstances = this.", a:"What is moral culpability?", n:"The basic moral calculus is useful but \"flawed because of its simplicity.\"" },
+      { v:300, q:"This thought experiment asks whether you should pull a lever so a runaway trolley kills one person instead of five.", a:"What is the trolley problem?", n:"Philippa Foot first posed it in 1967." },
+      { v:400, q:"For Aquinas, a just law must be an ordinance of reason, made by legitimate authority, for this.", a:"What is the common good?", n:"It must also be properly promulgated." },
+      { v:500, q:"Aristotle calls justice this kind of equality, rather than strict equality; the class calls it equity.", a:"What is proportional equality?", n:"Equality gives everyone the same shoes; equity gives everyone shoes that fit." }
+    ]}
+  ],
+  final: {
+    category: "Founding Ideas",
+    q: "Thomas Jefferson echoed this philosopher when he wrote that governments derive \"their just powers from the consent of the governed.\"",
+    a: "Who is John Locke?",
+    n: "Locke's natural rights of life, health, liberty, and property became \"life, liberty, and the pursuit of happiness.\""
+  }
+};
+const GAME3 = {
+  categories: [
+    { name: "Virtue Ethics", clues: [
+      { v:100, q:"This Greek philosopher wrote the Republic, where justice is each part of the soul doing its proper work.", a:"Who is Plato?", n:"For Plato, injustice is meddling in the work of the other parts." },
+      { v:200, q:"Augustine says every virtue is a form of this, the ultimate good.", a:"What is love (caritas)?", n:"Prudence, for Augustine, is \"love distinguishing with sagacity between what hinders it and what helps it.\"" },
+      { v:300, q:"In Aristotle's doctrine of the mean, this vice is the deficiency of generosity.", a:"What is stinginess?", n:"Wastefulness is the excess." },
+      { v:400, q:"Aquinas says perfect happiness is found only in this, beyond earthly life.", a:"What is union with God (the beatific vision)?", n:"Earthly happiness, for Aquinas, is real but imperfect." },
+      { v:500, q:"In Just War Theory, this principle says only combatants may ever be intentionally harmed.", a:"What is discrimination?", n:"It always comes paired with proportionality." }
+    ]},
+    { name: "Social Contract", clues: [
+      { v:100, q:"Hobbes said life in the state of nature would be \"solitary, poor, nasty, brutish, and\" this.", a:"What is short?", n:"His grim view of human nature leads him to favor an absolute sovereign." },
+      { v:200, q:"Rousseau believed humans are naturally this, until society corrupts them.", a:"What is good?", n:"Hobbes, by contrast, saw human nature as selfish and fearful." },
+      { v:300, q:"Hobbes thought the best government has this kind of sovereign, ideally a monarch.", a:"What is absolute?", n:"Locke preferred limited, representative government." },
+      { v:400, q:"This U.S. founding document says governments derive \"their just powers from the consent of the governed.\"", a:"What is the Declaration of Independence?", n:"Its natural rights language comes from Locke." },
+      { v:500, q:"Rawls's name for the imagined first gathering of people creating a society, where they sit behind a veil of ignorance.", a:"What is the original position?", n:"Not knowing who you will be, you would choose fair rules for everyone." }
+    ]},
+    { name: "Deontology", clues: [
+      { v:100, q:"This philosopher said to act only on the maxim you could will to become a universal law.", a:"Who is Immanuel Kant?", n:"That is the first formulation of the categorical imperative." },
+      { v:200, q:"For Kant, an action has moral worth only when it is done from this, not from inclination.", a:"What is duty?", n:"Doing the right thing for a reward lacks moral worth." },
+      { v:300, q:"A false promise to get a loan fails Kant's test: if everyone made them, this would happen to promises.", a:"What is no one would believe them (promising would collapse)?", n:"The maxim contradicts itself when universalized." },
+      { v:400, q:"Any system built on a clear set of rules is deontology, sometimes called a \"rule-based ethic\"; the Ethics Explainer names this ancient list as an example.", a:"What are the Ten Commandments?", n:"The Universal Declaration of Human Rights is another example." },
+      { v:500, q:"Kant: \"A free will and a will under moral laws are one and the same.\" This lets us recognize universal moral laws.", a:"What is rational autonomy?", n:"Morality is not dictated externally; it is reached internally by our rational will." }
+    ]},
+    { name: "Utilitarianism", clues: [
+      { v:100, q:"Utilitarianism judges actions entirely by these, not by intentions.", a:"What are consequences?", n:"Deontology looks first to intentions and duty." },
+      { v:200, q:"To a utilitarian, this is an action's usefulness in producing happiness and preventing pain.", a:"What is utility?", n:"The theory takes its name from it." },
+      { v:300, q:"Bentham claimed the game of push-pin is of equal value with music and this art, because only the quantity of pleasure matters.", a:"What is poetry?", n:"From Bentham's Rationale of Reward. Mill disagreed and ranked pleasures by quality." },
+      { v:400, q:"Bentham's full hedonic calculus has this many elements for measuring pleasure.", a:"What is seven?", n:"The hedonic calculus: intensity, duration, certainty, propinquity, fecundity, purity, and extent." },
+      { v:500, q:"Utilitarians object that this theory's rigid rules can make things worse, like refusing to lie to save a life.", a:"What is deontology?", n:"A utilitarian would lie to the murderer at the door." }
+    ]},
+    { name: "Define It", clues: [
+      { v:100, q:"A bad habit: a settled tendency toward excess or deficiency.", a:"What is a vice?", n:"Augustine and Aquinas call vice a privation, or absence, of virtue." },
+      { v:200, q:"The ability to choose the good.", a:"What is free will?", n:"Freedom for excellence grows as we practice virtue." },
+      { v:300, q:"The purpose or motive behind an action; for Kant, what determines its moral worth.", a:"What is intention?", n:"Intentions shape the world (transitive) and us (intransitive)." },
+      { v:400, q:"Fulfillment, flourishing, or happiness through the virtuous life.", a:"What is eudaimonia?", n:"Eu means well or good; daimon means spirit." },
+      { v:500, q:"Treating a person only as a tool for your own goals, which Kant forbids.", a:"What is treating them as a mere means?", n:"Kant says to treat humanity always as an end." }
+    ]},
+    { name: "Big Ideas", clues: [
+      { v:100, q:"Something valued because it is useful for getting something else has this kind of value.", a:"What is instrumental value?", n:"Inherent value is valued for its own sake." },
+      { v:200, q:"Hobbes saw people as selfish; Rousseau saw them as naturally good. Both are views of this.", a:"What is human nature?", n:"A thinker's view of human nature shapes their view of the best government." },
+      { v:300, q:"Aquinas's name for the moral law written in the human heart and known by reason.", a:"What is natural law?", n:"Its first principle: pursue good, avoid evil." },
+      { v:400, q:"Freedom as the ability to choose what I want: \"You are free, no matter what you choose.\"", a:"What is freedom of indifference?", n:"Contrast it with freedom for excellence, which grows as we practice virtue." },
+      { v:500, q:"Natural law, human dignity, and the categorical imperative all agree that persons have this kind of worth, which can't be traded for outcomes.", a:"What is inherent worth (dignity)?", n:"None of them allows harvesting one person's organs to save five." }
+    ]}
+  ],
+  final: {
+    category: "The Trolley Problem",
+    q: "Philippa Foot, who first posed the trolley problem in 1967, argued it is better explained by the difference between avoiding injury and bringing aid than by this principle.",
+    a: "What is the principle (doctrine) of double effect?",
+    n: "Foot: the driver faces a conflict of negative duties and should do the least injury he can."
+  }
+};
+const GAMES = [DATA, GAME2, GAME3];
+const GAME_LABELS = { "1":"Game 1", "2":"Game 2", "3":"Game 3", "mix":"Shuffle" };
 const KEY = "ethics-jeopardy-v1";
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const fresh = () => ({ teams:[{name:"Team 1",score:0},{name:"Team 2",score:0},{name:"Team 3",score:0}], used:{} });
+/* A board: "1"/"2"/"3" plays that game; "mix" draws each square from a random game. Daily Doubles land in two random squares (200–500) in different categories. */
+function newBoard(game){
+  const pick = {}, cols = shuffle([0,1,2,3,4,5]);
+  for (let c = 0; c < 6; c++) for (let r = 0; r < 5; r++) pick[c + "-" + r] = game === "mix" ? Math.floor(Math.random() * 3) : (+game - 1);
+  return { game, pick, dd:[cols[0] + "-" + (1 + Math.floor(Math.random() * 4)), cols[1] + "-" + (1 + Math.floor(Math.random() * 4))], fin: game === "mix" ? Math.floor(Math.random() * 3) : (+game - 1) };
+}
+function shuffle(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+const fresh = () => ({ teams:[{name:"Team 1",score:0},{name:"Team 2",score:0},{name:"Team 3",score:0}], used:{}, ...newBoard("1") });
+const clueAt = id => { const [c, r] = id.split("-").map(Number); return GAMES[state.pick[id]].categories[c].clues[r]; };
 let state, cur = null, timerId = null, armed = {};
 
 function load(){ try { const s = localStorage.getItem(KEY); return s ? JSON.parse(s) : null; } catch(e){ return null; } }
@@ -249,7 +368,7 @@ function renderBoard(){
   let html = cats.map(c => `<div class="cat" role="columnheader">${esc(c.name)}</div>`).join("");
   for (let r = 0; r < 5; r++) {
     html += cats.map((c, ci) => {
-      const id = ci + "-" + r, used = state.used[id], v = c.clues[r].v;
+      const id = ci + "-" + r, used = state.used[id], v = (r + 1) * 100;
       return used
         ? `<button class="tile used" type="button" disabled aria-label="${esc(c.name)} ${v}, used">${v}</button>`
         : `<button class="tile" type="button" data-cell="${id}" aria-label="${esc(c.name)} for ${v}">${v}</button>`;
@@ -258,6 +377,8 @@ function renderBoard(){
   $("#board").innerHTML = html;
   const left = 30 - Object.keys(state.used).length;
   $("#left").textContent = left + (left === 1 ? " clue left" : " clues left");
+  $("#games").innerHTML = Object.entries(GAME_LABELS).map(([k, l]) => `<button type="button" data-game="${k}" aria-pressed="${state.game === k}">${l}</button>`).join("");
+  $("#gameName").textContent = GAME_LABELS[state.game];
 }
 
 function renderTeams(){
@@ -295,10 +416,13 @@ $("#teams").addEventListener("click", e => {
 $("#board").addEventListener("click", e => {
   const b = e.target.closest("[data-cell]"); if (b) openClue(b.dataset.cell);
 });
-$("#resetBtn").addEventListener("click", e => arm("reset", e.currentTarget, "Reset scores?", () => {
-  const names = state.teams.map(t => ({ name:t.name, score:0 }));
-  state = { teams:names, used:{} }; render();
-}));
+function startGame(game){ const names = state.teams.map(t => ({ name:t.name, score:0 })); state = { teams:names, used:{}, ...newBoard(game) }; render(); }
+$("#resetBtn").addEventListener("click", e => arm("reset", e.currentTarget, "Reset scores?", () => startGame(state.game)));
+$("#games").addEventListener("click", e => {
+  const b = e.target.closest("[data-game]"); if (!b || b.dataset.game === state.game && state.game !== "mix") return;
+  const g = b.dataset.game, go = () => startGame(g);
+  if (Object.keys(state.used).length || state.teams.some(t => t.score)) arm("game" + g, b, "New game?", go); else go();
+});
 $("#finalBtn").addEventListener("click", openFinal);
 
 /* ---------- Clue overlay ---------- */
@@ -306,8 +430,8 @@ const ov = $("#overlay");
 function openClue(id){
   const [ci, r] = id.split("-").map(Number);
   const c = DATA.categories[ci];
-  const dd = DAILY.has(id);
-  cur = { kind:"clue", id, cat:c.name, clue:c.clues[r], dd, stage: dd ? "dd" : "clue", team:null, wager:"", wrongs:[], revealed:false };
+  const dd = state.dd.includes(id);
+  cur = { kind:"clue", id, cat:c.name, clue:clueAt(id), dd, stage: dd ? "dd" : "clue", team:null, wager:"", wrongs:[], revealed:false };
   showOverlay();
 }
 function openFinal(){
@@ -366,7 +490,7 @@ function draw(){
       }
     }
   } else {
-    const F = DATA.final;
+    const F = GAMES[state.fin].final;
     head = `<div class="ov-cat">Final Jeopardy <span>· ${esc(F.category)}</span></div>
             ${cur.stage === "fdone" ? "" : `<button class="btn" type="button" data-act="fback">Back to board</button>`}`;
     if (cur.stage === "fwager") {
@@ -466,6 +590,7 @@ function boot(data){
   state = (data && data.state) || load() || fresh();
   if (!state.teams || !state.teams.length) state = fresh();
   state.used = state.used || {};
+  if (!state.game || !state.pick) Object.assign(state, { game:"1", pick:newBoard("1").pick, dd:["1-3","5-4"], fin:0 });
   render();
 }
 window.claude?.hot?.snapshot?.(() => ({ state }));

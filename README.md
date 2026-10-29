@@ -26,7 +26,7 @@ The elevator pitch station contains only class material and does not generate or
 
 | Station | What it practices | Mode |
 | --- | --- | --- |
-| Virtue Case Lab | The four-step case study method, with model answers | Step by step, pairs, or timed blue book |
+| Virtue Case Lab | The four-step case study method on twelve cases, including the four class practice cases, with model answers | Step by step, pairs, or timed blue book |
 | Definition Drill | The four cardinal virtue definitions (and virtue itself), matched and then written from memory | Solo |
 | Characteristics Sort | The elements, vices, and roles of each cardinal virtue | Solo or pairs |
 | Spot the Virtue | Naming the virtue at stake in short real-life moments | Solo or pairs |
@@ -43,7 +43,7 @@ The elevator pitch station contains only class material and does not generate or
 | Key Ideas | Key Ideas (9 pts) and Short Answer (10 pts) | Solo |
 | Case Lab | Case Study Analysis (10 pts) | Solo or group |
 | Describe It | Word Definitions | Group (teams) |
-| Class Jeopardy | Multiple Choice and review | Group or whole class |
+| Class Jeopardy | Multiple Choice and review; three games plus Shuffle | Group or whole class |
 
 ## Direct links
 
@@ -57,6 +57,22 @@ Add these to the end of the site address to send students straight to a unit or 
 - Class Jeopardy is its own page: `jeopardy.html` (designed for a projector or shared screen)
 
 Progress and written answers are saved in each student's own browser. Nothing is collected or sent anywhere.
+
+## Notes-first locks and the teacher key
+
+Some answers stay locked until students do their own work first, so the site supports note-taking instead of replacing it:
+
+- **Flashcards (Units 1 and 3):** students write the definition from memory before a card flips. Once their attempt is in the right ballpark, that card stays unlocked. The Unit 1 glossary shows only unlocked terms.
+- **Virtue Toolkit:** each virtue opens after the student writes its class definition and two essential characteristics.
+- **Virtue Case Lab:** the model answer opens after the student writes enough for all four steps (in pairs mode, after the pair checks a box saying they wrote theirs).
+- **Moral Calculus Lab, Key Ideas, and the Unit 3 Case Lab:** students write their reasoning before comparing with the model.
+- **Definition Drill:** the class definition shows only after a real attempt.
+
+The locks are a speed bump, not security: they run in the student's browser.
+
+**Teacher key.** Nothing on the student pages links to it. Add `#teacher` to the end of the site address and enter the teacher code to open every lock on that device. While the key is on, a small line at the bottom of the landing page says so and offers "Turn off."
+
+**Adjusting the locks.** In `index.html`, find `const GATES` near the bottom of the `<script>` section. Set `on: false` to turn every lock off, or change the word counts. The teacher code is stored only as a number (`teacherHash`), so the code itself is not in the page. To change it, open the site, open the browser console (F12), type `hashCode("YourNewCode")`, and paste the number it returns in place of the old `teacherHash` value. Capitalization does not matter.
 
 ## Publish with GitHub Pages
 
@@ -95,7 +111,7 @@ Unit 3:
 - `IDEAS`: key ideas with a model definition, explanation, and example
 - `CASES`: case studies with the key moral issue and model responses for each stance
 
-Jeopardy clues are in `jeopardy.html`, in the `DATA` object near the top of its `<script>` section. Each clue has `q` (the clue), `a` (the correct response), and `n` (a teaching note). The two Daily Doubles are set in the `DAILY` line just below it.
+Class Jeopardy has three complete games (Game 1, Game 2, Game 3) with the same six categories, plus a Shuffle option that builds each board square from a random one of the three games. The two Daily Doubles land in different random squares every new game. The clues are in `jeopardy.html`, near the top of its `<script>` section: `DATA` is Game 1, `GAME2` is Game 2, and `GAME3` is Game 3. Each clue has `q` (the clue), `a` (the correct response), and `n` (a teaching note), and each game has a `final` for Final Jeopardy. Keep the category names and their order the same in all three games so Shuffle lines up.
 
 Theory codes: `ve` Virtue Ethics, `sct` Social Contract, `deon` Deontology, `util` Utilitarianism, `gen` across theories. Virtue codes: `pru` Prudence, `jus` Justice, `tem` Temperance, `for` Fortitude.
 
